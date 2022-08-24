@@ -95,6 +95,9 @@ local.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# root
+.root-context.xml
+
 # Package Files #
 *.jar
 *.war
