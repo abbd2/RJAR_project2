@@ -31,11 +31,11 @@ public class MultiSearchRestController {
 	private final static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
 
 	@GetMapping(value = "/executeMultiSearch")
-	public String multiSearch(String summoners) throws IOException {
+	public MultiSearchBean multiSearch(String summoners) throws IOException {
 
 		long beforeTime = System.currentTimeMillis(); // 코드 실행 전의 시간
 
-		log.info(getSummonersInfo(summoners)); // 멀티서치에 뿌릴 정보 받아오기
+		getSummonersInfo(summoners); // 멀티서치에 뿌릴 정보 받아오기
 
 		long afterTime = System.currentTimeMillis(); // 코드 실행 후의 시간
 		double secDiffTime = ((double) afterTime - beforeTime) / 1000;
@@ -61,10 +61,10 @@ public class MultiSearchRestController {
 
 		System.out.println("총 걸린 시간 : " + secDiffTime);
 
-		return "multiSearch";
+		return msb;
 	}
 
-	public String getSummonersInfo(String summoners) throws IOException {
+	public void getSummonersInfo(String summoners) throws IOException {
 
 		// 나중에 summoners 유무 체크
 		String replaceVal = "님이 방에 참가했습니다.";
@@ -78,9 +78,6 @@ public class MultiSearchRestController {
 		// 개행과 쉼표 문자를 기준으로 나누어서 소환사 이름 저장
 		String[] summonerName = summoners2.split("\\R|,");
 
-		// 최종적으로 멀티서치에 뿌릴 데이터를 저장하는 곳
-		MultiSearchBean[] msbArr = new MultiSearchBean[summonerName.length];
-
 		for (int i = 0; i < summonerName.length; i++) {
 			System.out.println(summonerName[i] + "의 puuid 받아오는중...");
 
@@ -89,8 +86,6 @@ public class MultiSearchRestController {
 			System.out.println((++i) + "명 완료...");
 			System.out.println();
 		}
-
-		return "";
 	}
 
 	// 소환사 이름으로 puuid 받아오기
@@ -115,8 +110,6 @@ public class MultiSearchRestController {
 		leagueInfo(id);
 		// 게임 정보 저장
 		getGameId(puuid.toString());
-
-//		return getGameId(puuid.toString());
 	}
 
 	// 리그정보 가져오기
@@ -182,8 +175,6 @@ public class MultiSearchRestController {
 			msb.setTotalWinRate(-1);
 		}
 		System.out.println("totalWinRate : " + msb.getTotalWinRate());
-
-//		return msb;
 	}
 
 	// puuid로 gameid 10개씩 받기
@@ -233,8 +224,6 @@ public class MultiSearchRestController {
 		msb.setAssists(assists);
 		msb.setWins(wins);
 		msb.setEndTimeDate(endTimeDate);
-
-//		return msb;
 	}
 
 	// 게임아이디로 데이터 가져오기
@@ -282,7 +271,7 @@ public class MultiSearchRestController {
 
 		return data;
 	}
-	
+
 	// url 커넥션
 	public static String connectURL(String getUrl) throws IOException {
 

@@ -36,9 +36,10 @@
 	<div id="multiSearch">
 		<form action="executeMultiSearch" method="get">
 			<div id="textarea">
-				<textarea name="summoners" class="form-control" id="exampleTextarea" style="height: 300px"></textarea>
+				<textarea name="summoners" class="form-control" id="exampleTextarea" style="height: 200px"></textarea>
 				<input type="submit">
 			</div>
+			<div id="showData">${msb.getRank}</div>
 		</form>
 	</div>
 

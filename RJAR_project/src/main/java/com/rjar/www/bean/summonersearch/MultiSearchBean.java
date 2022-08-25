@@ -26,10 +26,10 @@ public class MultiSearchBean {
 	private String[] wins; // 10게임 경경기 결과
 	private long[] endTimeDate;
 	
-	// most는 전체 게임 고료이기 때문에 따로 클래스를 만들지 고려하고 나중에
+	// most는 전체 게임 고려이기 때문에 따로 클래스를 만들지 고려하고 나중에
 	private String[] mostChampionNames;
 	private double[] mostChampionKDA;
-	private int[] mostChampionWins; // 모스트 챔피언들의 경기 수
+	private int[] mostChampGameCount; // 모스트 챔피언들의 경기 수
 	private int[] mostChampionWinRate; // 모스트 챔피언들의 경기 수
 	
 }
