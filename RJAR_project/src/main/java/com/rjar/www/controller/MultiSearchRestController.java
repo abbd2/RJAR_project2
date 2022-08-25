@@ -50,14 +50,15 @@ public class MultiSearchRestController {
 		log.info("replaceval 제거 : " + summoners1);
 		String summoners2 = summoners1.replaceAll("\\p{Z}", ""); // 공백 완전히 제거
 		log.info("공백 완전히 제거 : " + summoners2);
+		StringTokenizer st = new StringTokenizer(summoners2,"\\\\R|,");
 		String[] summonerName = summoners2.split("\\R|,"); // 개행과 쉼표 문자를 기준으로 나누어서 저장
 
-		// 소환사 이름 출력
-		for (String name : summonerName) {
-			System.out.println("소환사 이름 : " + name);
-		}
-		// 검색한 소환사들의 프로필 정보를 저장
 		MultiSearchBean[] msbArr = new MultiSearchBean[summonerName.length];
+		while(st.hasMoreTokens()) {
+			
+		}
+		
+		
 
 		for (int i = 0; i < summonerName.length; i++) {
 			System.out.println(summonerName[i] + "의 puuid 받아오는중...");
@@ -67,6 +68,12 @@ public class MultiSearchRestController {
 
 			System.out.println();
 		}
+		
+		// 소환사 이름 출력
+//		for (String name : summonerName) {
+//			System.out.println("소환사 이름 : " + name);
+//		}
+		// 검색한 소환사들의 프로필 정보를 저장
 
 //		getGameId(puuid[0]);
 
@@ -143,8 +150,7 @@ public class MultiSearchRestController {
 
 		String result = connectURL(leagueUrl);
 		System.out.println("result : " + result);
-		result = result.replace("[", ""); // 대괄호 제거
-		result = result.replace("]", ""); // 대괄호 제거
+//		result = stringFormating2(result); // 대괄호 제거
 		System.out.println("result replace : " + result);
 		JsonNode json = parseStringToJson(leagueUrl, result);
 
