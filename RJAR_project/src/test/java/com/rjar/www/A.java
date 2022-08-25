@@ -6,8 +6,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class A {
@@ -15,25 +19,58 @@ public class A {
 	@Autowired
 	private B b;
 
-	private String api_key = "RGAPI-4843ae9e-7ede-4140-8341-164bbda24a7b";
+	private final static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
 
+	@Test
 	public void print() throws IOException {
-		String summonerName = "여눙1";
 
-		String proFileUrl = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName
-				+ "?api_key=" + api_key;
-//		URL에서 URLConnection 객체 얻기(프로토콜이 http://인 경우 아래 객체로 캐스팅 가능)
-		URL url = new URL(proFileUrl);
+		String gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/KR_6086366536?api_key=" + api_key;
+		String result = connectURL(gameUrl); // url connect
+		JsonNode json = parseStringToJson(gameUrl, result); // Stinrg -> JsonNode
+
+		System.out.println("------------------------------------");
+		System.out.println("gameid json : " + json);
+		System.out.println("------------------------------------");
+
+		String kill = json.get("info").get("participants").get(1).get("lane").toPrettyString();
+		System.out.println("kill : " + kill);
+
+	}
+
+	public static String connectURL(String getUrl) throws IOException {
+
+		System.out.println("URL connecting...");
+		URL url = new URL(getUrl);
 		HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
 		urlconnection.setRequestMethod("GET");
-//		urlconnection.setRequestProperty("Content-type", "application/json");
-//		urlconnection.setDoOutput(true);
 		BufferedReader br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
-		
-		String result = "";
-		result = br.readLine();
-		System.out.println(result);
 
+		String brRead = "";
+		String result = "";
+
+		// br,readLine() 한 줄 이상이 있다면
+		while ((brRead = br.readLine()) != null) {
+			result += brRead;
+			System.out.println("while : " + result);
+		} // while end
+
+		// url에서 긁어온 값을 String으로 반환
+		return result;
+	}
+
+	// 문자열 -> JsonNode
+	public static JsonNode parseStringToJson(String getUrl, String result) throws IOException {
+
+		System.out.println("String to JsonNode...");
+
+//		JsonParser jsonParser = new JsonParser();
+//		JsonObject jsonNode = (JsonObject) jsonParser.parse(result);
+
+		ObjectMapper objMapper = new ObjectMapper();
+		JsonNode jsonNode = objMapper.readTree(result); // String을 JsonNode로 변환
+		System.out.println("jsonNode : " + jsonNode);
+
+		return jsonNode;
 	}
 
 }

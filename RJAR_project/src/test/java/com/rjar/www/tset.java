@@ -14,7 +14,6 @@ class tset {
 	@Autowired
 	private A a;
 
-	@Test
 	public void print() throws IOException {
 		
 		String api_key = "RGAPI-4843ae9e-7ede-4140-8341-164bbda24a7b";

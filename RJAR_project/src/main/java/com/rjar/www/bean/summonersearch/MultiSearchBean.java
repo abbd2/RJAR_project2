@@ -10,7 +10,7 @@ import lombok.Data;
 public class MultiSearchBean {
 	
 	private String summonerName;
-	private String mainLane;
+//	private String mainLane; // 후처리로 작업
 	private String tier;
 	private String rank;
 	private String lp;
@@ -18,13 +18,15 @@ public class MultiSearchBean {
 	private int totalLosses;
 	private int totalWinRate;
 	
+	private String[] championName;
 	private String[] lanes;
 	private int[] kilss;
 	private int[] deaths;
 	private int[] assists;
-	private boolean[] wins; // 10게임 경경기 결과
-	private int[] realTimeDate;
+	private String[] wins; // 10게임 경경기 결과
+	private long[] endTimeDate;
 	
+	// most는 전체 게임 고료이기 때문에 따로 클래스를 만들지 고려하고 나중에
 	private String[] mostChampionNames;
 	private double[] mostChampionKDA;
 	private int[] mostChampionWins; // 모스트 챔피언들의 경기 수
