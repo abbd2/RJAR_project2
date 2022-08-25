@@ -1,5 +1,7 @@
 package com.rjar.www.controller;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,7 +18,7 @@ public class SummonerSearchController {
 	ModelAndView mav;
 
 	@GetMapping(value = "/summonerSearch")
-	public ModelAndView summonerSearch(String summonerName) {
+	public ModelAndView summonerSearch(String summonerName) throws Exception {
 
 		mav = new ModelAndView(); // mav 객체 생성
 		log.info(summonerName); // 검색한 소환사 이름 콘솔에 출력

@@ -92,7 +92,7 @@ public class SummonerSearchMM {
 			if (jsonArray.size() == 2) {
 				JsonObject p = (JsonObject) jsonArray.get(0);
 				JsonObject p1 = (JsonObject) jsonArray.get(1);
-				if (p.get("queueType").getAsString() == "RANKED_FLEX_SR") {
+				if (p.get("queueType").getAsString().equals( "RANKED_FLEX_SR")) {
 					freeTier = p.get("tier").getAsString();
 					freeLeaguePoint = p.get("leaguePoints").getAsInt();
 					freeWins = p.get("wins").getAsInt();
@@ -118,7 +118,7 @@ public class SummonerSearchMM {
 				}
 			} else if (jsonArray.size() == 1) {
 				JsonObject p = (JsonObject) jsonArray.get(0);
-				if (p.get("queueType").getAsString() == "RANKED_FLEX_SR") {
+				if (p.get("queueType").getAsString().equals( "RANKED_FLEX_SR")) {
 					freeTier = p.get("tier").getAsString();
 					freeLeaguePoint = p.get("leaguePoints").getAsInt();
 					freeWins = p.get("wins").getAsInt();
