@@ -59,8 +59,7 @@
 	<img
 		src="http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${profileIconId}.png">
 	<h1>전적 검색 페이지</h1>
-	<h2>검색한 소환사 이름: ${summonerName}</h2>
-	<h2>${puuid}</h2>
+	<h2>검색한 소환사 이름: ${name}</h2>
 	<h2>${LV}</h2>
 	<h1>자유랭크</h1>
 	<h2>${freeTier}</h2>
