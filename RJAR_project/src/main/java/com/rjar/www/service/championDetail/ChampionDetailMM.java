@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.rjar.www.bean.Champion;
 import com.rjar.www.dao.IchampionDao;
-import com.rjar.www.service.bean.championDetail.Champion;
 
 import lombok.extern.log4j.Log4j;
 

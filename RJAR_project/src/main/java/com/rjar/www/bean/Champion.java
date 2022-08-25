@@ -1,4 +1,4 @@
-package com.rjar.www.bean.championDetail;
+package com.rjar.www.bean;
 
 import java.util.List;
 
