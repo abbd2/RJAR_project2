@@ -5,25 +5,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.rjar.www.bean.summonersearch.MultiSearchBean;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @RestController // @ResponseBody 생략
 @RequiredArgsConstructor
+@RequestMapping(value = "/multiSearch")
 public class MultiSearchRestController {
 
 	private final MultiSearchBean msb;
@@ -31,66 +31,78 @@ public class MultiSearchRestController {
 	private final static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
 
 	@GetMapping(value = "/executeMultiSearch")
-	public MultiSearchBean multiSearch(String summoners) throws IOException {
+	public ArrayList<MultiSearchBean> multiSearch(String summoners) throws IOException {
 
 		long beforeTime = System.currentTimeMillis(); // 코드 실행 전의 시간
 
-		getSummonersInfo(summoners); // 멀티서치에 뿌릴 정보 받아오기
+		ArrayList<MultiSearchBean> msbList = getSummonersInfo(summoners); // 멀티서치에 뿌릴 정보 받아오기
 
 		long afterTime = System.currentTimeMillis(); // 코드 실행 후의 시간
 		double secDiffTime = ((double) afterTime - beforeTime) / 1000;
 
-		System.out.println("---------- 최종 데이터 값 모두 출력 ----------");
-		System.out.println("소환사 이름 : " + msb.getSummonerName());
-		System.out.println("티어 : " + msb.getTier());
-		System.out.println("랭크 : " + msb.getRank());
-		System.out.println("LP : " + msb.getLp());
-		System.out.println("종합 승리 : " + msb.getTotalWins());
-		System.out.println("종합 패배 : " + msb.getTotalLosses());
-		System.out.println("종합 승률 : " + msb.getTotalWinRate());
-		for (int i = 0; i < 10; i++) {
-			System.out.println("이제부터 10개씩 저장된 값");
-			System.out.println("챔피언 이름 : " + msb.getChampionName()[i]);
-			System.out.println("라인 : " + msb.getLanes()[i]);
-			System.out.println("킬 : " + msb.getKilss()[i]);
-			System.out.println("데스 : " + msb.getDeaths()[i]);
-			System.out.println("어시스트 : " + msb.getAssists()[i]);
-			System.out.println("결과 : " + msb.getWins()[i]);
-			System.out.println("게임 끝난 시간 : " + msb.getEndTimeDate()[i]);
+		for (int i = 0; i < msbList.size(); i++) {
+			System.out.println("---------- 최종 데이터 값 모두 출력 ----------");
+			System.out.println("소환사 이름 : " + msbList.get(i).getSummonerName());
+			System.out.println("티어 : " + msbList.get(i).getTier());
+			System.out.println("랭크 : " + msbList.get(i).getRank());
+			System.out.println("LP : " + msbList.get(i).getLp());
+			System.out.println("종합 승리 : " + msbList.get(i).getTotalWins());
+			System.out.println("종합 패배 : " + msbList.get(i).getTotalLosses());
+			System.out.println("종합 승률 : " + msbList.get(i).getTotalWinRate());
+			for (int j = 0; j < 10; j++) {
+				System.out.println("이제부터 10개씩 저장된 값");
+				System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
+				System.out.println("라인 : " + msbList.get(i).getLanes()[j]);
+				System.out.println("킬 : " + msbList.get(i).getKilss()[j]);
+				System.out.println("데스 : " + msbList.get(i).getDeaths()[j]);
+				System.out.println("어시스트 : " + msbList.get(i).getAssists()[j]);
+				System.out.println("결과 : " + msbList.get(i).getWins()[j]);
+				System.out.println("게임을 언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
+				System.out.println();
+			}
 		}
 
 		System.out.println("총 걸린 시간 : " + secDiffTime);
 
-		return msb;
+		return msbList;
 	}
 
-	public void getSummonersInfo(String summoners) throws IOException {
+	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners) throws IOException {
 
 		// 나중에 summoners 유무 체크
 		String replaceVal = "님이 방에 참가했습니다.";
 
+		// 소환사 이름 가공
 		log.info("검색창에서 넘어온 값 : " + summoners);
 		String summoners1 = summoners.replace(replaceVal, ""); // replaceVal 제거
 		log.info("replaceval 제거 : " + summoners1);
-		String summoners2 = summoners1.replaceAll("\\p{Z}", ""); // 공백 완전히 제거
-		log.info("공백 완전히 제거 : " + summoners2);
 
 		// 개행과 쉼표 문자를 기준으로 나누어서 소환사 이름 저장
-		String[] summonerName = summoners2.split("\\R|,");
+		String[] summonerName = summoners1.split("\\R|,");
+
+		for (int i = 0; i < summonerName.length; i++) {
+			summonerName[i] = summonerName[i].trim(); // 앞뒤 공백 제거
+			log.info("앞뒤 공백 제거 : " + summonerName[i]);
+		}
+
+		ArrayList<MultiSearchBean> msbList = new ArrayList<>();
 
 		for (int i = 0; i < summonerName.length; i++) {
 			System.out.println(summonerName[i] + "의 puuid 받아오는중...");
 
 			msb.setSummonerName(summonerName[i]); // 소환사의 이름 저장
-			getPuuid(summonerName[i]); // 데이터 받아오기
+			msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
 			System.out.println((++i) + "명 완료...");
 			System.out.println();
 		}
+		return msbList;
 	}
 
 	// 소환사 이름으로 puuid 받아오기
-	public void getPuuid(String summonerName) throws IOException {
+	public MultiSearchBean getPuuid(String summonerName) throws IOException {
 
+		// puuid검색을 위해 닉네임의 공백이 있을경우 공백 제거
+		summonerName = summonerName.replaceAll("\\s", "");
 		String proFileUrl = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName
 				+ "?api_key=" + api_key;
 
@@ -110,6 +122,8 @@ public class MultiSearchRestController {
 		leagueInfo(id);
 		// 게임 정보 저장
 		getGameId(puuid.toString());
+
+		return msb;
 	}
 
 	// 리그정보 가져오기
@@ -196,7 +210,7 @@ public class MultiSearchRestController {
 		int[] deaths = new int[10];
 		int[] assists = new int[10];
 		String[] wins = new String[10]; // 승패 여부
-		long[] endTimeDate = new long[10]; // 경기 끝난 시간
+		String[] endTimeDate = new String[10]; // 경기 끝난 시간
 
 		// 게임이아디에서 데이터 가져오기
 		for (int i = 0; i < 10; i++) {
@@ -210,7 +224,7 @@ public class MultiSearchRestController {
 			deaths[i] = Integer.parseInt(data[3].toString());
 			assists[i] = Integer.parseInt(data[4].toString());
 			wins[i] = replaceQuotationMarks(data[5].toString()); // 큰따옴표 제거
-			endTimeDate[i] = Long.parseLong(data[6].toString());
+			endTimeDate[i] = data[6].toString();
 
 			System.out.println("---------- 받아온 데이터 ----------");
 			System.out.println(Arrays.toString(data));
@@ -223,7 +237,7 @@ public class MultiSearchRestController {
 		msb.setDeaths(deaths);
 		msb.setAssists(assists);
 		msb.setWins(wins);
-		msb.setEndTimeDate(endTimeDate);
+		msb.setAgoTimeDate(endTimeDate);
 	}
 
 	// 게임아이디로 데이터 가져오기
@@ -245,9 +259,32 @@ public class MultiSearchRestController {
 		System.out.println("검색할 소환사 이름 : " + msb.getSummonerName());
 
 		Object[] data = new Object[7]; // 데이터 담을 공간
-		data[6] = json.get("info").get("gameEndTimestamp"); // 게임 끝난 시간 저장
-
 		String summonerName = "\"" + msb.getSummonerName() + "\""; // 포맷 맞춰주기
+
+		long currentTime = System.currentTimeMillis() / 1000; // 현재 시간 구하기
+		long endTimeDate = Long.parseLong(json.get("info").get("gameEndTimestamp").toString()) / 1000; // 게임이 끝난 시간
+		System.out.println("현재 유닉스 시간 : " + currentTime);
+		System.out.println("게임이 끝난 유닉스 시간 : " + endTimeDate);
+
+		long agoTime = currentTime - endTimeDate; // 몇시간 전에 했는지 구하기
+		System.out.println("agoTime : " + agoTime);
+
+//		// 맞춰진 형식으로 띄우기 위해 계산
+		if (agoTime / 2592000 >= 1) {
+			long monTime = agoTime / 2592000;
+			data[6] = monTime + "달 전";
+		} else if (agoTime / 86400 >= 1) { // 일 계산
+			long dayTime = agoTime / 86400;
+			data[6] = dayTime + "일 전"; // 하루 이상이면
+		} else if (agoTime / 3600 >= 1) {
+			long hourTime = agoTime / 3600;
+			data[6] = hourTime + "시간 전"; // 1시간 이상이면
+		} else if (agoTime / 60 >= 1) {
+			long minTime = agoTime / 60;
+			data[6] = minTime + "분 전"; // 1분 이상이면
+		}
+
+		System.out.println("게임한 시간 : " + data[6]);
 
 //		10명의 소환사의 이름과 비교한 후 같으면 데이터 저장
 		for (int j = 0; j < 10; j++) {

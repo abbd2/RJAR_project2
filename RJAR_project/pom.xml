@@ -212,11 +212,18 @@
 		</dependency>
 
 		<!--jackson-dataformat-xml : 객체를 xml로 변환할때 -->
-		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
-			<version>2.13.3</version> </dependency> jackson-dataformat-xml : 객체를 xml로 
-			변환할때 >>>>>>> parent of 4ab9521 (no message) <dependency> <groupId>com.fasterxml.jackson.dataformat</groupId> 
-			<artifactId>jackson-dataformat-xml</artifactId> <version>2.10.3</version> 
-			<<<<<<< HEAD </dependency> ======= </dependency> -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+		
+		<!-- jackson-dataformat-xml : 객체를 xml로 변환할때 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.10.3</version>
+		</dependency>
 
 		<!-- 파일 업로드 -->
 		<!-- commons-fileupload -->
