@@ -202,7 +202,7 @@ public class MultiSearchRestController {
 		gameId = replaceQuotationMarks(gameId); // 큰따옴표 제거한 값 저장
 
 		// 쉼표를 기준으로 나누기
-		StringTokenizer st = new StringTokenizer(gameId, ",");
+		String[] gameIds = gameId.split(",");
 
 		String[] championName = new String[10];
 		String[] lanes = new String[10];
@@ -213,9 +213,9 @@ public class MultiSearchRestController {
 		String[] endTimeDate = new String[10]; // 경기 끝난 시간
 
 		// 게임이아디에서 데이터 가져오기
-		for (int i = 0; i < 10; i++) {
-			System.out.println("검색할 게임 아이디 : " + st.hasMoreTokens());
-			Object[] data = getGameData(st.nextToken(), i); // 게임아이디와 인덱스를 넘겨줌
+		for (int i = 0; i < gameIds.length; i++) {
+			System.out.println("검색할 게임 아이디 : " + gameIds[i]);
+			Object[] data = getGameData(gameIds[i]); // 게임아이디와 인덱스를 넘겨줌
 			System.out.println("반환된 데이터 : " + Arrays.toString(data));
 
 			championName[i] = replaceQuotationMarks(data[0].toString()); // 큰따옴표 제거
@@ -223,7 +223,7 @@ public class MultiSearchRestController {
 			kills[i] = Integer.parseInt(data[2].toString());
 			deaths[i] = Integer.parseInt(data[3].toString());
 			assists[i] = Integer.parseInt(data[4].toString());
-			wins[i] = replaceQuotationMarks(data[5].toString()); // 큰따옴표 제거
+			wins[i] = data[5].toString(); // 큰따옴표 제거
 			endTimeDate[i] = data[6].toString();
 
 			System.out.println("---------- 받아온 데이터 ----------");
@@ -241,7 +241,7 @@ public class MultiSearchRestController {
 	}
 
 	// 게임아이디로 데이터 가져오기
-	private Object[] getGameData(String gameId, int i) throws IOException {
+	private Object[] getGameData(String gameId) throws IOException {
 
 		System.out.println("게임아이디를 이용해 데이터 가져오는중...");
 
