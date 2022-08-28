@@ -49,9 +49,28 @@
 				dataType : 'json',
 				success : function(data) {
 					console.log(data)
-					divList += '<tr height="25" align="center">'
-					+'<td width="100">'+data[0].summonerName+'</td>'
-					$('#showDataTable').html(divList);
+					
+					for(info of data){
+						divList += '<tr height="25" align="center">'
+						+'<td width="100">'+info.summonerName+'</td>'
+						+'<td width="100">'+info.tier+'</td>'
+						+'<td width="100">'+info.rank+'</td>'
+						+'<td width="100">'+info.lp+'</td>'
+						+'<td width="100">'+info.totalWins+'</td>'
+						+'<td width="100">'+info.totalLosses+'</td>'
+						+'<td width="100">'+info.totalWinRate+'%</td>'
+						for(var i = 0; i < 10; i++){
+							divList += '<tr height="25" align="center">'
+							+'<td width="100">'+info.championName[i]+'</td>'
+							+'<td width="100">'+info.lanes[i]+'</td>'
+							+'<td width="100">'+info.kilss[i]+'</td>'
+							+'<td width="100">'+info.deaths[i]+'</td>'
+							+'<td width="100">'+info.assists[i]+'</td>'
+							+'<td width="100">'+info.wins[i]+'</td>'
+							+'<td width="100">'+info.agoTimeDate[i]+'</td>'
+						}
+					}
+					$('#showDataTable').html(divList); /* div추가 */
 				},
 				error : function() {
 					alert("err");
@@ -70,11 +89,6 @@
 				onclick="multiSearch()">
 		</div>
 		<table id="showDataTable">
-			<tr>
-				<td class="champImage"></td>
-				<td class="kda"></td>
-				<td class="agoTime"></td>
-			</tr>
 		</table>
 	</div>
 	<div id="footer"></div>
