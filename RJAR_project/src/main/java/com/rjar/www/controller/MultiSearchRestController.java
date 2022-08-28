@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,11 +23,15 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @RestController // @ResponseBody 생략
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping(value = "/multiSearch")
 public class MultiSearchRestController {
 
-	private final MultiSearchBean msb;
+	@Autowired
+	private MultiSearchBean msb; 
+//	private final MultiSearchBean msb;
+
+	ArrayList<MultiSearchBean> msbList;
 
 	private final static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
 
@@ -35,7 +40,8 @@ public class MultiSearchRestController {
 
 		long beforeTime = System.currentTimeMillis(); // 코드 실행 전의 시간
 
-		ArrayList<MultiSearchBean> msbList = getSummonersInfo(summoners); // 멀티서치에 뿌릴 정보 받아오기
+		ArrayList<MultiSearchBean> msbList = null;
+		msbList = getSummonersInfo(summoners, msbList); // 멀티서치에 뿌릴 정보 받아오기
 
 		long afterTime = System.currentTimeMillis(); // 코드 실행 후의 시간
 		double secDiffTime = ((double) afterTime - beforeTime) / 1000;
@@ -50,6 +56,7 @@ public class MultiSearchRestController {
 			System.out.println("종합 패배 : " + msbList.get(i).getTotalLosses());
 			System.out.println("종합 승률 : " + msbList.get(i).getTotalWinRate());
 			for (int j = 0; j < 10; j++) {
+				System.out.println();
 				System.out.println("이제부터 10개씩 저장된 값");
 				System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
 				System.out.println("라인 : " + msbList.get(i).getLanes()[j]);
@@ -67,7 +74,8 @@ public class MultiSearchRestController {
 		return msbList;
 	}
 
-	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners) throws IOException {
+	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners, ArrayList<MultiSearchBean> msbList)
+			throws IOException {
 
 		// 나중에 summoners 유무 체크
 		String replaceVal = "님이 방에 참가했습니다.";
@@ -84,16 +92,36 @@ public class MultiSearchRestController {
 			summonerName[i] = summonerName[i].trim(); // 앞뒤 공백 제거
 			log.info("앞뒤 공백 제거 : " + summonerName[i]);
 		}
+		System.out.println("가공한 소환사의 이름들 : " + Arrays.toString(summonerName));
+		System.out.println();
 
-		ArrayList<MultiSearchBean> msbList = new ArrayList<>();
+		msbList = new ArrayList<>();
 
 		for (int i = 0; i < summonerName.length; i++) {
-			System.out.println(summonerName[i] + "의 puuid 받아오는중...");
+			try {
+				System.out.println(summonerName[i] + "의 puuid 받아오는중...");
+				
+				msb = new MultiSearchBean();
+				msb.setSummonerName(summonerName[i]); // 소환사의 이름 저장
+				msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
+				System.out.println(i + "명 완료...");
+				System.out.println();
+				System.out.println("소환사의 이름 : " + msbList.get(i).getSummonerName());
+				System.out.println("티어 : " + msbList.get(i).getTier());
+				System.out.println("랭크 : " + msbList.get(i).getRank());
+				System.out.println("LP : " + msbList.get(i).getLp());
+				for (int j = 0; j < 10; j++) {
+					System.out.println();
+					System.out.println("10개");
+					System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
+					System.out.println("어언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
+				}
+			} catch (Exception e) {
+				System.out.println("--------------------------");
+				System.out.println("오류 !!!");
+				System.out.println("--------------------------");
+			}
 
-			msb.setSummonerName(summonerName[i]); // 소환사의 이름 저장
-			msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
-			System.out.println((++i) + "명 완료...");
-			System.out.println();
 		}
 		return msbList;
 	}
@@ -107,7 +135,7 @@ public class MultiSearchRestController {
 				+ "?api_key=" + api_key;
 
 		String result = connectURL(proFileUrl); // url connect
-		JsonNode json = parseStringToJson(proFileUrl, result); // String(json모양) -> JsonNode
+		JsonNode json = parseStringToJson(result); // String(json모양) -> JsonNode
 
 		JsonNode jsonId = json.get("id"); // JsonNode에서 id 저장
 		JsonNode jsonPuuid = json.get("puuid"); // JsonNode에서 puuid 저장
@@ -132,66 +160,140 @@ public class MultiSearchRestController {
 		String leagueUrl = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key="
 				+ api_key;
 		String result = connectURL(leagueUrl); // url connect
-		result = replaceSquareBrackets(result); // 대괄호 제거
-		JsonNode json = parseStringToJson(leagueUrl, result); // String to jsonNode
+//		result = replaceSquareBrackets(result); // 대괄호 제거
+		JsonNode json = parseStringToJson(result); // String to jsonNode
 
 		System.out.println("프로필 데이터 저장중...");
+		System.out.println();
+		System.out.println("json의 사이즈 : " + json.size());
+		System.out.println();
 
-		// tier 저장
-		System.out.println("티어");
-		JsonNode jsonTier = json.get("tier"); // JsonNode에서 tier 저장
-		System.out.println("jsonTier : " + jsonTier);
+		if (json.size() > 1) { // 자유 랭크와 솔로랭크 둘 다 전적이 존재한다면
+			for (int i = 0; i < 2; i++) {
+				System.out.println();
+				System.out.println("큐타입 : " + json.get(i).get("queueType"));
+				System.out.println();
+				if (json.get(i).get("queueType").toString().equals("\"RANKED_SOLO_5x5\"")) { // 큐 타입이 솔로랭크라면
+					// 큐 타입 불러와보기
+					System.out.println();
+					System.out.println("데이터 큐 타입");
+					JsonNode jsonQueueType1 = json.get(i).get("queueType"); // JsonNode에서 tier 저장
+					System.out.println("jsonQueueType : " + jsonQueueType1);
+					System.out.println();
+					// tier 저장
+					System.out.println("티어");
+					JsonNode jsonTier = json.get(i).get("tier"); // JsonNode에서 tier 저장
+					System.out.println("jsonTier : " + jsonTier);
 
-		String jsonTier2 = replaceQuotationMarks(jsonTier.toString()); // 큰따옴표 제거
-		msb.setTier(jsonTier2.toString()); // 큰따옴표 제거한 값 저장
-		System.out.println("Tier : " + msb.getTier());
+					String jsonTier2 = replaceQuotationMarks(jsonTier.toString()); // 큰따옴표 제거
+					msb.setTier(jsonTier2.toString()); // 큰따옴표 제거한 값 저장
+					System.out.println("Tier : " + msb.getTier());
 
-		// 랭크 저장
-		System.out.println("랭크");
-		JsonNode jsonRank = json.get("rank"); // JsonNode에서 tier 저장
-		System.out.println("jsonRank : " + jsonRank);
+					// 랭크 저장
+					System.out.println("랭크");
+					JsonNode jsonRank = json.get(i).get("rank"); // JsonNode에서 tier 저장
+					System.out.println("jsonRank : " + jsonRank);
 
-		String jsonRank2 = replaceQuotationMarks(jsonRank.toString()); // 큰따옴표 제거
-		msb.setRank(jsonRank2); // 큰따옴표 제거한 값 저장
-		System.out.println("rank : " + msb.getRank());
+					String jsonRank2 = replaceQuotationMarks(jsonRank.toString()); // 큰따옴표 제거
+					msb.setRank(jsonRank2); // 큰따옴표 제거한 값 저장
+					System.out.println("rank : " + msb.getRank());
 
-		// LP 저장
-		System.out.println("LP");
-		JsonNode jsonLP = json.get("leaguePoints"); // JsonNode에서 tier 저장
-		System.out.println("jsonLP : " + jsonLP);
+					// LP 저장
+					System.out.println("LP");
+					JsonNode jsonLP = json.get(i).get("leaguePoints"); // JsonNode에서 tier 저장
+					System.out.println("jsonLP : " + jsonLP);
 
-		msb.setLp(jsonLP.toString()); // 큰따옴표 제거한 값 저장
-		System.out.println("leaguePoints : " + msb.getLp());
+					msb.setLp(jsonLP.toString()); // 큰따옴표 제거한 값 저장
+					System.out.println("leaguePoints : " + msb.getLp());
 
-		// 전체 경기 승리 수 저장
-		System.out.println("전체 경기 승리 수");
-		JsonNode jsonWins = json.get("wins"); // JsonNode에서 tier 저장
-		System.out.println("jsonWins : " + jsonWins);
+					// 전체 경기 승리 수 저장
+					System.out.println("전체 경기 승리 수");
+					JsonNode jsonWins = json.get(i).get("wins"); // JsonNode에서 tier 저장
+					System.out.println("jsonWins : " + jsonWins);
 
-		msb.setTotalWins(Integer.parseInt(jsonWins.toString())); // 큰따옴표 제거한 값 저장
-		System.out.println("wins : " + msb.getTotalWins());
+					msb.setTotalWins(Integer.parseInt(jsonWins.toString())); // 큰따옴표 제거한 값 저장
+					System.out.println("wins : " + msb.getTotalWins());
 
-		// 전체 경기 패배 수 저장
-		System.out.println("전체 패배 수");
-		JsonNode jsonLosses = json.get("losses"); // JsonNode에서 tier 저장
-		System.out.println("jsonLosses : " + jsonLosses);
+					// 전체 경기 패배 수 저장
+					System.out.println("전체 패배 수");
+					JsonNode jsonLosses = json.get(i).get("losses"); // JsonNode에서 tier 저장
+					System.out.println("jsonLosses : " + jsonLosses);
 
-		msb.setTotalLosses(Integer.parseInt(jsonLosses.toString())); // 큰따옴표 제거한 값 저장
-		System.out.println("losses : " + msb.getTotalLosses());
+					msb.setTotalLosses(Integer.parseInt(jsonLosses.toString())); // 큰따옴표 제거한 값 저장
+					System.out.println("losses : " + msb.getTotalLosses());
 
-		// 전체 경기의 승률 저장
-		System.out.println("승률");
-		if (msb.getTotalLosses() > 0) {
-			double winRate = 0;
-			winRate = (double) msb.getTotalWins() / (msb.getTotalWins() + msb.getTotalLosses()) * 100;
-			msb.setTotalWinRate(Math.round((int) winRate));
+					// 전체 경기의 승률 저장
+					System.out.println("승률");
+					if (msb.getTotalLosses() > 0) {
+						double winRate = 0;
+						winRate = (double) msb.getTotalWins() / (msb.getTotalWins() + msb.getTotalLosses()) * 100;
+						msb.setTotalWinRate(Math.round((int) winRate));
+					} else {
+						msb.setTotalWinRate(-1);
+					}
+					System.out.println("totalWinRate : " + msb.getTotalWinRate());
+					break;
+				} // end if
+			} // end for
 		} else {
-			msb.setTotalWinRate(-1);
-		}
-		System.out.println("totalWinRate : " + msb.getTotalWinRate());
+
+			// tier 저장
+			System.out.println("티어");
+			JsonNode jsonTier = json.get(0).get("tier"); // JsonNode에서 tier 저장
+			System.out.println("jsonTier : " + jsonTier);
+
+			String jsonTier2 = replaceQuotationMarks(jsonTier.toString()); // 큰따옴표 제거
+			msb.setTier(jsonTier2.toString()); // 큰따옴표 제거한 값 저장
+			System.out.println("Tier : " + msb.getTier());
+
+			// 랭크 저장
+			System.out.println("랭크");
+			JsonNode jsonRank = json.get(0).get("rank"); // JsonNode에서 tier 저장
+			System.out.println("jsonRank : " + jsonRank);
+
+			String jsonRank2 = replaceQuotationMarks(jsonRank.toString()); // 큰따옴표 제거
+			msb.setRank(jsonRank2); // 큰따옴표 제거한 값 저장
+			System.out.println("rank : " + msb.getRank());
+
+			// LP 저장
+			System.out.println("LP");
+			JsonNode jsonLP = json.get(0).get("leaguePoints"); // JsonNode에서 tier 저장
+			System.out.println("jsonLP : " + jsonLP);
+
+			msb.setLp(jsonLP.toString()); // 큰따옴표 제거한 값 저장
+			System.out.println("leaguePoints : " + msb.getLp());
+
+			// 전체 경기 승리 수 저장
+			System.out.println("전체 경기 승리 수");
+			JsonNode jsonWins = json.get(0).get("wins"); // JsonNode에서 tier 저장
+			System.out.println("jsonWins : " + jsonWins);
+
+			msb.setTotalWins(Integer.parseInt(jsonWins.toString())); // 큰따옴표 제거한 값 저장
+			System.out.println("wins : " + msb.getTotalWins());
+
+			// 전체 경기 패배 수 저장
+			System.out.println("전체 패배 수");
+			JsonNode jsonLosses = json.get(0).get("losses"); // JsonNode에서 tier 저장
+			System.out.println("jsonLosses : " + jsonLosses);
+
+			msb.setTotalLosses(Integer.parseInt(jsonLosses.toString())); // 큰따옴표 제거한 값 저장
+			System.out.println("losses : " + msb.getTotalLosses());
+
+			// 전체 경기의 승률 저장
+			System.out.println("승률");
+			if (msb.getTotalLosses() > 0) {
+				double winRate = 0;
+				winRate = (double) msb.getTotalWins() / (msb.getTotalWins() + msb.getTotalLosses()) * 100;
+				msb.setTotalWinRate(Math.round((int) winRate));
+			} else {
+				msb.setTotalWinRate(-1);
+			}
+			System.out.println("totalWinRate : " + msb.getTotalWinRate());
+		} // end if
+
 	}
 
-	// puuid로 gameid 10개씩 받기
+	// puuid로 gameId 10개씩 받기
 	public void getGameId(String puuid) throws IOException {
 
 		System.out.println("gmaeID 가져오는 중...");
@@ -249,7 +351,7 @@ public class MultiSearchRestController {
 		String gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
 
 		String result = connectURL(gameUrl); // url connect
-		JsonNode json = parseStringToJson(gameUrl, result); // Stinrg -> JsonNode
+		JsonNode json = parseStringToJson(result); // Stinrg -> JsonNode
 
 		System.out.println("------------------------------------");
 		System.out.println("gameid json : " + json);
@@ -312,6 +414,7 @@ public class MultiSearchRestController {
 	// url 커넥션
 	public static String connectURL(String getUrl) throws IOException {
 
+		System.out.println();
 		System.out.println("URL connecting...");
 		URL url = new URL(getUrl);
 		HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
@@ -332,7 +435,7 @@ public class MultiSearchRestController {
 	}
 
 	// 문자열 -> JsonNode
-	public static JsonNode parseStringToJson(String getUrl, String result) throws IOException {
+	public static JsonNode parseStringToJson(String result) throws IOException {
 
 		System.out.println("String to JsonNode...");
 
