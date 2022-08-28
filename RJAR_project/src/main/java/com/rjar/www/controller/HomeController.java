@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.rjar.www.bean.Champion;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
 
 import lombok.extern.log4j.Log4j;
@@ -12,9 +13,9 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Controller
 public class HomeController {
-	
+
 	@Autowired
-	private ChampionDetailMM champmm; 
+	private ChampionDetailMM champmm;
 
 	ModelAndView mav;
 
@@ -30,12 +31,11 @@ public class HomeController {
 		return "home";
 	}
 
-	@GetMapping(value = "/championHome")
-	public ModelAndView championDetail() {
-		String tier = "platinum";
-		String lane = "top"; // 다른 메소드에서 사용
-		mav = champmm.getChampionInfo(tier, lane);
-		return mav;
+	@GetMapping(value = "/championDetail")
+	public String championDetail(Champion champ) {
+		log.info("home 이지롱");
+//		mav = champmm.getChampionInfo(champ.getTier(), champ.getLane());
+		return "championHome";
 	}
 
 	@GetMapping(value = "/laboratory")
@@ -46,10 +46,10 @@ public class HomeController {
 
 	@GetMapping(value = "/multiSearch")
 	public String multiSearch() {
- 
+
 		return "multiSearch";
 	}
-	
+
 	@GetMapping(value = "/community")
 	public String community() {
 
