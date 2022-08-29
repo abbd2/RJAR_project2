@@ -6,22 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" -->
-<!-- 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" -->
-<!-- 	crossorigin="anonymous"> -->
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" -->
-<!-- 	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" -->
-<!-- 	crossorigin="anonymous"></script> -->
-
-<!-- <script -->
-<!-- 	src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" -->
-<!-- 	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" -->
-<!-- 	crossorigin="anonymous"></script> -->
-<!-- <script -->
-<!-- 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" -->
-<!-- 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" -->
-<!-- 	crossorigin="anonymous"></script> -->
 <title>멀티서치</title>
 <style type="text/css">
 .summoner-search-outter-box {
@@ -37,54 +21,101 @@
 	<script type="text/javascript">
 		function multiSearch() {
 
-			let divList;
+			let summaryList;
+			let matchesList;
+			let liList; // mathcList 반복문으로 10개 뽑기 
 			let summoners = $("#multiSearchInput").val();
 
 			console.log("함수")
-			$.ajax({
-				url : "multiSearch/executeMultiSearch",
-				contentType : 'application/json; charset=UTF-8',
-				method : "get",
-				data : {
-					"summoners" : summoners
-				},
-				dataType : 'json',
-				success : function(data) {
-					console.log(data)
-					
-					divList += '<div class=tierPosition>'
-						+'<div class=tier>'
-							+'<img src="./resources/tierImg/'+data[0].tier+'.png" width="38px">'
-						+'</div>'
-						+'<div class=mostPosition>'
-							+'<img src="./resources/laneImg/'+data[0].lanes[0]+'.png">'
-						+'</div>'
-					+'</div>'
-					+'<div class="summonerName">'
-						+'<a href="">'+data[0].summonerName+'</a>'
-					+'</div>'
-					+'<div class="lp">'+data[0].tier+' '+data[0].rank+' '+data[0].lp
-					+'</div>'
-					+'<div class="graph">'
-						+'<div class=barGraph style="weight=185; height=16;">'
-							+'<div class="base" style="backgorund-color: red;>'
-								+'<div class="win" style="width: '+data[0].totalWinRate+'%">'
-									+data[0].totalWins+'승'
+			$
+					.ajax({
+						url : "multiSearch/executeMultiSearch",
+						contentType : 'application/json; charset=UTF-8',
+						method : "get",
+						data : {
+							"summoners" : summoners
+						},
+						dataType : 'json',
+						success : function(data) {
+							console.log(data)
+ 
+							for(let i=0; i<data.length; i++){
+								
+								console.log("길이: "+data.length)
+								
+								summaryList += '<div class=tierPosition>'
+											+ '<div class=tier>'
+												+ '<img src="./resources/tierImg/'+data[i].tier+'.png" width="38px">'
+											+ '</div>'
+										+ '<div class="summonerName">'
+											+ '<a href="">'
+											+ data[i].summonerName
+											+ '</a>'
+										+ '</div>'
+										+ '<div class="lp">'
+										+ data[i].tier + ' ' + data[i].rank + data[i].lp
+										+ '</div>'
+										+ '<div class="graph">'
+											+ '<div class=barGraph style="weight=185; height=16;">'
+												+ '<div class="base" style="backgorund-color: red;>'
+													+ '<div class="win" style="width: '+ data[i].totalWinRate + '%">'
+														+ data[i].totalWins + '승'
+													+ '</div>'
+													+ data[i].totalLosses + '패'
+												+ '</div>'
+												+ '<strong class="winRatio">' + data[i].totalWinRate + '%' + '</strong>' 
+											+ '</div>'
+										+ '</div>';
+	
+								$('.summonerSummary').html(summaryList); /* div추가 */
+	
+								matchesList += '<div class=title>'+'최근 플레이'+'</div>'
+									+'<div class="positions">'
+									+'<div class="position">'
+										+'<div class="positionIcon">'
+											+'<img src="">' // 최근 10판중 가장 많이 간 라인 이미지
+										+'</div>'
+										+'<div class="positionInfo">'
+										+'<div class="roleRate">'
+											// 최근 10판중 가장 많이 간 라인 퍼센트
+											+'%'
+									+'</div>'
+									+'<div class="winRate">'
+									+"W/R "
+									+'<strong>'+// 라인 승률
+									+'%'
+									+'</strong>'
 								+'</div>'
-								+data[0].totalLosses+'패'
-							+'</div>'
-							+'<strong class="winRate">'
-								+data[0].totalWinRate+'%'
-						+'</div>'
-					+'</div>';
-					
-					$('.summonerSummary').html(divList); /* div추가 */
-
-				},
-				error : function() {
-					alert("err");
-				}
-			});
+								+'</div>'
+								+'</div>'
+								+'</div>'
+								+'<ul class="recentGames">'
+									+'<li>'
+										+'<div style="pisition:relative" class="recentGameImage">'
+										// 경로에 챔피언 이미지 등록
+											+'<img src="" width="20" alt="'+data[i].championName[0]+'" title="'+data[i].championName[0]+'" height="20">'
+										+'</div>'
+										+'<div class="isWin">'
+											+'<span class="kill">'+data[i].kilss[0]+'</span>'
+											+' /'
+											+'<span class="death">'+data[i].deaths[0]+'</span>'
+											+' /'
+											+'<span class="assist">'+data[i].assists[0]+'</span>'
+										+'</div>'
+										+'<div class="timeStamp">'
+											+'<div style="positionRelative" class="tooltip">'+data[i].agoTimeDate[0]
+											+'</div>'
+										+'</div>'
+									+'</li>'
+									+'</div>'
+									+'</ul>'
+						$('.recentMatches').html(matchesList);
+							} // end for
+						},
+						error : function() {
+							alert("err");
+						}
+					});
 		}
 	</script>
 
@@ -101,57 +132,57 @@
 		<div id="content">
 			<ul class="multiList" style="list-style: none;">
 				<li style="width: 216; height: 869; border: 1px solid gray;">
-					<div class="summonerSummary" >
-<!-- 						<div class="tierPosition"> -->
-<!-- 							<div class="tier"> -->
-<!-- 								<img src="./resources/tierImg/SILVER.png" width="50px"> -->
-<!-- 							</div> -->
-<!-- 							<div class="mostPosition"> -->
-<!-- 								<img alt="" src=""> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 						<div class="summonerName"> -->
-<!-- 							<a>소환사 이름</a> -->
-<!-- 						</div> -->
-<!-- 						<div class="lp">티어, lp</div> -->
-<!-- 						<div class="graph"> -->
-<!-- 							<div class="barGraph"> -->
-<!-- 								<div class="base"> -->
-<!-- 									<div class="win">승 수, 승</div> -->
-<!-- 									패 수, 패 -->
-<!-- 								</div> -->
-<!-- 								<strong>승률</strong> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
+					<div class="summonerSummary">
+						<!-- 						<div class="tierPosition"> -->
+						<!-- 							<div class="tier"> -->
+						<!-- 								<img src="./resources/tierImg/SILVER.png" width="50px"> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="mostPosition"> -->
+						<!-- 								<img alt="" src=""> -->
+						<!-- 							</div> -->
+						<!-- 						</div> -->
+						<!-- 						<div class="summonerName"> -->
+						<!-- 							<a>소환사 이름</a> -->
+						<!-- 						</div> -->
+						<!-- 						<div class="lp">티어, lp</div> -->
+						<!-- 						<div class="graph"> -->
+						<!-- 							<div class="barGraph"> -->
+						<!-- 								<div class="base"> -->
+						<!-- 									<div class="win">승 수, 승</div> -->
+						<!-- 									패 수, 패 -->
+						<!-- 								</div> -->
+						<!-- 								<strong>승률</strong> -->
+						<!-- 							</div> -->
+						<!-- 						</div> -->
 					</div>
 
 					<div class="recentMatches">
 						<div class="title">최근 플레이</div>
 
-						<div class="positions">
-							<div class="position">
-								<div class="positionIcon">
-									<img alt="" src="">
-								</div>
-								<div class="positionInfo">
-									<div class="roleRate">승률</div>
-									<div class="winRate">
-										W/R<strong>%</strong>
-									</div>
-								</div>
-							</div>
-							<div class="position">
-								<div class="positionIcon">
-									<img alt="" src="">
-								</div>
-								<div class="positionInfo">
-									<div class="roleRate">승률</div>
-									<div class="winRate">
-										W/R<strong>%</strong>
-									</div>
-								</div>
-							</div>
-						</div>
+						<!-- 						<div class="positions"> -->
+						<!-- 							<div class="position"> -->
+						<!-- 								<div class="positionIcon"> -->
+						<!-- 									<img alt="" src=""> -->
+						<!-- 								</div> -->
+						<!-- 								<div class="positionInfo"> -->
+						<!-- 									<div class="roleRate">승률</div> -->
+						<!-- 									<div class="winRate"> -->
+						<!-- 										W/R<strong>%</strong> -->
+						<!-- 									</div> -->
+						<!-- 								</div> -->
+						<!-- 							</div> -->
+						<!-- 							<div class="position"> -->
+						<!-- 								<div class="positionIcon"> -->
+						<!-- 									<img alt="" src=""> -->
+						<!-- 								</div> -->
+						<!-- 								<div class="positionInfo"> -->
+						<!-- 									<div class="roleRate">승률</div> -->
+						<!-- 									<div class="winRate"> -->
+						<!-- 										W/R<strong>%</strong> -->
+						<!-- 									</div> -->
+						<!-- 								</div> -->
+						<!-- 							</div> -->
+						<!-- 						</div> -->
 						<ul class="recentGames">
 						</ul>
 
