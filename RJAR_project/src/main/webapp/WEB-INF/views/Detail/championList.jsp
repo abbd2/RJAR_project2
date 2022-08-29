@@ -19,19 +19,56 @@
 	margin: 5px;
 }
 
+.champList {
+	width: 450px;
+}
+
+.champion { /* 이미지 감싼 태그 */
+	margin-left: 10px; 
+	float: left;
+	width: 50px; 
+	height: 70px; 
+}
+
+.listimg {
+	width: 50px; 
+	height: 50px; 	
+}
+
+.championName {
+	margin: auto;
+	display: block;
+	width: 50px;
+/* 이 두께를 넘어가야 ..처리됨 */	
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	font-weight: bold; 
+}
+
+.Laneimg {
+	width: 450px;
+	height: 55px;
+	margin-bottom: 10px;
+}
+
+
+
+
 .ui-autocomplete {
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
-table.position {
-	border: solid 1px lightgray;
-	width: 440px;
-	margin-left: 70px;
-	margin-bottom: 10px;
-	/* border-collapse: separate; */
-	border-radius: 8px;
-}
+/* 포지션 이미지 파트 */
+/* table.position { */
+/* 	border: solid 1px lightgray; */
+/* 	width: 440px; */
+/* 	margin-left: 70px; */
+/* 	margin-bottom: 10px; */
+/* 	/* border-collapse: separate; */ */
+/* 	border-radius: 8px; */
+/* } */
 
 td:nth-child(-n) {
 	border-left: solid 1px lightgray;
@@ -76,6 +113,8 @@ small {
 #searchInput:focus {
 	outline: solid 2px #B3CDFF;
 }
+
+
 </style>
 
 
@@ -100,7 +139,9 @@ small {
 	<div>
 		<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
 	</div>
-	<table class="position">
+	
+	<div style = "width : 450px;">
+	<table class="Laneimg">
 		<tr>
 			<td class="a_img" id="all"><a class="all"
 				href="javascript:Aj('./champion_list','#champion_list')"> <img
@@ -130,7 +171,7 @@ small {
 					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png"
 					width="40px;" height="40px;">
 			</a></td>
-			<td class="a_img" id="supporter"><a
+			<td class="a_img" id="supporter" ><a
 				href="javascript:Aj('./Supporter','#champion_list')"> <img
 					name='Supporter'
 					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
@@ -142,10 +183,11 @@ small {
 					width="40px;" height="40px;">
 			</a></td>
 		</tr>
-		<tr>
-		${nameIdList}
-		</tr>
 	</table>
+	</div>
+	<div class = "champList">
+		${nameIdList}
+	</div>
 
 	<script type="text/javascript">
 		$('.chamImg').click(

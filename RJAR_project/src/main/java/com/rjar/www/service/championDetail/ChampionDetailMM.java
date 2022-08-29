@@ -49,7 +49,7 @@ public class ChampionDetailMM {
 			
 			sb.append("<td>");
 			sb.append("<div class = 'tierChamp' value = " + tierList.get(i).getChampionId() + ">");
-			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getChampionName() + ".png>");
 			sb.append("</div>");
 			sb.append("</td>");
@@ -66,15 +66,15 @@ public class ChampionDetailMM {
 			
 			sb.append("<td>");
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter1() + ">");
-			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter1() + ".png>");
 			sb.append("</div>");
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter2() + ">");
-			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter2() + ".png>");
 			sb.append("</div>");
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter3() + ">");
-			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter3() + ".png>");
 			sb.append("</div>");
 			sb.append("</td><br>");
@@ -86,25 +86,21 @@ public class ChampionDetailMM {
 	}
 
 	private String makechampList(List<Champion> nameIdList) {
-		
-		try {
-			for (int i = 0; i < nameIdList.size(); i++) {				
-				System.out.println("nameIdList는 " + nameIdList.get(i).getChampionId());
-			}
-			
-		} catch(Exception e) {
-			System.out.println(e);
-		}
 			
 		StringBuilder sb = new StringBuilder();
 		
 		for (int i = 0; i < nameIdList.size(); i++) {
-
+			sb.append("<td>");
 			sb.append("<div class = 'champion' value = " + nameIdList.get(i).getChampionId() + ">");
-			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
+			sb.append("<img class = 'listimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ nameIdList.get(i).getChampionName() + ".png>");
-			sb.append("<br><small>"+nameIdList.get(i).getChampion_kr_name() +"</small>");
+			sb.append("<br><small class = 'championName''>"+nameIdList.get(i).getChampion_kr_name() +"</small>");
 			sb.append("</div>");
+			sb.append("</td>");
+			i++;
+//			if (i == 5) {
+//				sb.append
+//			}
 		}
 
 		

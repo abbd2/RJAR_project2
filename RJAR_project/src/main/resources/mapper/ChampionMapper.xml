@@ -4,8 +4,9 @@
 <mapper namespace="com.rjar.www.dao.IchampionDao">
    
    <select id="getChampionList" resultType="Champion">
-   SELECT CHAMPIONNAME, CHAMPIONID 
+   SELECT CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME 
    FROM STATS_SKILL_DATA
+   ORDER BY CHAMPION_KR_NAME
    </select>
 <!--    CHAMPIONID : 첫페이지 이후 검색할 때의 파라미터용 -->
    <select id="getTierList" resultType="Champion">
