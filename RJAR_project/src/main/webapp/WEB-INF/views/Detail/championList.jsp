@@ -141,8 +141,10 @@ small {
 					width="40px;" height="40px;">
 			</a></td>
 		</tr>
+		<tr>
+		${nameIdList}
+		</tr>
 	</table>
-	${chamList}
 
 	<script type="text/javascript">
 		$('.chamImg').click(
