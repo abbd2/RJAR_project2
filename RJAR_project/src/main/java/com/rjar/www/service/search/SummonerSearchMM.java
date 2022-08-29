@@ -1,6 +1,7 @@
 package com.rjar.www.service.search;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -194,10 +195,11 @@ public class SummonerSearchMM {
 
 			System.out.println("gameData=" + matchDataList.get(0).replaceAll("\"", ""));
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
-
+			
+			List<GameDetailShowInfo> gdsList = null;
 			for (int j = 0; j < matchDataList.size(); j++) {
 				try {
-					GameDetailShowInfo sg = isc.SearchGame(matchDataList.get(j).replaceAll("\"", ""));
+					gdsList = isc.SearchGame(matchDataList.get(j).replaceAll("\"", ""));
 					System.out.println("데이터가 존재합니다.");
 
 				}
@@ -267,7 +269,7 @@ public class SummonerSearchMM {
 						preMap.put("wardsPlaced", participant.get("wardsPlaced").getAsInt());
 						preMap.put("totalMinionsKilled", participant.get("totalMinionsKilled").getAsInt()+participant.get("neutralMinionsKilled").getAsInt());
 						
-
+                        //item들을 한 칼럼에 넣기 위해 JOIN 작업을 수행
 						ArrayList<String> items = new ArrayList<>();
 						items.add(participant.get("item0").getAsString());
 						items.add(participant.get("item1").getAsString());
@@ -284,7 +286,6 @@ public class SummonerSearchMM {
 						preMap.put("baron", baron.get("kills").getAsInt());
 						preMap.put("tower", tower.get("kills").getAsInt());
 						
-
 						preMap.put("gameDuration",info.get("gameDuration").getAsString());
 						preMap.put("gameEndTimestamp", info.get("gameEndTimestamp").getAsString());
 					}
