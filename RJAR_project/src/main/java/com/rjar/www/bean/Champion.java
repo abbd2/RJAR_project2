@@ -16,7 +16,7 @@ public class Champion {
    
    private String championName;
    private String champion_kr_name;
-   private int champId;
+   private int championId;
    private double winRate;
    private double pickRate;
    private double banRate;

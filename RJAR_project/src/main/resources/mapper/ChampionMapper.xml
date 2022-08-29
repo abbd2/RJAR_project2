@@ -7,18 +7,12 @@
    SELECT CHAMPIONNAME, CHAMPIONID 
    FROM STATS_SKILL_DATA
    </select>
-   <!-- CHAMPIONID : 첫페이지 이후 검색할 때의 파라미터용 -->
+<!--    CHAMPIONID : 첫페이지 이후 검색할 때의 파라미터용 -->
    <select id="getTierList" resultType="Champion">
    	SELECT CHAMPIONNAME, CHAMPION_KR_NAME, WINRATE, PICKRATE, 
    	BANRATE, COUNTER1, COUNTER2, COUNTER3 
-   	FROM ${tier}_DATAIL
-	WHERE LANE = #{lane} AND PICKRATE != 0
+   	FROM ${tier}_DETAIL
+	WHERE LANE = #{lane} AND PICKRATE!=0
    </select>
    
-   
-   
-   
-   
-<!--    winRate  -->
-<!--    pickRate banRate counter_champName -->
 </mapper>
