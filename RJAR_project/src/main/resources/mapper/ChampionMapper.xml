@@ -2,24 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjar.www.dao.IchampionDao">
-	
-	<select id="getChampionList" resultType="Champion">
-	SELECT A.CHAMPIONAME, B.CHAMPION_KR_NAME,, B.CHAMPIONID 
-	FROM ${tier} A
-	INNER JOIN
-	STATS_SKILL_DATA B
-	ON A.CHAMPIONNAME = B.CHAMPIONNAME
-	ORDER BY B.CHAMPION_KR_NAME
-	</select>
-	
-	<select id="getwinRate" resultType="Champion">
-	
-	</select>
-	
-	
-	
-	
-	
-<!-- 	winRate  -->
-<!-- 	pickRate banRate counter_champName -->
+   
+   <select id="getChampionList" resultType="Champion">
+   SELECT CHAMPIONNAME, CHAMPIONID 
+   FROM STATS_SKILL_DATA
+   </select>
+   <!-- CHAMPIONID : 첫페이지 이후 검색할 때의 파라미터용 -->
+   <select id="getTierList" resultType="Champion">
+   	SELECT CHAMPIONNAME, CHAMPION_KR_NAME, WINRATE, PICKRATE, 
+   	BANRATE, COUNTER1, COUNTER2, COUNTER3 
+   	FROM ${tier}_DATAIL
+	WHERE LANE = #{lane} AND PICKRATE != 0
+   </select>
+   
+   
+   
+   
+   
+<!--    winRate  -->
+<!--    pickRate banRate counter_champName -->
 </mapper>
