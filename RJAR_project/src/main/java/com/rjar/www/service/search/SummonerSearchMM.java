@@ -195,20 +195,24 @@ public class SummonerSearchMM {
 			System.out.println("gameData=" + matchDataList.get(0).replaceAll("\"", ""));
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
 
-			for (int k = 0; k < matchDataList.size(); k++) {
-				GameDetailShowInfo sg = isc.SearchGame(matchDataList.get(k).replaceAll("\"", ""));
+			for (int j = 0; j < matchDataList.size(); j++) {
+				try {
+					GameDetailShowInfo sg = isc.SearchGame(matchDataList.get(j).replaceAll("\"", ""));
+					System.out.println("데이터가 존재합니다.");
 
-				if (sg == null) {
-					String urlBr1 = getUrl(matchUrl + matchDataList.get(k).replaceAll("\"", "") + "?api_key=" + api_key);
+				}
+				catch (Exception e) {
+					String urlBr1 = getUrl(matchUrl + matchDataList.get(j).replaceAll("\"", "") + "?api_key=" + api_key);
 
 					JsonParser jsonParser1 = new JsonParser();
 					JsonObject p = (JsonObject) jsonParser1.parse(urlBr1);
 					JsonObject info = (JsonObject) p.get("info");
 					JsonArray participants = info.getAsJsonArray("participants");
+					JsonArray team = info.getAsJsonArray("teams");
 					
-					for (int j = 0; j < 10; j++) {
-						Map<String, String> preMap = new HashMap<String, String>();
-						JsonObject participant = (JsonObject) participants.get(j);
+					for (int k = 0; k < 10; k++) {
+						Map<String, Object> preMap = new HashMap<String, Object>();
+						JsonObject participant = (JsonObject) participants.get(k);
 						JsonObject challenges = (JsonObject) participant.get("challenges");
 						JsonObject perks = (JsonObject) participant.get("perks");
 						JsonArray styles = perks.getAsJsonArray("styles");
@@ -216,43 +220,73 @@ public class SummonerSearchMM {
 						JsonObject SubSelections = (JsonObject) styles.get(1);
 						JsonArray prime = PrimeSelections.getAsJsonArray("selections");
 						JsonObject mainPrime = (JsonObject) prime.get(0);
+						JsonObject purple = (JsonObject) team.get(0);
+						JsonObject blue = (JsonObject) team.get(1);
 						
+						JsonObject dragon =null;
+						JsonObject baron =null;
+						JsonObject tower =null;
+						
+						if(k<5) {
+							JsonObject objectives = (JsonObject) purple.get("objectives");
+							baron = (JsonObject) objectives.get("baron");
+							dragon = (JsonObject) objectives.get("dragon");
+							tower = (JsonObject) objectives.get("tower");
+						}else {
+							JsonObject objectives = (JsonObject) blue.get("objectives");
+							baron = (JsonObject) objectives.get("baron");
+							dragon = (JsonObject) objectives.get("dragon");
+							tower = (JsonObject) objectives.get("tower");
+						}
+						
+						
+						preMap.put("gameId", matchDataList.get(k).replaceAll("\"", ""));
+						preMap.put("participantId", participant.get("participantId").getAsInt());
 
-						preMap.put("summonerName", participant.get("summonerName").getAsString());
+						preMap.put("championId", participant.get("championId").getAsInt());
 						preMap.put("championName", participant.get("championName").getAsString());
-						preMap.put("championId", participant.get("championId").getAsString());
-						preMap.put("champLevel", participant.get("champLevel").getAsString());
-						preMap.put("win", participant.get("win").getAsString());
+						preMap.put("champLevel", participant.get("champLevel").getAsInt());
+						preMap.put("summonerName", participant.get("summonerName").getAsString());
 
+						preMap.put("win", participant.get("win").getAsString());
 						preMap.put("summoner1Id", participant.get("summoner1Id").getAsString());
 						preMap.put("summoner2Id", participant.get("summoner2Id").getAsString());
-						preMap.put("perk", mainPrime.get("perk").getAsString());
-						preMap.put("style", SubSelections.get("style").getAsString());
+						preMap.put("perk", mainPrime.get("perk").getAsInt());
+						preMap.put("style", SubSelections.get("style").getAsInt());
 
-						preMap.put("kills", participant.get("kills").getAsString());
-						preMap.put("assists", participant.get("assists").getAsString());
-						preMap.put("deaths", participant.get("deaths").getAsString());
-						preMap.put("kda", challenges.get("kda").getAsString());
-						preMap.put("killParticipation", challenges.get("killParticipation").getAsString());
-						preMap.put("totalDamageDealtToChampions",participant.get("totalDamageDealtToChampions").getAsString());
-						preMap.put("totalDamageTaken", participant.get("totalDamageTaken").getAsString());
-
-						preMap.put("visionWardsBoughtIngame", participant.get("visionWardsBoughtInGame").getAsString());
-						preMap.put("wardsKilled", participant.get("wardsKilled").getAsString());
-						preMap.put("wardsPlaced", participant.get("wardsPlaced").getAsString());
-						preMap.put("totalMinionsKilled", participant.get("totalMinionsKilled").getAsString());
-
-						preMap.put("item0", participant.get("item0").getAsString());
-						preMap.put("item1", participant.get("item1").getAsString());
-						preMap.put("item2", participant.get("item2").getAsString());
-						preMap.put("item3", participant.get("item3").getAsString());
-						preMap.put("item4", participant.get("item4").getAsString());
-						preMap.put("item5", participant.get("item5").getAsString());
-						preMap.put("item6", participant.get("item6").getAsString());
+						preMap.put("kills", participant.get("kills").getAsInt());
+						preMap.put("assists", participant.get("assists").getAsInt());
+						preMap.put("deaths", participant.get("deaths").getAsInt());
 						
+						preMap.put("killParticipation", challenges.get("killParticipation").getAsDouble());
+						preMap.put("totalDamageDealtToChampions",participant.get("totalDamageDealtToChampions").getAsInt());
+						preMap.put("totalDamageTaken", participant.get("totalDamageTaken").getAsInt());
+
+						preMap.put("visionWardsBoughtIngame", participant.get("visionWardsBoughtInGame").getAsInt());
+						preMap.put("wardsKilled", participant.get("wardsKilled").getAsInt());
+						preMap.put("wardsPlaced", participant.get("wardsPlaced").getAsInt());
+						preMap.put("totalMinionsKilled", participant.get("totalMinionsKilled").getAsInt()+participant.get("neutralMinionsKilled").getAsInt());
+						
+
+						ArrayList<String> items = new ArrayList<>();
+						items.add(participant.get("item0").getAsString());
+						items.add(participant.get("item1").getAsString());
+						items.add(participant.get("item2").getAsString());
+						items.add(participant.get("item3").getAsString());
+						items.add(participant.get("item4").getAsString());
+						items.add(participant.get("item5").getAsString());
+						items.add(participant.get("item6").getAsString());
+						
+						preMap.put("items", String.join("|", items));
+						preMap.put("goldEarned", participant.get("goldEarned").getAsInt());
+						
+						preMap.put("dragon", dragon.get("kills").getAsInt());
+						preMap.put("baron", baron.get("kills").getAsInt());
+						preMap.put("tower", tower.get("kills").getAsInt());
+						
+
 						preMap.put("gameDuration",info.get("gameDuration").getAsString());
 						preMap.put("gameEndTimestamp", info.get("gameEndTimestamp").getAsString());
-//						String items = 
 					}
 
 //					GameCountMap.put(Integer.toString(i), gameData);
