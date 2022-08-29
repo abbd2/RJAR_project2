@@ -22,23 +22,24 @@ public class ChampionDetailMM {
 	ModelAndView mav;
 
 	public ModelAndView getChampionInfo(String tier, String lane) {
-
+		mav = new ModelAndView();
+		
 		log.info("tier=" + tier);
 		log.info("lane=" + lane);
 
 		// 챔피언 사진에 들어갈 value들
-		List<Champion> nameIdList = champDao.getChampionList(tier);
-		log.info("nameIdList는~~"+nameIdList);
+		List<Champion> nameIdList = champDao.getChampionList();
 		mav.addObject("nameIdList", makechampList(nameIdList));
-
+			
 		// 챔피언티어 정보에 들어갈 value들
 		List<Champion> tierList = champDao.getTierList(tier, lane);
 		mav.addObject("tierList", makeTierList(tierList));
 		mav.setViewName("Detail/championHome");
+
 		return mav;
 	}
 
-	private Object makeTierList(List<Champion> tierList) {
+	private String makeTierList(List<Champion> tierList) {
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -47,7 +48,7 @@ public class ChampionDetailMM {
 			sb.append("<td>"+i+1+"<td>");
 			
 			sb.append("<td>");
-			sb.append("<div class = 'tierChamp' value = " + tierList.get(i).getChampId() + ">");
+			sb.append("<div class = 'tierChamp' value = " + tierList.get(i).getChampionId() + ">");
 			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
 					+ tierList.get(i).getChampionName() + ".png>");
 			sb.append("</div>");
@@ -77,27 +78,36 @@ public class ChampionDetailMM {
 					+ tierList.get(i).getCounter3() + ".png>");
 			sb.append("</div>");
 			sb.append("</td><br>");
-			
-			
+						
 		}
 		
 		
-		return null;
+		return sb.toString();
 	}
 
 	private String makechampList(List<Champion> nameIdList) {
-
+		
+		try {
+			for (int i = 0; i < nameIdList.size(); i++) {				
+				System.out.println("nameIdList는 " + nameIdList.get(i).getChampionId());
+			}
+			
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+			
 		StringBuilder sb = new StringBuilder();
-
+		
 		for (int i = 0; i < nameIdList.size(); i++) {
 
-			sb.append("<div class = 'champion' value = " + nameIdList.get(i).getChampId() + ">");
+			sb.append("<div class = 'champion' value = " + nameIdList.get(i).getChampionId() + ">");
 			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
 					+ nameIdList.get(i).getChampionName() + ".png>");
-			sb.append("<br><small>"+nameIdList.get(i).getChampionName()+"</small>");
+			sb.append("<br><small>"+nameIdList.get(i).getChampion_kr_name() +"</small>");
 			sb.append("</div>");
 		}
 
+		
 		return sb.toString();
 	}
 	
