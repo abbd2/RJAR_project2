@@ -31,11 +31,13 @@ public class HomeController {
 		return "home";
 	}
 
-	@GetMapping(value = "/championDetail")
-	public String championDetail(Champion champ) {
+	@GetMapping(value = "/championHome")
+	public ModelAndView championDetail() {
 		log.info("home 이지롱");
-//		mav = champmm.getChampionInfo(champ.getTier(), champ.getLane());
-		return "championHome";
+		String tier = "platinum";
+		String lane = "TOP";
+		mav = champmm.getChampionInfo(tier, lane);
+		return mav;
 	}
 
 	@GetMapping(value = "/laboratory")

@@ -23,11 +23,12 @@ public class ChampionDetailMM {
 
 	public ModelAndView getChampionInfo(String tier, String lane) {
 
-//		log.info("tier=" + tier);
-//		log.info("lane=" + lane);
+		log.info("tier=" + tier);
+		log.info("lane=" + lane);
 
 		// 챔피언 사진에 들어갈 value들
 		List<Champion> nameIdList = champDao.getChampionList(tier);
+		log.info("nameIdList는~~"+nameIdList);
 		mav.addObject("nameIdList", makechampList(nameIdList));
 
 		// 챔피언티어 정보에 들어갈 value들
@@ -75,7 +76,7 @@ public class ChampionDetailMM {
 			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/10.6.1/img/champion/"
 					+ tierList.get(i).getCounter3() + ".png>");
 			sb.append("</div>");
-			sb.append("</td>");
+			sb.append("</td><br>");
 			
 			
 		}
