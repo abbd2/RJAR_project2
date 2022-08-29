@@ -7,4 +7,12 @@
 	<select id="SearchGame" parameterType="String" resultType="GameDetailShowInfo">
 		SELECT * FROM SUMSEARCH WHERE SS_GAMEID = #{ss_gameId}
 	</select>
+	<insert id="insertGameData" parameterType="GameDetailShowInfo">
+		<foreach collection="">
+		
+		
+		</foreach>
+	</insert>
+
+
 </mapper>

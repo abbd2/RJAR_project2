@@ -132,8 +132,9 @@ public class SummonerSearchMM {
 			System.out.println(freeTier);
 			System.out.println(freeLeaguePoint);
 			System.out.println(freeWins);
-
-			ModelAndView matchData = summonerMatchDetail(puuid);
+			
+			// 검색한 소환사의 최근 10경기 데이터 가져오기
+			ModelAndView matchData = summonerMatchDetail(puuid, summonerName);
 
 			mav.addObject("profileIconId", profileIconId);
 			mav.addObject("LV", summonerLevel);
@@ -175,17 +176,21 @@ public class SummonerSearchMM {
 		return result;
 	}
 
-	private ModelAndView summonerMatchDetail(Object object) {
+	private ModelAndView summonerMatchDetail(Object object, String summonerName) {
 
 		mav = new ModelAndView();
 		String summonerMatch = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + object
 				+ "/ids?start=0&count=10&api_key=" + api_key;
+		System.out.println("summonerName="+summonerName);
+		System.out.println("object="+object);
 		try {
 			String urlBr = getUrl(summonerMatch);
 			JsonParser jsonParser = new JsonParser();
 			JsonArray jsonArray = (JsonArray) jsonParser.parse(urlBr);
 			System.out.println("gameData=" + jsonArray);
-
+			
+			
+			//puuid로 10개의 matchId 불러오기
 			ArrayList<String> matchDataList = new ArrayList<String>();
 			if (jsonArray != null) {
 				for (int i = 0; i < jsonArray.size(); i++) {
@@ -197,6 +202,8 @@ public class SummonerSearchMM {
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
 			
 			List<GameDetailShowInfo> gdsList = null;
+			Map<String, Object> sdList = null;
+			// 10판 게임데이터 불러오기
 			for (int j = 0; j < matchDataList.size(); j++) {
 				try {
 					gdsList = isc.SearchGame(matchDataList.get(j).replaceAll("\"", ""));
@@ -212,6 +219,8 @@ public class SummonerSearchMM {
 					JsonArray participants = info.getAsJsonArray("participants");
 					JsonArray team = info.getAsJsonArray("teams");
 					
+					ArrayList<Object> gameData = new ArrayList<>();
+					// 1게임당 10명의 소환사 정보 불러오기
 					for (int k = 0; k < 10; k++) {
 						Map<String, Object> preMap = new HashMap<String, Object>();
 						JsonObject participant = (JsonObject) participants.get(k);
@@ -242,32 +251,32 @@ public class SummonerSearchMM {
 						}
 						
 						
-						preMap.put("gameId", matchDataList.get(k).replaceAll("\"", ""));
-						preMap.put("participantId", participant.get("participantId").getAsInt());
+						preMap.put("ss_gameId", matchDataList.get(k).replaceAll("\"", ""));
+						preMap.put("ss_participantId", participant.get("participantId").getAsInt());
 
-						preMap.put("championId", participant.get("championId").getAsInt());
-						preMap.put("championName", participant.get("championName").getAsString());
-						preMap.put("champLevel", participant.get("champLevel").getAsInt());
-						preMap.put("summonerName", participant.get("summonerName").getAsString());
+						preMap.put("ss_championId", participant.get("championId").getAsInt());
+						preMap.put("ss_championName", participant.get("championName").getAsString());
+						preMap.put("ss_champLevel", participant.get("champLevel").getAsInt());
+						preMap.put("ss_summonerName", participant.get("summonerName").getAsString());
 
-						preMap.put("win", participant.get("win").getAsString());
-						preMap.put("summoner1Id", participant.get("summoner1Id").getAsString());
-						preMap.put("summoner2Id", participant.get("summoner2Id").getAsString());
-						preMap.put("perk", mainPrime.get("perk").getAsInt());
-						preMap.put("style", SubSelections.get("style").getAsInt());
+						preMap.put("ss_win", participant.get("win").getAsString());
+						preMap.put("ss_spell1", participant.get("summoner1Id").getAsString());
+						preMap.put("ss_spell2", participant.get("summoner2Id").getAsString());
+						preMap.put("ss_mainRune", mainPrime.get("perk").getAsInt());
+						preMap.put("ss_subRune", SubSelections.get("style").getAsInt());
 
-						preMap.put("kills", participant.get("kills").getAsInt());
-						preMap.put("assists", participant.get("assists").getAsInt());
-						preMap.put("deaths", participant.get("deaths").getAsInt());
+						preMap.put("ss_kills", participant.get("kills").getAsInt());
+						preMap.put("ss_assists", participant.get("assists").getAsInt());
+						preMap.put("ss_deaths", participant.get("deaths").getAsInt());
 						
-						preMap.put("killParticipation", challenges.get("killParticipation").getAsDouble());
-						preMap.put("totalDamageDealtToChampions",participant.get("totalDamageDealtToChampions").getAsInt());
-						preMap.put("totalDamageTaken", participant.get("totalDamageTaken").getAsInt());
+						preMap.put("ss_killParticipation", challenges.get("killParticipation").getAsDouble());
+						preMap.put("ss_totalDamageDealtToChampions",participant.get("totalDamageDealtToChampions").getAsInt());
+						preMap.put("ss_totalDamageTaken", participant.get("totalDamageTaken").getAsInt());
 
-						preMap.put("visionWardsBoughtIngame", participant.get("visionWardsBoughtInGame").getAsInt());
-						preMap.put("wardsKilled", participant.get("wardsKilled").getAsInt());
-						preMap.put("wardsPlaced", participant.get("wardsPlaced").getAsInt());
-						preMap.put("totalMinionsKilled", participant.get("totalMinionsKilled").getAsInt()+participant.get("neutralMinionsKilled").getAsInt());
+						preMap.put("ss_visionWardBuy", participant.get("visionWardsBoughtInGame").getAsInt());
+						preMap.put("ss_wardKilled", participant.get("wardsKilled").getAsInt());
+						preMap.put("ss_wardPlaced", participant.get("wardsPlaced").getAsInt());
+						preMap.put("ss_cs", participant.get("totalMinionsKilled").getAsInt()+participant.get("neutralMinionsKilled").getAsInt());
 						
                         //item들을 한 칼럼에 넣기 위해 JOIN 작업을 수행
 						ArrayList<String> items = new ArrayList<>();
@@ -279,15 +288,16 @@ public class SummonerSearchMM {
 						items.add(participant.get("item5").getAsString());
 						items.add(participant.get("item6").getAsString());
 						
-						preMap.put("items", String.join("|", items));
-						preMap.put("goldEarned", participant.get("goldEarned").getAsInt());
+						preMap.put("ss_items", String.join("|", items));
+						preMap.put("ss_earnGold", participant.get("goldEarned").getAsInt());
 						
-						preMap.put("dragon", dragon.get("kills").getAsInt());
-						preMap.put("baron", baron.get("kills").getAsInt());
-						preMap.put("tower", tower.get("kills").getAsInt());
+						preMap.put("ss_dragon", dragon.get("kills").getAsInt());
+						preMap.put("ss_baron", baron.get("kills").getAsInt());
+						preMap.put("ss_tower", tower.get("kills").getAsInt());
 						
-						preMap.put("gameDuration",info.get("gameDuration").getAsString());
-						preMap.put("gameEndTimestamp", info.get("gameEndTimestamp").getAsString());
+						preMap.put("ss_gameDuration",info.get("gameDuration").getAsString());
+						preMap.put("ss_gameEndTimestamp", info.get("gameEndTimestamp").getAsString());
+						gameData.add(preMap);
 					}
 
 //					GameCountMap.put(Integer.toString(i), gameData);
@@ -301,6 +311,11 @@ public class SummonerSearchMM {
 		}
 
 		return mav;
+	}
+
+	private Map<String, Object> SummonerMainDetail(List<GameDetailShowInfo> gdsList, String summonerName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
