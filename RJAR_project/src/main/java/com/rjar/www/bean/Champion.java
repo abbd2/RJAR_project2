@@ -3,7 +3,7 @@ package com.rjar.www.bean;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.stereotype.Repository;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -11,14 +11,12 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class Champion {
-   @Value("platinum")
    private String tier;
-   @Value("top")
    private String lane;
    
    private String championName;
    private String champion_kr_name;
-   private int champId;
+   private int championId;
    private double winRate;
    private double pickRate;
    private double banRate;
