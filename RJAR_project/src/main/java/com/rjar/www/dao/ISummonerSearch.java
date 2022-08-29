@@ -1,9 +1,11 @@
 package com.rjar.www.dao;
 
+import java.util.List;
+
 import com.rjar.www.bean.summonersearch.GameDetailShowInfo;
 
 public interface ISummonerSearch {
 
-	GameDetailShowInfo SearchGame(String ss_gameId);
+	List<GameDetailShowInfo> SearchGame(String ss_gameId);
 
 }
