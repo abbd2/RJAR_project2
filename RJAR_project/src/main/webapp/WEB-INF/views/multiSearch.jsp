@@ -45,32 +45,41 @@
 				url : "multiSearch/executeMultiSearch",
 				contentType : 'application/json; charset=UTF-8',
 				method : "get",
-				data : {"summoners" : summoners},
+				data : {
+					"summoners" : summoners
+				},
 				dataType : 'json',
 				success : function(data) {
 					console.log(data)
 					
-					for(info of data){
-						divList += '<tr height="25" align="center">'
-						+'<td width="100">'+info.summonerName+'</td>'
-						+'<td width="100">'+info.tier+'</td>'
-						+'<td width="100">'+info.rank+'</td>'
-						+'<td width="100">'+info.lp+'</td>'
-						+'<td width="100">'+info.totalWins+'</td>'
-						+'<td width="100">'+info.totalLosses+'</td>'
-						+'<td width="100">'+info.totalWinRate+'%</td>'
-						for(var i = 0; i < 10; i++){
-							divList += '<tr height="25" align="center">'
-							+'<td width="100">'+info.championName[i]+'</td>'
-							+'<td width="100">'+info.lanes[i]+'</td>'
-							+'<td width="100">'+info.kilss[i]+'</td>'
-							+'<td width="100">'+info.deaths[i]+'</td>'
-							+'<td width="100">'+info.assists[i]+'</td>'
-							+'<td width="100">'+info.wins[i]+'</td>'
-							+'<td width="100">'+info.agoTimeDate[i]+'</td>'
-						}
-					}
-					$('#showDataTable').html(divList); /* div추가 */
+					divList += '<div class=tierPosition>'
+						+'<div class=tier>'
+							+'<img src="./resources/tierImg/'+data[0].tier+'.png" width="38px">'
+						+'</div>'
+						+'<div class=mostPosition>'
+							+'<img src="./resources/laneImg/'+data[0].lanes[0]+'.png">'
+						+'</div>'
+					+'</div>'
+					+'<div class="summonerName">'
+						+'<a href="">'+data[0].summonerName+'</a>'
+					+'</div>'
+					+'<div class="lp">'+data[0].tier+' '+data[0].rank+' '+data[0].lp
+					+'</div>'
+					+'<div class="graph">'
+						+'<div class=barGraph style="weight=185; height=16;">'
+							+'<div class="base" style="backgorund-color: red;>'
+								+'<div class="win" style="width: '+data[0].totalWinRate+'%">'
+									+data[0].totalWins+'승'
+								+'</div>'
+								+data[0].totalLosses+'패'
+							+'</div>'
+							+'<strong class="winRate">'
+								+data[0].totalWinRate+'%'
+						+'</div>'
+					+'</div>';
+					
+					$('.summonerSummary').html(divList); /* div추가 */
+
 				},
 				error : function() {
 					alert("err");
@@ -88,8 +97,75 @@
 			<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색"
 				onclick="multiSearch()">
 		</div>
-		<table id="showDataTable">
-		</table>
+
+		<div id="content">
+			<ul class="multiList" style="list-style: none;">
+				<li style="width: 216; height: 869; border: 1px solid gray;">
+					<div class="summonerSummary" >
+<!-- 						<div class="tierPosition"> -->
+<!-- 							<div class="tier"> -->
+<!-- 								<img src="./resources/tierImg/SILVER.png" width="50px"> -->
+<!-- 							</div> -->
+<!-- 							<div class="mostPosition"> -->
+<!-- 								<img alt="" src=""> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="summonerName"> -->
+<!-- 							<a>소환사 이름</a> -->
+<!-- 						</div> -->
+<!-- 						<div class="lp">티어, lp</div> -->
+<!-- 						<div class="graph"> -->
+<!-- 							<div class="barGraph"> -->
+<!-- 								<div class="base"> -->
+<!-- 									<div class="win">승 수, 승</div> -->
+<!-- 									패 수, 패 -->
+<!-- 								</div> -->
+<!-- 								<strong>승률</strong> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+					</div>
+
+					<div class="recentMatches">
+						<div class="title">최근 플레이</div>
+
+						<div class="positions">
+							<div class="position">
+								<div class="positionIcon">
+									<img alt="" src="">
+								</div>
+								<div class="positionInfo">
+									<div class="roleRate">승률</div>
+									<div class="winRate">
+										W/R<strong>%</strong>
+									</div>
+								</div>
+							</div>
+							<div class="position">
+								<div class="positionIcon">
+									<img alt="" src="">
+								</div>
+								<div class="positionInfo">
+									<div class="roleRate">승률</div>
+									<div class="winRate">
+										W/R<strong>%</strong>
+									</div>
+								</div>
+							</div>
+						</div>
+						<ul class="recentGames">
+						</ul>
+
+						<div></div>
+					</div>
+
+				</li>
+				<li style="width: 216; height: 869;"></li>
+				<li style="width: 216; height: 869;"></li>
+				<li style="width: 216; height: 869;"></li>
+				<li style="width: 216; height: 869;"></li>
+			</ul>
+		</div>
+
 	</div>
 	<div id="footer"></div>
 </body>

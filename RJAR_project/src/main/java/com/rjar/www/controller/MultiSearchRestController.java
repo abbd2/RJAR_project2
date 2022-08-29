@@ -28,7 +28,7 @@ import lombok.extern.log4j.Log4j;
 public class MultiSearchRestController {
 
 	@Autowired
-	private MultiSearchBean msb; 
+	private MultiSearchBean msb;
 //	private final MultiSearchBean msb;
 
 	ArrayList<MultiSearchBean> msbList;
@@ -98,29 +98,29 @@ public class MultiSearchRestController {
 		msbList = new ArrayList<>();
 
 		for (int i = 0; i < summonerName.length; i++) {
-			try {
-				System.out.println(summonerName[i] + "의 puuid 받아오는중...");
-				
-				msb = new MultiSearchBean();
-				msb.setSummonerName(summonerName[i]); // 소환사의 이름 저장
-				msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
-				System.out.println(i + "명 완료...");
+//			try {
+			System.out.println(summonerName[i] + "의 puuid 받아오는중...");
+
+			msb = new MultiSearchBean();
+			msb.setSummonerName(summonerName[i]); // 소환사의 이름 저장
+			msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
+			System.out.println(i + "명 완료...");
+			System.out.println();
+			System.out.println("소환사의 이름 : " + msbList.get(i).getSummonerName());
+			System.out.println("티어 : " + msbList.get(i).getTier());
+			System.out.println("랭크 : " + msbList.get(i).getRank());
+			System.out.println("LP : " + msbList.get(i).getLp());
+			for (int j = 0; j < 10; j++) {
 				System.out.println();
-				System.out.println("소환사의 이름 : " + msbList.get(i).getSummonerName());
-				System.out.println("티어 : " + msbList.get(i).getTier());
-				System.out.println("랭크 : " + msbList.get(i).getRank());
-				System.out.println("LP : " + msbList.get(i).getLp());
-				for (int j = 0; j < 10; j++) {
-					System.out.println();
-					System.out.println("10개");
-					System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
-					System.out.println("어언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
-				}
-			} catch (Exception e) {
-				System.out.println("--------------------------");
-				System.out.println("오류 !!!");
-				System.out.println("--------------------------");
+				System.out.println("10개");
+				System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
+				System.out.println("어언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
 			}
+//			} catch (Exception e) {
+//				System.out.println("--------------------------");
+//				System.out.println("오류 !!!");
+//				System.out.println("--------------------------");
+//			}
 
 		}
 		return msbList;
@@ -146,10 +146,19 @@ public class MultiSearchRestController {
 		System.out.println("id : " + id);
 		System.out.println("puuid : " + puuid);
 
-		// 리그 정보 저장
-		leagueInfo(id);
-		// 게임 정보 저장
-		getGameId(puuid.toString());
+		// 리그 정보가 없어도 게임정보 가져오기
+		try {
+			// 리그 정보 저장
+			leagueInfo(id);
+			// 게임 정보 저장
+			getGameId(puuid.toString());
+		} catch (Exception e) {
+			// 게임 정보 저장
+			System.out.println();
+			System.out.println("리그 정보 없음");
+			getGameId(puuid.toString());
+
+		}
 
 		return msb;
 	}
