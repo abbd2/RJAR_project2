@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class Champion {
    @Value("platinum")
    private String tier;
