@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- summoner search 관련 mapper -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rjar.www.dao.ISummonerSearch">
+	<select id="SearchGame" parameterType="String" resultType="GameDetailShowInfo">
+		SELECT * FROM SUMSEARCH WHERE SS_GAMEID = #{ss_gameId}
+	</select>
+	
+	
+	
+	
+</mapper>
