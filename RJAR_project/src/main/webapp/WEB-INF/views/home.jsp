@@ -8,7 +8,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+<script src="https://code.jquery.com/jquery-3.2.1.js"
 	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 	crossorigin="anonymous"></script>
 
@@ -128,8 +128,6 @@
 				<div class="collapse navbar-collapse" id="navbarColor02">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link" href="./Detail/championHome">챔피언분석</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="./championHome">챔피언분석</a></li>
 						<li class="nav-item"><a class="nav-link" href="./laboratory">연구소</a></li>
 						<li class="nav-item"><a class="nav-link" href="./multiSearch">멀티서치</a></li>
 						<li class="nav-item"><a class="nav-link" href="./community">커뮤니티</a></li>
