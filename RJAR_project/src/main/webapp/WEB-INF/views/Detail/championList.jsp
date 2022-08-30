@@ -278,22 +278,5 @@ font {
 	</div>
 </body>
 <script type="text/javascript">
-	$('.chamImg').click(
-			function() {
-				let data_eName = $(this).attr("data-eName");
-				let data_lane = $(this).attr("data-lane");
-				let data_code = $(this).attr("data-code");
-				let $form = $("<form></form>");
-				$form.attr("action", "champInfo");
-				$("<input>").attr("name", "img")
-						.val($(this).attr("data-eName")).appendTo($form);
-				$("<input>").attr("name", "lane")
-						.val($(this).attr("data-lane")).appendTo($form);
-				$("<input>").attr("name", "code")
-						.val($(this).attr("data-code")).appendTo($form);
-
-				$form.appendTo("body");
-				$form.submit();
-			});
 </script>
 </html>

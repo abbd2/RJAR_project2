@@ -50,6 +50,8 @@
 		}).done((data)=>$(position).html(data))
 		  .fail((data)=>console.log(err));
 	} //Aj End
+	
+	
 </script>
 </head>
 </html>
