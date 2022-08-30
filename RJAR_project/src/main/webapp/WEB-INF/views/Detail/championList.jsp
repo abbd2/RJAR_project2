@@ -9,7 +9,7 @@
 
 
 <style type="text/css">
-.tierVersion{
+.tierVersion {
 	width: 549px;
 }
 
@@ -20,15 +20,15 @@
 	color: #006fff;
 	border-radius: 7px;
 	border: 2px solid black;
- 	font-size: 20px;
+	font-size: 20px;
 	font-weight: bold;
 }
 
-option{
+option {
 	font-weight: bold;
 }
 
-.laneDiv{
+.laneDiv {
 	border: 1px solid gray;
 	width: 200px;
 }
@@ -49,6 +49,7 @@ option{
 
 .champion { /* 이미지 감싼 태그 */
 	margin-left: 10px;
+	margin-top: 3px;
 	float: left;
 	width: 60px;
 	height: 80px;
@@ -72,14 +73,22 @@ option{
 
 .Laneimg {
 	float: left;
-	width: 500px;
+    width: 550px;
 	height: 55px;
 	margin-bottom: 10px;
 }
 
 .tierList {
 	float: right;
-	width: 600px;
+    width: 650px;
+}
+
+.tierList th {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 12px;
+	text-align: center;
+	"
 }
 
 .tierList tr {
@@ -112,7 +121,6 @@ option{
 	margin-left: 0px;
 	margin-top: 10px;
 	text-align: center;
-	
 }
 
 .rate {
@@ -132,7 +140,7 @@ small {
 
 font {
 	margin-left: 17px;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .ui-autocomplete {
@@ -156,7 +164,6 @@ font {
 	width: 500px;
 	height: 45px;
 	margin-bottom: 10px;
-/* 	margin-left: 20px; */
 	border-radius: 5px;
 	border: solid 2px lightgray;
 }
@@ -170,54 +177,64 @@ font {
 </head>
 <body>
 	<div style="width: 1200px; margin: auto;">
-			<form action="">
-				<table style="width: 1200px;">
-					<tr>
-						<td style="width: 450px;">
-							<div class="tierVersion">
-								<select class="selectOption">
-									<option value="platinum" style ="color: #006fff;">+Platinum</option>
-									<option value="bronze" style ="color: #964b00;">+Bronze</option>
-									<option value="silver" style ="color: #c0c0c0;">+Silver</option>
-									<option value="gold" style ="color: #ffd700;">+Gold</option>
-									<option value="diamond" style ="color: #87cefa;">+Diamond</option>
-								</select>
-								<!-- 		</select> <select id="versionSelect" class="selectOption"> -->
-								<!-- 			<option value="12.14.456.5556">12.14</option> -->
-								<!-- 			<option value="12.13.456.5556">12.13</option> -->
-								<!-- 		</select> -->
-							</div>
-							</td>
-						<td class = "laneDiv" style="width: 110px;">
-							<button class="lane">
-								<span>탑</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>정글</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>미드</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>원딜</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>서폿</span>
-							</button>
-						</td>
-					</tr>
-				</table>
-			</form>
+		<form action="">
+			<table style="width: 1200px;">
+				<tr>
+					<td style="width: 450px;">
+						<div class="tierVersion">
+							<select class="selectOption">
+								<option value="platinum" style="color: #006fff;">+Platinum</option>
+								<option value="bronze" style="color: #964b00;">+Bronze</option>
+								<option value="silver" style="color: #c0c0c0;">+Silver</option>
+								<option value="gold" style="color: #ffd700;">+Gold</option>
+								<option value="diamond" style="color: #87cefa;">+Diamond</option>
+							</select>
+							<!-- 		</select> <select id="versionSelect" class="selectOption"> -->
+							<!-- 			<option value="12.14.456.5556">12.14</option> -->
+							<!-- 			<option value="12.13.456.5556">12.13</option> -->
+							<!-- 		</select> -->
+						</div>
+					</td>
+					<td class="laneDiv">
+						<button class="lane">
+							<span>탑</span>
+						</button>
+					</td>
+					<td class="laneDiv">
+						<button class="lane">
+							<span>정글</span>
+						</button>
+					</td>
+					<td class="laneDiv">
+						<button class="lane">
+							<span>미드</span>
+						</button>
+					</td>
+					<td class="laneDiv">
+						<button class="lane">
+							<span>원딜</span>
+						</button>
+					</td>
+					<td class="laneDiv">
+						<button class="lane">
+							<span>서폿</span>
+						</button>
+					</td>
+				</tr>
+			</table>
+		</form>
 		<div class="tierList">
-			<table class="tierList">${tierList}
+			<table class="tierList">
+				<tr>
+					<th>순위</th>
+					<th colspan="2" style="padding-left: 45px;">챔피언</th>
+					<!-- <td>티어</td> -->
+					<th>승률</th>
+					<th>픽률</th>
+					<th>밴률</th>
+					<th>상대하기 어려운 챔피언</th>
+				</tr>
+				${tierList}
 			</table>
 		</div>
 		<div>
