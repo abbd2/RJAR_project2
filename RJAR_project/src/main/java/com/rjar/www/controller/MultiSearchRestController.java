@@ -169,6 +169,12 @@ public class MultiSearchRestController {
 			// 게임 정보 저장
 			System.out.println();
 			System.out.println("리그 정보 없음");
+
+			// 리그 정보가 없다면 레벨 출력
+			String summonerLevel = json.get("summonerLevel").toString();
+			System.out.println("summonerLevel: " + summonerLevel);
+			msb.setRank(summonerLevel);
+			msb.setLp("");
 			getGameId(puuid.toString());
 
 		}
@@ -224,7 +230,7 @@ public class MultiSearchRestController {
 					JsonNode jsonLP = json.get(i).get("leaguePoints"); // JsonNode에서 tier 저장
 					System.out.println("jsonLP : " + jsonLP);
 
-					msb.setLp(jsonLP.toString()); // 큰따옴표 제거한 값 저장
+					msb.setLp("(" + jsonLP.toString() + ")"); // 큰따옴표 제거한 값 저장
 					System.out.println("leaguePoints : " + msb.getLp());
 
 					// 전체 경기 승리 수 저장
@@ -366,7 +372,7 @@ public class MultiSearchRestController {
 
 		System.out.println("---------");
 		System.out.println("mostLane : " + msb.getMostLane()); // 주 라인 출력
-		System.out.println("scdLane : " + msb.getSubLane()); // 서브 라인 출력
+		System.out.println("subLane : " + msb.getSubLane()); // 서브 라인 출력
 		System.out.println("---------");
 	}
 
@@ -418,7 +424,8 @@ public class MultiSearchRestController {
 		}
 
 		if (maxIdx > -1) {
-			msb.setMostLaneWinRate(laneWinRate(max)); // 모스트 라인의 승률 구하기
+			msb.setMostLaneRate((int) Math.round(max / 10.0 * 100)); // 모스트 라인 가는 비율 구하기
+			msb.setMostLaneWinRate(laneWinRate(max, msb.getMostLane())); // 모스트 라인의 승률 구하기
 			subLane(maxIdx, laneCnt); // 두 번째로 큰 최대 값 구하기
 		}
 
@@ -457,19 +464,20 @@ public class MultiSearchRestController {
 		}
 
 		if (subIdx > -1) {
-			msb.setSubLaneWinRate(laneWinRate(subMax)); // 서브 라인의 승률 구하기
+			msb.setSubLaneRate((int) Math.round(subMax / 10.0 * 100)); // 서브 라인 가는 비율 구하기
+			msb.setSubLaneWinRate(laneWinRate(subMax, msb.getSubLane())); // 서브 라인의 승률 구하기
 		}
 
 	} // end scdLane
 
 	// 라인 승률 구하기
-	public int laneWinRate(int gameCnt) {
+	public int laneWinRate(int gameCnt, String lane) {
 
 		int winGame = 0; // 이긴 경기 카운트
 		int laneWinRate = 0; // 승률(정수형)
 
 		for (int i = 0; i < msb.getWins().length; i++) { // 경기 수 만큼 반복
-			if (msb.getLanes()[i].equals(msb.getMostLane())) { // 해당 경기의 라인이 모스트 라인과 같다면
+			if (msb.getLanes()[i].equals(lane)) { // 해당 경기의 라인이 모스트 라인과 같다면
 				if (msb.getWins()[i].equals("true")) { // 이긴 경기라면
 					System.out.println("이긴 경기 발견!");
 					winGame++;
@@ -477,7 +485,7 @@ public class MultiSearchRestController {
 			}
 		} // end for
 		System.out.println();
-		System.out.println("경기 수: " + gameCnt + ", 이긴 경기 수: " + winGame);
+		System.out.println(msb.getMostLane() + " 경기 수: " + gameCnt + ", " + msb.getSubLane() + "이긴 경기 수: " + winGame);
 		laneWinRate = (int) Math.round((double) winGame / gameCnt * 100);
 		System.out.println(Math.round((double) winGame / gameCnt * 100));
 		System.out.println("라인 승률: " + laneWinRate);
