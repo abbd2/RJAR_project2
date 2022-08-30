@@ -25,8 +25,8 @@ public class GameDetailShowInfo {
 	private int ss_subRune;// 서브 룬
 
 	private int ss_kills; // 킬
-	private int ss_deaths; // 데스
 	private int ss_assists; // 어시스트
+	private int ss_deaths; // 데스
 	private double ss_killParticipation; // 해당 게임의 킬 관여율
 	private int ss_totalDamageDealtToChampions; // 챔피언 딜량
 	private int ss_totalDamageTaken; // 챔피언 받은 피해량
@@ -41,6 +41,10 @@ public class GameDetailShowInfo {
 	private int ss_dragon;
 	private int ss_baron;
 	private int ss_tower;
+	
+	private String ss_gameDuration;
+	private String ss_gameEndTimestamp;
+	
 
 
 }

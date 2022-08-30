@@ -127,7 +127,7 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarColor02">
 					<ul class="navbar-nav me-auto">
-						<li class="nav-item"><a class="nav-link" href="./championHome">챔피언분석</a></li>
+						<li class="nav-item"><a class="nav-link" href="./Detail/championHome">챔피언분석</a></li>
 						<li class="nav-item"><a class="nav-link" href="./laboratory">연구소</a></li>
 						<li class="nav-item"><a class="nav-link" href="./multiSearch">멀티서치</a></li>
 						<li class="nav-item"><a class="nav-link" href="./community">커뮤니티</a></li>
@@ -140,7 +140,7 @@
 			</div>
 		</nav>
 	</div>
-	<form action="summonerSearch" method="get">
+	<form action="summonerSearch" method="Post">
 		<div class="main">
 			<div class="container">
 				<div class="main-text-center">
