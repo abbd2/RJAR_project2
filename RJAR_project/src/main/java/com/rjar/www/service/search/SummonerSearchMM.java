@@ -201,7 +201,7 @@ public class SummonerSearchMM {
 			System.out.println("gameData=" + matchDataList.get(0).replaceAll("\"", ""));
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
 			
-			boolean f = true;
+			boolean f = false;
 			List<GameDetailShowInfo> gdsList = null;
 			Map<String, Object> sdList = null;
 			// 10판 게임데이터 불러오기
@@ -309,6 +309,8 @@ public class SummonerSearchMM {
 						
 						System.out.println(preMap);
 						f = isc.insertGameData(preMap);
+						
+
 					}
 					System.out.println("gg"+gameData.getClass().getName());
 					System.out.println("insert 성공(?)");
@@ -320,7 +322,8 @@ public class SummonerSearchMM {
 //			mav.addObject("json", GameCountMap);
 
 		} catch (Exception e) {
-			System.out.println("오류=" + e.getMessage());
+			System.out.println("오류="+e.getMessage());
+			e.printStackTrace();
 			
 		}
 
