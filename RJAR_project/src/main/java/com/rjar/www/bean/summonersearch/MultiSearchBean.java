@@ -1,5 +1,6 @@
 package com.rjar.www.bean.summonersearch;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import lombok.Data;
@@ -16,7 +17,7 @@ public class MultiSearchBean {
 	private int totalWins;
 	private int totalLosses;
 	private int totalWinRate;
-	private String mainLane; // 후처리로 작업
+	private String mostLane; // 후처리로 작업
 	
 	private String[] championName;
 	private String[] lanes;

@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjar.www.bean.summonersearch.MultiSearchBean;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -41,7 +39,7 @@ public class MultiSearchRestController {
 		long beforeTime = System.currentTimeMillis(); // 코드 실행 전의 시간
 
 		ArrayList<MultiSearchBean> msbList = null;
-		msbList = getSummonersInfo(summoners, msbList); // 멀티서치에 뿌릴 정보 받아오기
+		msbList = getSummonersInfo(summoners); // 멀티서치에 뿌릴 정보 받아오기
 
 		long afterTime = System.currentTimeMillis(); // 코드 실행 후의 시간
 		double secDiffTime = ((double) afterTime - beforeTime) / 1000;
@@ -55,6 +53,7 @@ public class MultiSearchRestController {
 			System.out.println("종합 승리 : " + msbList.get(i).getTotalWins());
 			System.out.println("종합 패배 : " + msbList.get(i).getTotalLosses());
 			System.out.println("종합 승률 : " + msbList.get(i).getTotalWinRate());
+			System.out.println("주로 가는 라인: "+msbList.get(i).getMostLane());
 			for (int j = 0; j < 10; j++) {
 				System.out.println();
 				System.out.println("이제부터 10개씩 저장된 값");
@@ -74,7 +73,7 @@ public class MultiSearchRestController {
 		return msbList;
 	}
 
-	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners, ArrayList<MultiSearchBean> msbList)
+	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners)
 			throws IOException {
 
 		// 나중에 summoners 유무 체크
@@ -127,10 +126,10 @@ public class MultiSearchRestController {
 	}
 
 	// 소환사 이름으로 puuid 받아오기
-	public MultiSearchBean getPuuid(String summonerName) throws IOException {
+	public MultiSearchBean getPuuid(String orlSummonerName) throws IOException {
 
 		// puuid검색을 위해 닉네임의 공백이 있을경우 공백 제거
-		summonerName = summonerName.replaceAll("\\s", "");
+		String summonerName = orlSummonerName.replaceAll("\\s", "");
 		String proFileUrl = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName
 				+ "?api_key=" + api_key;
 
@@ -145,6 +144,17 @@ public class MultiSearchRestController {
 
 		System.out.println("id : " + id);
 		System.out.println("puuid : " + puuid);
+
+		String name = json.get("name").toString(); // 원래 소환사 이름
+		name = replaceQuotationMarks(name); // 큰따옴표 제거한 값 저장
+		System.out.println("orlSummonerName : " + orlSummonerName);
+
+		// 검색한 소환사의 닉네임과 proFileUrl에 저장된 닉네임이 다를경우(공백이 다를확률99.999%)
+		if (!orlSummonerName.equals(name)) {
+			System.out.println();
+			System.out.println("공백 틀렸으므로 수정");
+			msb.setSummonerName(name); // 소환사의 이름 다시 저장
+		}
 
 		// 리그 정보가 없어도 게임정보 가져오기
 		try {
@@ -325,7 +335,7 @@ public class MultiSearchRestController {
 		// 게임이아디에서 데이터 가져오기
 		for (int i = 0; i < gameIds.length; i++) {
 			System.out.println("검색할 게임 아이디 : " + gameIds[i]);
-			Object[] data = getGameData(gameIds[i]); // 게임아이디와 인덱스를 넘겨줌
+			Object[] data = getGameData(gameIds[i]); // 게임아이디를 넘겨줌
 			System.out.println("반환된 데이터 : " + Arrays.toString(data));
 
 			championName[i] = replaceQuotationMarks(data[0].toString()); // 큰따옴표 제거
@@ -348,10 +358,66 @@ public class MultiSearchRestController {
 		msb.setAssists(assists);
 		msb.setWins(wins);
 		msb.setAgoTimeDate(endTimeDate);
+
+		mostLane(msb.getLanes());
+		
+		System.out.println("---------");
+		System.out.println("mostLane : "+msb.getMostLane());
+		System.out.println("---------");
+	}
+
+	// 주로 가는 라인 구하기
+	public void mostLane(String[] lanes) {
+
+		int[] laneCnt = new int[5]; // 라인이 나온 횟수 저장
+		int maxIdx = 0; // 최대 값의 인덱스 저장
+		int max = 0; // 최대 값 저장
+
+		for (String lane : lanes) {
+			if (lane.equals("TOP")) {
+				laneCnt[0]++;
+			} else if (lane.equals("JUNGLE")) {
+				laneCnt[1]++;
+			} else if (lane.equals("MIDDLE")) {
+				laneCnt[2]++;
+			} else if (lane.equals("BOTTOM")) {
+				laneCnt[3]++;
+			} else if (lane.equals("UTILITY")) {
+				laneCnt[4]++;
+			} else {
+				System.out.println();
+				System.out.println("none");
+			}
+		}
+
+		for (int i = 0; i < 5; i++) {
+			if (max < laneCnt[i]) { // 최대 값을 구하고 그 값의 인덱스를 저장
+				max = laneCnt[i]; // 최대 값 저장
+				maxIdx = i; // 최대 값의 인덱스 저장
+			}
+		}
+
+		System.out.println("최대값 : " + maxIdx);
+
+		if (maxIdx == 0) {
+			msb.setMostLane("TOP");
+		} else if (maxIdx == 1) {
+			msb.setMostLane("JUNGLE");
+		} else if (maxIdx == 2) {
+			msb.setMostLane("MIDDLE");
+		} else if (maxIdx == 3) {
+			msb.setMostLane("BOTTOM");
+		} else if (maxIdx == 4) {
+			msb.setMostLane("UTILITY");
+		} else {
+			System.out.println();
+			System.out.println("none");
+		}
+		
 	}
 
 	// 게임아이디로 데이터 가져오기
-	private Object[] getGameData(String gameId) throws IOException {
+	public Object[] getGameData(String gameId) throws IOException {
 
 		System.out.println("게임아이디를 이용해 데이터 가져오는중...");
 
@@ -404,7 +470,7 @@ public class MultiSearchRestController {
 			if (sumNameToComp.equals(summonerName)) { // 검색한 소환사 이름과 같으면
 				System.out.println("----- 소환사 이름 일치 -----");
 				data[0] = json.get("info").get("participants").get(j).get("championName");
-				data[1] = json.get("info").get("participants").get(j).get("lane");
+				data[1] = json.get("info").get("participants").get(j).get("teamPosition");
 				data[2] = json.get("info").get("participants").get(j).get("kills");
 				data[3] = json.get("info").get("participants").get(j).get("deaths");
 				data[4] = json.get("info").get("participants").get(j).get("assists");
