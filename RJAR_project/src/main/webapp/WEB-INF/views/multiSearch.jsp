@@ -16,14 +16,14 @@
 }
 .matchesList{
 	width: 216px;
-	height: 432px;
+	height: 600px;
 	float: left;
 }
 #multiList{
 	list-style: none;
 	border: 1px solid gray;
 	width: 1500px;
-	height: 432px;
+	height: 600px;
 }
 </style>
 </head>
@@ -53,10 +53,10 @@
 								console.log("길이: "+data.length)
 								
 								let summaryList = '<div class="tierPosition" style="width:186px; height:50px; float:center">'
-											+ '<div class="tier" style="float:left;">'
+											+ '<div class="tier" style="float:left; padding: 3px;">'
 												+ '<img src="./resources/tierImg/'+data[i].tier+'.png" width="50px">'
 											+ '</div>'
-											+ '<div class="mostPosition" style="float:left;">'
+											+ '<div class="mostPosition" style="float:left; padding: 3px;"">'
 											+ '<img src="./resources/laneImg/'+data[i].mostLane+'.png" width="40px">'
 										+ '</div>'
 										+'</div>'
@@ -65,12 +65,12 @@
 											+ data[i].summonerName
 											+ '</a>'
 										+ '</div>'
-										+ '<div class="lp" style="text-align: center;"">'
+										+ '<div class="lp" style="text-align: center; font-size: 15px;">'
 										+ data[i].tier + ' ' +data[i].rank + '(' + data[i].lp + ')'
 										+ '</div>'
 										+ '<div class="graph">'
-											+ '<div class="barGraph" style="padding:5px;">'
-												+ '<div class="base" style="background-color: #e84057; float: left; width:155px; height:16;">'
+											+ '<div class="barGraph" style="padding:5px; width:216px; height:20px;">'
+												+ '<div class="base" style="background-color: #e84057; float: left; width:155px; height:16; font-size: 13px;">'
 													+ '<div class="win" style="width: '+ data[i].totalWinRate + '%; background-color: #5383e8; float: left;">'
 														+ data[i].totalWins + '승'
 													+ '</div>'
@@ -81,21 +81,21 @@
 	
 								$('.summonerSummary'+i).html(summaryList); /* div추가 */
 	
-								let matchesList = '<div class="title" style="width:185px; height:16px; text-align:center;">'+'최근 플레이'+'</div>'
-									+'<div class="positions">'
-									+'<div class="position">'
-										+'<div class="positionIcon">'
-											+'<img src="">' // 최근 10판중 가장 많이 간 라인 이미지
+								let matchesList = '<div class="title" style="padding: 10px; width:186px; height:16px; text-align:center; font-size: 10px;">'+'최근 플레이'+'</div>'
+									+'<div class="positions" font-size: 10px;>'
+									+'<div class="position"  style="width:100px; height:30px;">'
+										+'<div class="positionIcon" style="width:30px; height:30px;">'
+											+'<img src="./resources/laneImg/'+data[i].mostLane+'.png" width="30px">' // 최근 10판중 가장 많이 간 라인 이미지
 										+'</div>'
 										+'<div class="positionInfo">'
 										+'<div class="roleRate">'
 											// 최근 10판중 가장 많이 간 라인 퍼센트
 											+'%'
-									+'</div>'
+										+'</div>'
 									+'<div class="winRate">'
 									+"W/R "
-									+'<strong>'+// 라인 승률
-									+'%'
+									+'<strong>'+// 모스트 라인 승률
+									+data[i].mostLaneWinRate+'%'
 									+'</strong>'
 								+'</div>'
 								+'</div>'
@@ -142,7 +142,7 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	<div id="main"></div>
 	<div id="multiSearch">
-		<div id="textarea">
+		<div id="textarea" style="padding: 10px;">
 			<textarea name="multiSearchInput" id="multiSearchInput"
 				style="height: 200px; width: 500px;"></textarea>
 			<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색"
