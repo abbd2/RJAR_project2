@@ -47,7 +47,7 @@ public class ChampionDetailMM {
 			
 			sb.append("<tr>");
 			
-			sb.append("<td><font style = 'text-align: center; text-weight: bold;'>"+(i+1)+"</font><td>");
+			sb.append("<td style = 'width:50px;'><font style = 'text-align: center; text-weight: bold;'>"+(i+1)+"</font></td>");
 			
 			sb.append("<td>");
 			sb.append("<div class = 'tierChamp' value = " + tierList.get(i).getChampionId() + ">");
@@ -63,7 +63,7 @@ public class ChampionDetailMM {
 			sb.append("<td class = 'rate'><font>"+tierList.get(i).getBanRate()+"</font></td>");
 			sb.append("<td class = 'rate'><font>"+tierList.get(i).getPickRate()+"</font></td>");
 			
-			sb.append("<td>");
+			sb.append("<td style = 'padding-left:20px;'>");
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter1() + ">");
 			sb.append("<img class = 'counterimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter1() + ".png>");
@@ -81,9 +81,6 @@ public class ChampionDetailMM {
 			sb.append("</td>");
 			
 			sb.append("</tr>");
-			
-			System.out.println(tierList.get(i).getCounter1());
-						
 		}
 		
 		

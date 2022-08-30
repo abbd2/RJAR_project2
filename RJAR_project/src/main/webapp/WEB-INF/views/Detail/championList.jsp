@@ -72,20 +72,26 @@ option{
 
 .Laneimg {
 	float: left;
-	width: 500px;
+	width: 550px;
 	height: 55px;
 	margin-bottom: 10px;
 }
 
 .tierList {
 	float: right;
-	width: 600px;
+	width: 650px;
 }
 
 .tierList tr {
 	border-top: solid 1px lightgray;
 }
 
+.tierList th{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 12px;
+	text-align: center;"
+}
 .tierChamp { /* 티어리스트 챔피언 사진 - 나중에 작업 */
 	
 }
@@ -188,27 +194,27 @@ font {
 								<!-- 		</select> -->
 							</div>
 							</td>
-						<td class = "laneDiv" style="width: 110px;">
+						<td class = "laneDiv">
 							<button class="lane">
 								<span>탑</span>
 							</button>
 						</td>
-						<td class = "laneDiv" style="width: 110px">
+						<td class = "laneDiv">
 							<button class="lane">
 								<span>정글</span>
 							</button>
 						</td>
-						<td class = "laneDiv" style="width: 110px">
+						<td class = "laneDiv">
 							<button class="lane">
 								<span>미드</span>
 							</button>
 						</td>
-						<td class = "laneDiv" style="width: 110px">
+						<td class = "laneDiv">
 							<button class="lane">
 								<span>원딜</span>
 							</button>
 						</td>
-						<td class = "laneDiv" style="width: 110px">
+						<td class = "laneDiv">
 							<button class="lane">
 								<span>서폿</span>
 							</button>
@@ -217,14 +223,24 @@ font {
 				</table>
 			</form>
 		<div class="tierList">
-			<table class="tierList">${tierList}
+			<table class="tierList">
+			<tr>
+			<th>순위</th>
+			<th colspan = "2"  style = "padding-left:45px;">챔피언</th>
+<!-- <td>티어</td> -->
+			<th>승률</th>
+			<th>픽률</th>
+			<th>밴률</th>
+			<th>상대하기 어려운 챔피언</th>
+			</tr>
+			${tierList}
 			</table>
 		</div>
 		<div>
 			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
 		</div>
 
-		<div style="width: 500px;">
+		<div>
 
 			<table class="Laneimg" style="width: 500px;">
 				<tr>
