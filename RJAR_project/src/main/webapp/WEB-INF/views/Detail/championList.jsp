@@ -9,70 +9,83 @@
 
 
 <style type="text/css">
-.tierVersion {
-	margin-left: 70px;
+.tierVersion{
+	width: 549px;
 }
 
 .selectOption {
-	width: 150px;
-	height: 50px;
+	width: 200px;
+	height: 55px;
 	margin: 5px;
+	color: #006fff;
+	border-radius: 7px;
+	border: 2px solid black;
+ 	font-size: 20px;
+	font-weight: bold;
+}
+
+option{
+	font-weight: bold;
+}
+
+.laneDiv{
+	border: 1px solid gray;
+	width: 200px;
+}
+
+.lane {
+	margin-left: 18px;;
+	width: 89px;
+	height: 60px;
+	background-color: white;
+	border: hidden;
+	text-align: center;
+	font-weight: bold;
 }
 
 .champList {
-	width: 450px;
+	width: 545px;
 }
 
 .champion { /* 이미지 감싼 태그 */
-	margin-left: 10px; 
+	margin-left: 10px;
 	float: left;
-	width: 50px; 
-	height: 70px; 
+	width: 60px;
+	height: 80px;
 }
 
 .listimg {
-	width: 50px; 
-	height: 50px; 	
+	width: 60px;
+	height: 60px;
 }
 
 .championName {
 	margin: auto;
 	display: block;
 	width: 50px;
-/* 이 두께를 넘어가야 ..처리됨 */	
+	/* 이 두께를 넘어가야 ..처리됨 */
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	font-weight: bold; 
+	font-weight: bold;
 }
 
 .Laneimg {
-<<<<<<< HEAD
 	float: left;
-	width: 550px;
-=======
-	width: 450px;
->>>>>>> parent of db881f2 (챔피언 분석 css)
+	width: 500px;
 	height: 55px;
 	margin-bottom: 10px;
 }
 
-<<<<<<< HEAD
 .tierList {
 	float: right;
-	width: 650px;
+	width: 600px;
 }
-=======
->>>>>>> parent of db881f2 (챔피언 분석 css)
 
-
-<<<<<<< HEAD
-.tierList th{
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-size: 12px;
-	text-align: center;"
+.tierList tr {
+	border-top: solid 1px lightgray;
 }
+
 .tierChamp { /* 티어리스트 챔피언 사진 - 나중에 작업 */
 	
 }
@@ -121,30 +134,10 @@ font {
 	margin-left: 17px;
 	font-size: 12px;
 }
-=======
->>>>>>> parent of db881f2 (챔피언 분석 css)
 
 .ui-autocomplete {
 	overflow-y: scroll;
 	overflow-x: hidden;
-}
-
-/* 포지션 이미지 파트 */
-/* table.position { */
-/* 	border: solid 1px lightgray; */
-/* 	width: 440px; */
-/* 	margin-left: 70px; */
-/* 	margin-bottom: 10px; */
-/* 	/* border-collapse: separate; */ */
-/* 	border-radius: 8px; */
-/* } */
-
-td:nth-child(-n) {
-	border-left: solid 1px lightgray;
-}
-
-td:nth-child(-n+5) {
-	border-right: solid 1px lightgray;
 }
 
 .chamImg {
@@ -159,37 +152,23 @@ td:nth-child(-n+5) {
 	border-radius: 8px;
 }
 
-small {
-	overflow: hidden;
-	white-space: nowrap;
-	width: 46px;
-	text-overflow: ellipsis;
-	height: 16px;
-	font-size: 12px;
-	line-height: 1.33;
-	margin: 2px 0 8px
-}
-
 #searchInput {
-	width: 300px;
-	height: 30px;
+	width: 500px;
+	height: 45px;
 	margin-bottom: 10px;
-	margin-left: 20px;
+/* 	margin-left: 20px; */
 	border-radius: 5px;
-	border: solid 1px lightgray;
+	border: solid 2px lightgray;
 }
 
 #searchInput:focus {
 	outline: solid 2px #B3CDFF;
 }
-
-
 </style>
 
 
 </head>
 <body>
-<<<<<<< HEAD
 	<div style="width: 1200px; margin: auto;">
 			<form action="">
 				<table style="width: 1200px;">
@@ -209,27 +188,27 @@ small {
 								<!-- 		</select> -->
 							</div>
 							</td>
-						<td class = "laneDiv">
+						<td class = "laneDiv" style="width: 110px;">
 							<button class="lane">
 								<span>탑</span>
 							</button>
 						</td>
-						<td class = "laneDiv">
+						<td class = "laneDiv" style="width: 110px">
 							<button class="lane">
 								<span>정글</span>
 							</button>
 						</td>
-						<td class = "laneDiv">
+						<td class = "laneDiv" style="width: 110px">
 							<button class="lane">
 								<span>미드</span>
 							</button>
 						</td>
-						<td class = "laneDiv">
+						<td class = "laneDiv" style="width: 110px">
 							<button class="lane">
 								<span>원딜</span>
 							</button>
 						</td>
-						<td class = "laneDiv">
+						<td class = "laneDiv" style="width: 110px">
 							<button class="lane">
 								<span>서폿</span>
 							</button>
@@ -238,24 +217,14 @@ small {
 				</table>
 			</form>
 		<div class="tierList">
-			<table class="tierList">
-			<tr>
-			<th>순위</th>
-			<th colspan = "2"  style = "padding-left:45px;">챔피언</th>
-<!-- <td>티어</td> -->
-			<th>승률</th>
-			<th>픽률</th>
-			<th>밴률</th>
-			<th>상대하기 어려운 챔피언</th>
-			</tr>
-			${tierList}
+			<table class="tierList">${tierList}
 			</table>
 		</div>
 		<div>
 			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
 		</div>
 
-		<div>
+		<div style="width: 500px;">
 
 			<table class="Laneimg" style="width: 500px;">
 				<tr>
@@ -303,95 +272,28 @@ small {
 					</a></td>
 				</tr>
 			</table>
-=======
->>>>>>> parent of db881f2 (챔피언 분석 css)
 
-	<form action="">
-		<div class="tierVersion">
-			<select id="tierSelect" class="selectOption">
-				<option value="bronze">+Bronze</option>
-				<option value="silver">+Silver</option>
-				<option value="gold">+Gold</option>
-				<option value="platinum">+Platinum</option>
-				<option value="diamond">+Diamond</option>
-			</select>
-			<!-- 		</select> <select id="versionSelect" class="selectOption"> -->
-			<!-- 			<option value="12.14.456.5556">12.14</option> -->
-			<!-- 			<option value="12.13.456.5556">12.13</option> -->
-			<!-- 		</select> -->
 		</div>
-	</form>
-	<div>
-		<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
+		<div class="champList">${nameIdList}</div>
 	</div>
-	
-	<div style = "width : 450px;">
-	<table class="Laneimg">
-		<tr>
-			<td class="a_img" id="all"><a class="all"
-				href="javascript:Aj('./champion_list','#champion_list')"> <img
-					name="All"
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-fill.png"
-					width="40px;" height="40px;">
-			</a></td>
-			<td class="a_img" id="top"><a class='aTop'
-				href="javascript:Aj('./Top','#champion_list')"> <img name='Top'
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png"
-					width="40px;" height="40px;">
-			</a></td>
-			<td class="a_img" id="jungle"><a
-				href="javascript:Aj('./Jungle','#champion_list')"> <img
-					name='Jungle'
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png"
-					width="40px;" height="40px;">
-			</a></td>
-			<td class="a_img" id="mid"><a
-				href="javascript:Aj('./Middle','#champion_list')"> <img
-					name='Middle'
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png"
-					width="40px;" height="40px;">
-			</a></td>
-			<td class="a_img" id="bot"><a
-				href="javascript:Aj('./Bot','#champion_list')"> <img name='Bot'
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png"
-					width="40px;" height="40px;">
-			</a></td>
-			<td class="a_img" id="supporter" ><a
-				href="javascript:Aj('./Supporter','#champion_list')"> <img
-					name='Supporter'
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
-					width="40px;" height="40px;">
-			</a></td>
-			<td class="a_img" id="free"><a
-				href="javascript:Aj('free','#champion_list')"> <img name='free'
-					src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
-					width="40px;" height="40px;">
-			</a></td>
-		</tr>
-	</table>
-	</div>
-	<div class = "champList">
-		${nameIdList}
-	</div>
-
-	<script type="text/javascript">
-		$('.chamImg').click(
-				function() {
-					let data_eName = $(this).attr("data-eName");
-					let data_lane = $(this).attr("data-lane");
-					let data_code = $(this).attr("data-code");
-					let $form = $("<form></form>");
-					$form.attr("action", "champInfo");
-					$("<input>").attr("name", "img").val(
-							$(this).attr("data-eName")).appendTo($form);
-					$("<input>").attr("name", "lane").val(
-							$(this).attr("data-lane")).appendTo($form);
-					$("<input>").attr("name", "code").val(
-							$(this).attr("data-code")).appendTo($form);
-
-					$form.appendTo("body");
-					$form.submit();
-				});
-	</script>
 </body>
+<script type="text/javascript">
+	$('.chamImg').click(
+			function() {
+				let data_eName = $(this).attr("data-eName");
+				let data_lane = $(this).attr("data-lane");
+				let data_code = $(this).attr("data-code");
+				let $form = $("<form></form>");
+				$form.attr("action", "champInfo");
+				$("<input>").attr("name", "img")
+						.val($(this).attr("data-eName")).appendTo($form);
+				$("<input>").attr("name", "lane")
+						.val($(this).attr("data-lane")).appendTo($form);
+				$("<input>").attr("name", "code")
+						.val($(this).attr("data-code")).appendTo($form);
+
+				$form.appendTo("body");
+				$form.submit();
+			});
+</script>
 </html>
