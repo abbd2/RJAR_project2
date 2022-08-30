@@ -14,21 +14,30 @@
 	align-items: center;
 	margin-right: 100px;
 }
+.matchesList{
+	width: 216px;
+	height: 600px;
+	float: left;
+}
+#multiList{
+	list-style: none;
+	border: 1px solid gray;
+	width: 1500px;
+	height: 600px;
+}
 </style>
 </head>
 <body>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 		function multiSearch() {
+			
+// 			$('#multiList').empty();
 
-			let summaryList;
-			let matchesList;
-			let liList; // mathcList 반복문으로 10개 뽑기 
+// 			let liList; // mathcList 반복문으로 10개 뽑기 
 			let summoners = $("#multiSearchInput").val();
-
-			console.log("함수")
-			$
-					.ajax({
+			
+					$.ajax({
 						url : "multiSearch/executeMultiSearch",
 						contentType : 'application/json; charset=UTF-8',
 						method : "get",
@@ -38,162 +47,130 @@
 						dataType : 'json',
 						success : function(data) {
 							console.log(data)
- 
+							
 							for(let i=0; i<data.length; i++){
 								
 								console.log("길이: "+data.length)
 								
-								summaryList += '<div class=tierPosition>'
-											+ '<div class=tier>'
-												+ '<img src="./resources/tierImg/'+data[i].tier+'.png" width="38px">'
+								let summaryList = '<div class="tierPosition" style="width:186px; height:50px; float:center">'
+											+ '<div class="tier" style="float:left; padding: 3px;">'
+												+ '<img src="./resources/tierImg/'+data[i].tier+'.png" width="50px">'
 											+ '</div>'
+											+ '<div class="mostPosition" style="float:left; padding: 3px;"">'
+											+ '<img src="./resources/laneImg/'+data[i].mostLane+'.png" width="40px">'
+										+ '</div>'
+										+'</div>'
 										+ '<div class="summonerName">'
-											+ '<a href="">'
+											+ '<a href="" style="float:center;">'
 											+ data[i].summonerName
 											+ '</a>'
 										+ '</div>'
-										+ '<div class="lp">'
-										+ data[i].tier + ' ' + data[i].rank + data[i].lp
+										+ '<div class="lp" style="text-align: center; font-size: 15px;">'
+										+ data[i].tier + ' ' +data[i].rank + '(' + data[i].lp + ')'
 										+ '</div>'
 										+ '<div class="graph">'
-											+ '<div class=barGraph style="weight=185; height=16;">'
-												+ '<div class="base" style="backgorund-color: red;>'
-													+ '<div class="win" style="width: '+ data[i].totalWinRate + '%">'
+											+ '<div class="barGraph" style="padding:5px; width:216px; height:20px;">'
+												+ '<div class="base" style="background-color: #e84057; float: left; width:155px; height:16; font-size: 13px;">'
+													+ '<div class="win" style="width: '+ data[i].totalWinRate + '%; background-color: #5383e8; float: left;">'
 														+ data[i].totalWins + '승'
 													+ '</div>'
 													+ data[i].totalLosses + '패'
 												+ '</div>'
-												+ '<strong class="winRatio">' + data[i].totalWinRate + '%' + '</strong>' 
-											+ '</div>'
+											+ '<strong class="winRatio" style="float:right;">' + data[i].totalWinRate + '%' + '</strong>' 
 										+ '</div>';
 	
-								$('.summonerSummary').html(summaryList); /* div추가 */
+								$('.summonerSummary'+i).html(summaryList); /* div추가 */
 	
-								matchesList += '<div class=title>'+'최근 플레이'+'</div>'
-									+'<div class="positions">'
-									+'<div class="position">'
-										+'<div class="positionIcon">'
-											+'<img src="">' // 최근 10판중 가장 많이 간 라인 이미지
+								let matchesList = '<div class="title" style="padding: 10px; width:186px; height:16px; text-align:center; font-size: 10px;">'+'최근 플레이'+'</div>'
+									+'<div class="positions" font-size: 10px;>'
+									+'<div class="position"  style="width:100px; height:30px;">'
+										+'<div class="positionIcon" style="width:30px; height:30px;">'
+											+'<img src="./resources/laneImg/'+data[i].mostLane+'.png" width="30px">' // 최근 10판중 가장 많이 간 라인 이미지
 										+'</div>'
 										+'<div class="positionInfo">'
 										+'<div class="roleRate">'
 											// 최근 10판중 가장 많이 간 라인 퍼센트
 											+'%'
-									+'</div>'
+										+'</div>'
 									+'<div class="winRate">'
 									+"W/R "
-									+'<strong>'+// 라인 승률
-									+'%'
+									+'<strong>'+// 모스트 라인 승률
+									+data[i].mostLaneWinRate+'%'
 									+'</strong>'
 								+'</div>'
 								+'</div>'
 								+'</div>'
 								+'</div>'
-								+'<ul class="recentGames">'
-									+'<li>'
-										+'<div style="pisition:relative" class="recentGameImage">'
-										// 경로에 챔피언 이미지 등록
-											+'<img src="" width="20" alt="'+data[i].championName[0]+'" title="'+data[i].championName[0]+'" height="20">'
-										+'</div>'
-										+'<div class="isWin">'
-											+'<span class="kill">'+data[i].kilss[0]+'</span>'
-											+' /'
-											+'<span class="death">'+data[i].deaths[0]+'</span>'
-											+' /'
-											+'<span class="assist">'+data[i].assists[0]+'</span>'
-										+'</div>'
-										+'<div class="timeStamp">'
-											+'<div style="positionRelative" class="tooltip">'+data[i].agoTimeDate[0]
-											+'</div>'
-										+'</div>'
-									+'</li>'
+								+'<ul class="recentGames" style="list-style:none; width:216px; height:336px; padding:15px">'
+									+ showList(data, i)
 									+'</div>'
 									+'</ul>'
-						$('.recentMatches').html(matchesList);
+						$('.recentMatches'+i).html(matchesList);
 							} // end for
 						},
 						error : function() {
 							alert("err");
 						}
 					});
-		}
+		} // end func
+		
+		function showList(data, idx){
+			let liList;
+			for(let i=0; i<data[idx].kilss.length; i++){
+				liList += '<li style="width: 186px; height: 20px;">'
+						+'<div class="recentGameImage" style="position:relative; float:left;">'
+						// 경로에 챔피언 이미지 등록
+							+'<img src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/'+data[idx].championName[i]+'.png" width="20" alt="'+data[idx].championName[i]+'" title="'+data[idx].championName[i]+'" height="20">'
+						+'</div>'
+						+'<div class="isWin" style="float:left; width:62px; height:20px;">'
+							+'<span class="kill">'+data[idx].kilss[i]+'</span>'
+							+' /'
+							+'<span class="death">'+data[idx].deaths[i]+'</span>'
+							+' /'
+							+'<span class="assist">'+data[idx].assists[i]+'</span>'
+						+'</div>'
+						+'<div class="timeStamp" style="float:right;">'
+							+'<div style="position:relative" class="agoTimeDate">'+data[idx].agoTimeDate[i]+'</div>'
+						+'</div>'
+					+'</li>'
+			}
+			return liList;
+		} // end func
+		
 	</script>
 
-	<%-- 	<jsp:include page="header.jsp"></jsp:include> --%>
+	<jsp:include page="header.jsp"></jsp:include>
 	<div id="main"></div>
 	<div id="multiSearch">
-		<div id="textarea">
+		<div id="textarea" style="padding: 10px;">
 			<textarea name="multiSearchInput" id="multiSearchInput"
 				style="height: 200px; width: 500px;"></textarea>
 			<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색"
 				onclick="multiSearch()">
 		</div>
 
-		<div id="content">
-			<ul class="multiList" style="list-style: none;">
-				<li style="width: 216; height: 869; border: 1px solid gray;">
-					<div class="summonerSummary">
-						<!-- 						<div class="tierPosition"> -->
-						<!-- 							<div class="tier"> -->
-						<!-- 								<img src="./resources/tierImg/SILVER.png" width="50px"> -->
-						<!-- 							</div> -->
-						<!-- 							<div class="mostPosition"> -->
-						<!-- 								<img alt="" src=""> -->
-						<!-- 							</div> -->
-						<!-- 						</div> -->
-						<!-- 						<div class="summonerName"> -->
-						<!-- 							<a>소환사 이름</a> -->
-						<!-- 						</div> -->
-						<!-- 						<div class="lp">티어, lp</div> -->
-						<!-- 						<div class="graph"> -->
-						<!-- 							<div class="barGraph"> -->
-						<!-- 								<div class="base"> -->
-						<!-- 									<div class="win">승 수, 승</div> -->
-						<!-- 									패 수, 패 -->
-						<!-- 								</div> -->
-						<!-- 								<strong>승률</strong> -->
-						<!-- 							</div> -->
-						<!-- 						</div> -->
-					</div>
-
-					<div class="recentMatches">
-						<div class="title">최근 플레이</div>
-
-						<!-- 						<div class="positions"> -->
-						<!-- 							<div class="position"> -->
-						<!-- 								<div class="positionIcon"> -->
-						<!-- 									<img alt="" src=""> -->
-						<!-- 								</div> -->
-						<!-- 								<div class="positionInfo"> -->
-						<!-- 									<div class="roleRate">승률</div> -->
-						<!-- 									<div class="winRate"> -->
-						<!-- 										W/R<strong>%</strong> -->
-						<!-- 									</div> -->
-						<!-- 								</div> -->
-						<!-- 							</div> -->
-						<!-- 							<div class="position"> -->
-						<!-- 								<div class="positionIcon"> -->
-						<!-- 									<img alt="" src=""> -->
-						<!-- 								</div> -->
-						<!-- 								<div class="positionInfo"> -->
-						<!-- 									<div class="roleRate">승률</div> -->
-						<!-- 									<div class="winRate"> -->
-						<!-- 										W/R<strong>%</strong> -->
-						<!-- 									</div> -->
-						<!-- 								</div> -->
-						<!-- 							</div> -->
-						<!-- 						</div> -->
-						<ul class="recentGames">
-						</ul>
-
-						<div></div>
-					</div>
-
+		<div id="content" >
+			<ul id="multiList">
+				<li class="matchesList">
+					<div class="summonerSummary0"></div>
+					<div class="recentMatches0"></div>
 				</li>
-				<li style="width: 216; height: 869;"></li>
-				<li style="width: 216; height: 869;"></li>
-				<li style="width: 216; height: 869;"></li>
-				<li style="width: 216; height: 869;"></li>
+				<li class="matchesList">
+					<div class="summonerSummary1"></div>
+					<div class="recentMatches1"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary2"></div>
+					<div class="recentMatches2"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary3"></div>
+					<div class="recentMatches3"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary4"></div>
+					<div class="recentMatches4"></div>
+				</li>
 			</ul>
 		</div>
 

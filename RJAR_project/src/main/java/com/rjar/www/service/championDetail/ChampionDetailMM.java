@@ -45,45 +45,52 @@ public class ChampionDetailMM {
 		
 		for (int i = 0; i < tierList.size(); i++) {
 			
+<<<<<<< HEAD
 			sb.append("<tr>");
 			
-			sb.append("<td><font style = 'text-align: center; text-weight: bold;'>"+(i+1)+"</font><td>");
+			sb.append("<td style = 'width:50px;'><font style = 'text-align: center; text-weight: bold;'>"+(i+1)+"</font></td>");
+=======
+			sb.append("<td>"+i+1+"<td>");
+>>>>>>> parent of db881f2 (챔피언 분석 css)
 			
 			sb.append("<td>");
 			sb.append("<div class = 'tierChamp' value = " + tierList.get(i).getChampionId() + ">");
-			sb.append("<img class = 'tierChampimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getChampionName() + ".png>");
 			sb.append("</div>");
 			sb.append("</td>");
 			
-			sb.append("<td class = 'kr_name'><small style = 'font-weight: bolder'>"+tierList.get(i).getChampion_kr_name()+"</small></td>");
+			sb.append("<td>"+tierList.get(i).getChampionName()+"</td>");
+			
+			sb.append("<td><small>"+tierList.get(i).getChampion_kr_name()+"</small></td>");
 			
 			//티어가 들어갈 자리
-			sb.append("<td class = 'rate'><font>"+tierList.get(i).getWinRate()+"</font></td>");
-			sb.append("<td class = 'rate'><font>"+tierList.get(i).getBanRate()+"</font></td>");
-			sb.append("<td class = 'rate'><font>"+tierList.get(i).getPickRate()+"</font></td>");
 			
-			sb.append("<td>");
+			sb.append("<td>"+tierList.get(i).getWinRate()+"</td>");
+			sb.append("<td>"+tierList.get(i).getBanRate()+"</td>");
+			sb.append("<td>"+tierList.get(i).getPickRate()+"</td>");
+			
+			sb.append("<td style = 'padding-left:20px;'>");
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter1() + ">");
-			sb.append("<img class = 'counterimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter1() + ".png>");
 			sb.append("</div>");
-			
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter2() + ">");
-			sb.append("<img class = 'counterimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter2() + ".png>");
 			sb.append("</div>");
-			
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter3() + ">");
-			sb.append("<img class = 'counterimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+			sb.append("<img src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter3() + ".png>");
 			sb.append("</div>");
+<<<<<<< HEAD
 			sb.append("</td>");
 			
 			sb.append("</tr>");
-			
-			System.out.println(tierList.get(i).getCounter1());
+=======
+			sb.append("</td><br>");
 						
+>>>>>>> parent of db881f2 (챔피언 분석 css)
 		}
 		
 		
@@ -95,12 +102,17 @@ public class ChampionDetailMM {
 		StringBuilder sb = new StringBuilder();
 		
 		for (int i = 0; i < nameIdList.size(); i++) {
+			sb.append("<td>");
 			sb.append("<div class = 'champion' value = " + nameIdList.get(i).getChampionId() + ">");
 			sb.append("<img class = 'listimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ nameIdList.get(i).getChampionName() + ".png>");
 			sb.append("<br><small class = 'championName''>"+nameIdList.get(i).getChampion_kr_name() +"</small>");
 			sb.append("</div>");
+			sb.append("</td>");
 			i++;
+//			if (i == 5) {
+//				sb.append
+//			}
 		}
 
 		
