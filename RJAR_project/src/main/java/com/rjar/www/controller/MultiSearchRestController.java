@@ -53,7 +53,11 @@ public class MultiSearchRestController {
 			System.out.println("종합 승리 : " + msbList.get(i).getTotalWins());
 			System.out.println("종합 패배 : " + msbList.get(i).getTotalLosses());
 			System.out.println("종합 승률 : " + msbList.get(i).getTotalWinRate());
-			System.out.println("주로 가는 라인: "+msbList.get(i).getMostLane());
+			System.out.println("모스트 라인: " + msbList.get(i).getMostLane());
+			System.out.println("모스트 라인 승률: " + msbList.get(i).getMostLaneWinRate());
+			System.out.println("서브 라인: " + msbList.get(i).getSubLane());
+			System.out.println("서브 라인 승률: " + msbList.get(i).getSubLaneWinRate());
+
 			for (int j = 0; j < 10; j++) {
 				System.out.println();
 				System.out.println("이제부터 10개씩 저장된 값");
@@ -73,8 +77,7 @@ public class MultiSearchRestController {
 		return msbList;
 	}
 
-	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners)
-			throws IOException {
+	public ArrayList<MultiSearchBean> getSummonersInfo(String summoners) throws IOException {
 
 		// 나중에 summoners 유무 체크
 		String replaceVal = "님이 방에 참가했습니다.";
@@ -359,18 +362,19 @@ public class MultiSearchRestController {
 		msb.setWins(wins);
 		msb.setAgoTimeDate(endTimeDate);
 
-		mostLane(msb.getLanes());
-		
+		mostLane(msb.getLanes()); // 주 라인 & 서브 라인 구하기
+
 		System.out.println("---------");
-		System.out.println("mostLane : "+msb.getMostLane());
+		System.out.println("mostLane : " + msb.getMostLane()); // 주 라인 출력
+		System.out.println("scdLane : " + msb.getSubLane()); // 서브 라인 출력
 		System.out.println("---------");
 	}
 
-	// 주로 가는 라인 구하기
+	// 주로 가는 라인 & 라인 승률 구하기
 	public void mostLane(String[] lanes) {
 
 		int[] laneCnt = new int[5]; // 라인이 나온 횟수 저장
-		int maxIdx = 0; // 최대 값의 인덱스 저장
+		int maxIdx = -1; // 최대 값의 인덱스 저장
 		int max = 0; // 최대 값 저장
 
 		for (String lane : lanes) {
@@ -385,7 +389,6 @@ public class MultiSearchRestController {
 			} else if (lane.equals("UTILITY")) {
 				laneCnt[4]++;
 			} else {
-				System.out.println();
 				System.out.println("none");
 			}
 		}
@@ -397,7 +400,7 @@ public class MultiSearchRestController {
 			}
 		}
 
-		System.out.println("최대값 : " + maxIdx);
+		System.out.println("최대 값 인덱스 : " + maxIdx);
 
 		if (maxIdx == 0) {
 			msb.setMostLane("TOP");
@@ -410,11 +413,78 @@ public class MultiSearchRestController {
 		} else if (maxIdx == 4) {
 			msb.setMostLane("UTILITY");
 		} else {
-			System.out.println();
+			msb.setMostLane("none");
 			System.out.println("none");
 		}
-		
-	}
+
+		if (maxIdx > -1) {
+			msb.setMostLaneWinRate(laneWinRate(max)); // 모스트 라인의 승률 구하기
+			subLane(maxIdx, laneCnt); // 두 번째로 큰 최대 값 구하기
+		}
+
+	} // end mostLane
+
+	// 두 번째로 큰 최대 값 구하기
+	public void subLane(int maxIdx, int[] laneCnt) {
+
+		int subMax = 0;
+		int subIdx = -1;
+
+		for (int i = 0; i < 5; i++) {
+			if (i != maxIdx) { // 최대 값 인덱스는 제외하고 두 번째로 큰 최대 값을 구함
+				if (subMax < laneCnt[i]) {
+					subMax = laneCnt[i];
+					subIdx = i;
+				}
+			}
+		} // end for
+
+		System.out.println("두 번째로 큰 최대 값 인덱스 : " + subIdx);
+
+		if (subIdx == 0) {
+			msb.setSubLane("TOP");
+		} else if (subIdx == 1) {
+			msb.setSubLane("JUNGLE");
+		} else if (subIdx == 2) {
+			msb.setSubLane("MIDDLE");
+		} else if (subIdx == 3) {
+			msb.setSubLane("BOTTOM");
+		} else if (subIdx == 4) {
+			msb.setSubLane("UTILITY");
+		} else {
+			msb.setSubLane("none");
+			System.out.println("none");
+		}
+
+		if (subIdx > -1) {
+			msb.setSubLaneWinRate(laneWinRate(subMax)); // 서브 라인의 승률 구하기
+		}
+
+	} // end scdLane
+
+	// 라인 승률 구하기
+	public int laneWinRate(int gameCnt) {
+
+		int winGame = 0; // 이긴 경기 카운트
+		int laneWinRate = 0; // 승률(정수형)
+
+		for (int i = 0; i < msb.getWins().length; i++) { // 경기 수 만큼 반복
+			if (msb.getLanes()[i].equals(msb.getMostLane())) { // 해당 경기의 라인이 모스트 라인과 같다면
+				if (msb.getWins()[i].equals("true")) { // 이긴 경기라면
+					System.out.println("이긴 경기 발견!");
+					winGame++;
+				}
+			}
+		} // end for
+		System.out.println();
+		System.out.println("경기 수: " + gameCnt + ", 이긴 경기 수: " + winGame);
+		laneWinRate = (int) Math.round((double) winGame / gameCnt * 100);
+		System.out.println(Math.round((double) winGame / gameCnt * 100));
+		System.out.println("라인 승률: " + laneWinRate);
+
+		return laneWinRate;
+
+	} // end laneWinRate
 
 	// 게임아이디로 데이터 가져오기
 	public Object[] getGameData(String gameId) throws IOException {
