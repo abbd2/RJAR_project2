@@ -106,16 +106,16 @@ public class MultiSearchRestController {
 			msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
 			System.out.println(i + "명 완료...");
 			System.out.println();
-			System.out.println("소환사의 이름 : " + msbList.get(i).getSummonerName());
-			System.out.println("티어 : " + msbList.get(i).getTier());
-			System.out.println("랭크 : " + msbList.get(i).getRank());
-			System.out.println("LP : " + msbList.get(i).getLp());
-			for (int j = 0; j < 10; j++) {
-				System.out.println();
-				System.out.println("10개");
-				System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
-				System.out.println("어언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
-			}
+//			System.out.println("소환사의 이름 : " + msbList.get(i).getSummonerName());
+//			System.out.println("티어 : " + msbList.get(i).getTier());
+//			System.out.println("랭크 : " + msbList.get(i).getRank());
+//			System.out.println("LP : " + msbList.get(i).getLp());
+//			for (int j = 0; j < 10; j++) {
+//				System.out.println();
+//				System.out.println("10개");
+//				System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
+//				System.out.println("어언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
+//			}
 //			} catch (Exception e) {
 //				System.out.println("--------------------------");
 //				System.out.println("오류 !!!");
@@ -169,7 +169,6 @@ public class MultiSearchRestController {
 		String leagueUrl = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key="
 				+ api_key;
 		String result = connectURL(leagueUrl); // url connect
-//		result = replaceSquareBrackets(result); // 대괄호 제거
 		JsonNode json = parseStringToJson(result); // String to jsonNode
 
 		System.out.println("프로필 데이터 저장중...");
@@ -447,9 +446,6 @@ public class MultiSearchRestController {
 	public static JsonNode parseStringToJson(String result) throws IOException {
 
 		System.out.println("String to JsonNode...");
-
-//		JsonParser jsonParser = new JsonParser();
-//		JsonObject jsonNode = (JsonObject) jsonParser.parse(result);
 
 		ObjectMapper objMapper = new ObjectMapper();
 		JsonNode jsonNode = objMapper.readTree(result); // String을 JsonNode로 변환
