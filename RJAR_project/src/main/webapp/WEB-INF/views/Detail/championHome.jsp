@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-<script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="js/jquery.serializeObject.js"></script>	
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -29,7 +29,7 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-	
+
 	<div id='box'>
 		<div id='main'>
 			<aside>
@@ -41,19 +41,36 @@
 	</div>
 </body>
 <script type="text/javascript">
-	Aj('champion_Home','#champion_list');
+
+$(function() {
 	
-	function Aj(url, position) {
-		//비동기 통신은 dataType을 json으로 받을 때만,
-		$.ajax({
-			url: url,
-			type: 'get',
-			dataType: 'html' //'json'
-		}).done((data)=>$(position).html(data))
-		  .fail((data)=>console.log(err));
-	} //Aj End
+// 	$('#${tier}').prop('selected', 'selected');
 	
-	$('option').click
+});
+
+
+// 티어 옵션 선택 시
+$('#selectOption').on('change', function (){
+
+	$('#select').submit();
+});
+// 		console.log("갔다!", tier);
+// 		$.ajax({
+// 			type : 'get',
+// 			url : 'tierOrLane',
+// 			data : {tier: tier, lane: $('#top').val()},
+// 			dataType: 'html',
+// 		}).done(function(data){
+// 			console.log("성공");			
+// 			console.log(data);			
+// 			$('.champList').html(data);			
+// 		}).fail(function(err) {
+// 			console.log(err);
+// 			console.log("에러다 이 자식아");
+
+// 티어 옵션 바꿀 시
+	
+	
 </script>
 </head>
 </html>

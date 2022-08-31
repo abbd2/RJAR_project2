@@ -13,11 +13,10 @@
 	width: 549px;
 }
 
-.selectOption {
+#selectOption {
 	width: 200px;
 	height: 55px;
 	margin: 5px;
-	color: #006fff;
 	border-radius: 7px;
 	border: 2px solid black;
 	font-size: 20px;
@@ -33,7 +32,7 @@ option {
 	width: 200px;
 }
 
-.lane {
+.lane_ {
 	margin-left: 18px;;
 	width: 89px;
 	height: 60px;
@@ -73,14 +72,14 @@ option {
 
 .Laneimg {
 	float: left;
-    width: 550px;
+	width: 550px;
 	height: 55px;
 	margin-bottom: 10px;
 }
 
 .tierList {
 	float: right;
-    width: 650px;
+	width: 650px;
 }
 
 .tierList th {
@@ -177,16 +176,16 @@ font {
 </head>
 <body>
 	<div style="width: 1200px; margin: auto;">
-		<form action="">
+		<form id="select" action="tierOrLane" method="get">
 			<table style="width: 1200px;">
 				<tr>
 					<td style="width: 450px;">
 						<div class="tierVersion">
-							<select class="selectOption">
-								<option value="platinum" style="color: #006fff;">+Platinum</option>
+							<select id="selectOption" name = "tier">		
 								<option value="bronze" style="color: #964b00;">+Bronze</option>
 								<option value="silver" style="color: #c0c0c0;">+Silver</option>
 								<option value="gold" style="color: #ffd700;">+Gold</option>
+								<option value="platinum" style="color: #006fff;">+Platinum</option>
 								<option value="diamond" style="color: #87cefa;">+Diamond</option>
 							</select>
 							<!-- 		</select> <select id="versionSelect" class="selectOption"> -->
@@ -194,35 +193,37 @@ font {
 							<!-- 			<option value="12.13.456.5556">12.13</option> -->
 							<!-- 		</select> -->
 						</div>
+						<input class="lane_" value="TOP" name = "lane" type = "hidden">
 					</td>
 					<td class="laneDiv">
-						<button class="lane">
+						<button class="lane_" value="TOP" name = "lane">
 							<span>탑</span>
 						</button>
 					</td>
 					<td class="laneDiv">
-						<button class="lane">
+						<button class="lane_" value="JUNGLE">
 							<span>정글</span>
 						</button>
 					</td>
 					<td class="laneDiv">
-						<button class="lane">
+						<button class="lane_" value="MIDDLE">
 							<span>미드</span>
 						</button>
 					</td>
 					<td class="laneDiv">
-						<button class="lane">
+						<button class="lane_" value="BOTTOM">
 							<span>원딜</span>
 						</button>
 					</td>
 					<td class="laneDiv">
-						<button class="lane">
+						<button class="lane_" value="UTILITY">
 							<span>서폿</span>
 						</button>
 					</td>
 				</tr>
 			</table>
 		</form>
+
 		<div class="tierList">
 			<table class="tierList">
 				<tr>

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.rjar.www.bean.Champion;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
 
 import lombok.extern.log4j.Log4j;
@@ -33,7 +32,6 @@ public class HomeController {
 
 	@GetMapping(value = "/championHome")
 	public ModelAndView championDetail() {
-		log.info("home 이지롱");
 		String tier = "platinum";
 		String lane = "TOP";
 		mav = champmm.getChampionInfo(tier, lane);

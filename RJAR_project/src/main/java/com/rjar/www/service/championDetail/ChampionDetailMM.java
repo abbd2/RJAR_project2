@@ -21,11 +21,12 @@ public class ChampionDetailMM {
 	ModelAndView mav;
 
 	public ModelAndView getChampionInfo(String tier, String lane) {
+
 		mav = new ModelAndView();
 		
-		log.info("tier=" + tier);
-		log.info("lane=" + lane);
-
+		//옵션에 띄울 티어/ 티어 색깔
+		mav.addObject("tier",tier);
+		
 		// 챔피언 사진에 들어갈 value들
 		List<Champion> nameIdList = champDao.getChampionList();
 		mav.addObject("nameIdList", makechampList(nameIdList));
@@ -33,8 +34,8 @@ public class ChampionDetailMM {
 		// 챔피언티어 정보에 들어갈 value들
 		List<Champion> tierList = champDao.getTierList(tier, lane);
 		mav.addObject("tierList", makeTierList(tierList));
-		mav.setViewName("Detail/championHome");
-
+        mav.setViewName("Detail/championHome");
+		
 		return mav;
 	}
 
