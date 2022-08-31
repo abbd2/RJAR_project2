@@ -100,7 +100,8 @@ public class MultiSearchRestController {
 		msbList = new ArrayList<>();
 
 		for (int i = 0; i < summonerName.length; i++) {
-//			try {
+			
+			try {
 			System.out.println(summonerName[i] + "의 puuid 받아오는중...");
 
 			msb = new MultiSearchBean();
@@ -108,21 +109,11 @@ public class MultiSearchRestController {
 			msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
 			System.out.println(i + "명 완료...");
 			System.out.println();
-//			System.out.println("소환사의 이름 : " + msbList.get(i).getSummonerName());
-//			System.out.println("티어 : " + msbList.get(i).getTier());
-//			System.out.println("랭크 : " + msbList.get(i).getRank());
-//			System.out.println("LP : " + msbList.get(i).getLp());
-//			for (int j = 0; j < 10; j++) {
-//				System.out.println();
-//				System.out.println("10개");
-//				System.out.println("챔피언 이름 : " + msbList.get(i).getChampionName()[j]);
-//				System.out.println("어언제 했는지 : " + msbList.get(i).getAgoTimeDate()[j]);
-//			}
-//			} catch (Exception e) {
-//				System.out.println("--------------------------");
-//				System.out.println("오류 !!!");
-//				System.out.println("--------------------------");
-//			}
+			} catch (Exception e) {
+				System.out.println("--------------------------");
+				System.out.println("오류 !!!");
+				System.out.println("--------------------------");
+			}
 
 		}
 		return msbList;
