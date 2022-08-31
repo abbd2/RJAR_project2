@@ -205,7 +205,7 @@ body{
 							+'style=" border-radius: 3px;">'
 						+'</div>'
 						+'<div class="isWin" style="float:left; width:80px; height:25px; border-radius: 3px; margin: 0px 0px 0px 10px; text-align:center; background-color:'+winColor+'; color:'+kdaColor+';">'
-							+'<span class="kill">'+data[idx].kilss[i]+'</span>'
+							+'<span class="kill">'+data[idx].kills[i]+'</span>'
 							+' /'
 							+'<span class="death">'+data[idx].deaths[i]+'</span>'
 							+' /'
