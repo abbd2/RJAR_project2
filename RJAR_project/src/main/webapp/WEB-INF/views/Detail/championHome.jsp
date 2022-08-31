@@ -29,7 +29,7 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-
+	
 	<div id='box'>
 		<div id='main'>
 			<aside>
@@ -43,34 +43,89 @@
 <script type="text/javascript">
 
 $(function() {
-	
-// 	$('#${tier}').prop('selected', 'selected');
-	
+	let key = '${tier}';
+
+	switch (key) {
+	case 'bronze':
+		$('#bronze').prop('selected', true);
+		break;
+	case 'silver':
+		$('#silver').prop('selected', true);
+		break;
+	case 'gold':
+		$('#gold').prop('selected', true);
+		break;
+	case 'platinum':
+		$('#platinum').prop('selected', true);		
+		break;
+	case 'diamond':
+		$('#diamond').prop('selected', true);
+		break;
+
+	default:
+		break;
+	}	
 });
 
 
 // 티어 옵션 선택 시
 $('#selectOption').on('change', function (){
-
 	$('#select').submit();
 });
-// 		console.log("갔다!", tier);
-// 		$.ajax({
-// 			type : 'get',
-// 			url : 'tierOrLane',
-// 			data : {tier: tier, lane: $('#top').val()},
-// 			dataType: 'html',
-// 		}).done(function(data){
-// 			console.log("성공");			
-// 			console.log(data);			
-// 			$('.champList').html(data);			
-// 		}).fail(function(err) {
-// 			console.log(err);
-// 			console.log("에러다 이 자식아");
 
-// 티어 옵션 바꿀 시
+
+// 라인 이미지 선택 시
+$('.laneImg').click(function (){
+	let tier = $('#selectOption').val();
+	let lane = $(this).val();
 	
+	console.log(tier);
+	console.log(lane);
 	
+	$.ajax({
+		type : 'get',
+		url : 'tierList',
+		data : {lane: lane},
+		
+		dataType: 'json'
+	}).done(function(data){
+		console.log("성공");			
+		console.log(data);	
+		
+		//화면에 표출될 태그 생성
+	}).fail(function(err) {
+		console.log("에러");
+		console.log(err);
+		
+	})
+	
+});	
+
+//라인(버튼) 선택 시
+$('.lane_').click(function (){
+	let tier = $('#selectOption').val();
+	let lane = $(this).val();
+	
+	console.log(tier);
+	console.log(lane);
+	
+	$.ajax({
+		type : 'get',
+		url : 'tierList',
+		data : {tier: tier, lane: lane},
+		
+		contentType : 'application/json;charset=UTF-8',	
+	}).done(function(data){
+		
+		console.log('성공');		
+		$('.tierList').html(data);
+	}).fail(function(err) {
+		console.log("에러");
+		console.log(err);
+		
+	})
+	
+});
 </script>
 </head>
 </html>

@@ -43,6 +43,16 @@ public class ChampionDetailMM {
 		
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("<tr>");
+		sb.append("<th>순위</th>");
+		sb.append("<th colspan=\"2\" style=\"padding-left: 45px;\">챔피언</th>");
+//		<td>티어</td>
+		sb.append("<th>승률</th>");
+		sb.append("<th>픽률</th>");
+		sb.append("<th>밴률</th>");
+		sb.append("<th>상대하기 어려운 챔피언</th>");
+		sb.append("<tr>");
+		
 		for (int i = 0; i < tierList.size(); i++) {
 			
 			sb.append("<tr>");
@@ -103,6 +113,12 @@ public class ChampionDetailMM {
 
 		
 		return sb.toString();
+	}
+
+	public String restTierList(Champion champ) {
+		List<Champion> restTierList = champDao.getTierList(champ.getTier(), champ.getLane());
+		String tierList = makeTierList(restTierList);
+		return tierList;
 	}
 	
 	

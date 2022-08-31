@@ -10,7 +10,6 @@ import com.rjar.www.service.championDetail.ChampionDetailMM;
 
 import lombok.extern.log4j.Log4j;
 
-@Log4j
 @Controller
 public class ChampionDetailController {
 	

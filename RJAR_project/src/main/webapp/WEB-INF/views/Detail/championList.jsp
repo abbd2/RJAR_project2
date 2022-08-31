@@ -27,15 +27,15 @@ option {
 	font-weight: bold;
 }
 
-.laneDiv {
+.laneTd {
 	border: 1px solid gray;
 	width: 200px;
+	padding: 0px;
 }
 
 .lane_ {
-	margin-left: 18px;;
-	width: 89px;
-	height: 60px;
+	width: 130px;
+	height: 66px;
 	background-color: white;
 	border: hidden;
 	text-align: center;
@@ -70,11 +70,12 @@ option {
 	font-weight: bold;
 }
 
-.Laneimg {
+.laneimg {
 	float: left;
-	width: 550px;
+	width: 510px;
 	height: 55px;
 	margin-bottom: 10px;
+	border-radius: 5px;
 }
 
 .tierList {
@@ -176,65 +177,52 @@ font {
 </head>
 <body>
 	<div style="width: 1200px; margin: auto;">
-		<form id="select" action="tierOrLane" method="get">
-			<table style="width: 1200px;">
-				<tr>
-					<td style="width: 450px;">
+		<table style="width: 1200px;">
+			<tr>
+				<td style="width: 450px;">
+					<form id="select" action="tierOrLane" method="get">
 						<div class="tierVersion">
-							<select id="selectOption" name = "tier">		
-								<option value="bronze" style="color: #964b00;">+Bronze</option>
-								<option value="silver" style="color: #c0c0c0;">+Silver</option>
-								<option value="gold" style="color: #ffd700;">+Gold</option>
-								<option value="platinum" style="color: #006fff;">+Platinum</option>
-								<option value="diamond" style="color: #87cefa;">+Diamond</option>
+							<select id="selectOption" name="tier">
+								<option id="bronze" value="bronze" style="color: #964b00;">+Bronze</option>
+								<option id="silver" value="silver" style="color: #c0c0c0;">+Silver</option>
+								<option id="gold" value="gold" style="color: #ffd700;">+Gold</option>
+								<option id="platinum" value="platinum" style="color: #006fff;">+Platinum</option>
+								<option id="diamond" value="diamond" style="color: #87cefa;">+Diamond</option>
 							</select>
-							<!-- 		</select> <select id="versionSelect" class="selectOption"> -->
-							<!-- 			<option value="12.14.456.5556">12.14</option> -->
-							<!-- 			<option value="12.13.456.5556">12.13</option> -->
-							<!-- 		</select> -->
 						</div>
-						<input class="lane_" value="TOP" name = "lane" type = "hidden">
-					</td>
-					<td class="laneDiv">
-						<button class="lane_" value="TOP" name = "lane">
-							<span>탑</span>
-						</button>
-					</td>
-					<td class="laneDiv">
-						<button class="lane_" value="JUNGLE">
-							<span>정글</span>
-						</button>
-					</td>
-					<td class="laneDiv">
-						<button class="lane_" value="MIDDLE">
-							<span>미드</span>
-						</button>
-					</td>
-					<td class="laneDiv">
-						<button class="lane_" value="BOTTOM">
-							<span>원딜</span>
-						</button>
-					</td>
-					<td class="laneDiv">
-						<button class="lane_" value="UTILITY">
-							<span>서폿</span>
-						</button>
-					</td>
-				</tr>
-			</table>
-		</form>
+						<input class="lane_" value="TOP" name="lane" type="hidden">
+					</form>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="TOP">
+						<span>탑</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="JUNGLE">
+						<span>정글</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="MIDDLE">
+						<span>미드</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="BOTTOM">
+						<span>원딜</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="UTILITY">
+						<span>서폿</span>
+					</button>
+				</td>
+			</tr>
+		</table>
 
 		<div class="tierList">
 			<table class="tierList">
-				<tr>
-					<th>순위</th>
-					<th colspan="2" style="padding-left: 45px;">챔피언</th>
-					<!-- <td>티어</td> -->
-					<th>승률</th>
-					<th>픽률</th>
-					<th>밴률</th>
-					<th>상대하기 어려운 챔피언</th>
-				</tr>
 				${tierList}
 			</table>
 		</div>
@@ -242,9 +230,8 @@ font {
 			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
 		</div>
 
-		<div style="width: 500px;">
-
-			<table class="Laneimg" style="width: 500px;">
+		<div>
+			<table class="laneimg">
 				<tr>
 					<td class="a_img" id="all"><a class="all"
 						href="javascript:Aj('./champion_list','#champion_list')"> <img
@@ -285,7 +272,7 @@ font {
 					<td class="a_img" id="free"><a
 						href="javascript:Aj('free','#champion_list')"> <img
 							name='free'
-							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
+							src="https://s-lol-web.op.gg/images/icon/icon-rotation.svg"
 							width="50px;" height="50px;">
 					</a></td>
 				</tr>
@@ -296,22 +283,6 @@ font {
 	</div>
 </body>
 <script type="text/javascript">
-	$('.chamImg').click(
-			function() {
-				let data_eName = $(this).attr("data-eName");
-				let data_lane = $(this).attr("data-lane");
-				let data_code = $(this).attr("data-code");
-				let $form = $("<form></form>");
-				$form.attr("action", "champInfo");
-				$("<input>").attr("name", "img")
-						.val($(this).attr("data-eName")).appendTo($form);
-				$("<input>").attr("name", "lane")
-						.val($(this).attr("data-lane")).appendTo($form);
-				$("<input>").attr("name", "code")
-						.val($(this).attr("data-code")).appendTo($form);
-
-				$form.appendTo("body");
-				$form.submit();
-			});
+	
 </script>
 </html>
