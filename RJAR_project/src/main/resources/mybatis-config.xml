@@ -8,6 +8,7 @@
 		<typeAlias alias="Member" type="com.rjar.www.bean.Member"/>
 		<typeAlias alias="Champion" type="com.rjar.www.bean.Champion"/>
 		<typeAlias alias="GameDetailShowInfo" type="com.rjar.www.bean.summonersearch.GameDetailShowInfo"/>
+		<typeAlias alias="MultiSearch" type="com.rjar.www.bean.summonersearch.MultiSearchBean"/>
 	</typeAliases>
 </configuration>
 <!-- commit -->
