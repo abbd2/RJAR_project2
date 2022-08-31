@@ -308,14 +308,11 @@ public class SummonerSearchMM {
 						gameData.add(preMap);
 						
 						System.out.println(preMap);
+						System.out.println("isc="+isc);
 						f = isc.insertGameData(preMap);
-						
-
 					}
 					System.out.println("gg"+gameData.getClass().getName());
-					System.out.println("insert 성공(?)");
-
-//					
+					System.out.println("insert 성공(?)");		
 				}
 			}
 			mav.setViewName("jsonView");
