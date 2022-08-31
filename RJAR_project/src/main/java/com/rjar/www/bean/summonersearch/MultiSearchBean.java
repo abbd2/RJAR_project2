@@ -1,6 +1,7 @@
 package com.rjar.www.bean.summonersearch;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import lombok.Data;
