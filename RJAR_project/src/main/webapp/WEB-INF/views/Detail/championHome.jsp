@@ -123,6 +123,7 @@ $('.lane_').click(function (){
 	
 });
 
+//로테이션 챔피언 챔피언
 $('#free').click(function () {
 	
 	$.ajax({

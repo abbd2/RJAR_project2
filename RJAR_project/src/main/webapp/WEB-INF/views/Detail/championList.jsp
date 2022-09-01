@@ -235,9 +235,8 @@ font {
 		</table>
 
 		<div class="tierList">
-			<table class="tierList" >
-				${tierList}
-			</table>
+				<table class="tierList">${tierList}
+				</table>
 		</div>
 		<div>
 			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
