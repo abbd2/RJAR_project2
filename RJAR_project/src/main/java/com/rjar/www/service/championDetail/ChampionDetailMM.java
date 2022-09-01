@@ -43,7 +43,7 @@ public class ChampionDetailMM {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<tr>");
+		sb.append("<tr class = 'jool'>");
 		sb.append("<th>순위</th>");
 		sb.append("<th colspan=\"2\" style=\"padding-left: 45px;\">챔피언</th>");
 //		<td>티어</td>
@@ -55,7 +55,7 @@ public class ChampionDetailMM {
 
 		for (int i = 0; i < tierList.size(); i++) {
 
-			sb.append("<tr>");
+			sb.append("<tr class = 'jool'>");
 
 			sb.append("<td style = 'width:50px;'><font style = 'text-align: center; text-weight: bold;'>" + (i + 1)
 					+ "</font></td>");
@@ -109,7 +109,6 @@ public class ChampionDetailMM {
 					+ nameIdList.get(i).getChampionName() + ".png>");
 			sb.append("<br><small class = 'championName''>" + nameIdList.get(i).getChampion_kr_name() + "</small>");
 			sb.append("</div>");
-			System.out.println(nameIdList.get(i).getChampionName());
 		}
 
 		return sb.toString();

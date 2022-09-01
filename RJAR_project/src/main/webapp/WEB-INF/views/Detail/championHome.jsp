@@ -112,9 +112,11 @@ $('.lane_').click(function (){
 		data : {tier: tier, lane: lane},
 		
 		contentType : 'application/json;charset=UTF-8'
-	}).done( function(tierList){
+	}).done( function(data){
 		console.log('성공');		
-		$('.tierList').html(tierList);
+		$('.tierList').html(data);
+		
+		console.log('진짜 성공');		
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);
