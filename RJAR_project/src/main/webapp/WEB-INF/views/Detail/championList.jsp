@@ -81,6 +81,10 @@ option {
 .laneimg tr td{
 	padding: 0px;
 }
+#free{
+	background-color: white;
+    border: hidden;
+}
 
 .a_img{
 	background-color: white;
@@ -272,7 +276,7 @@ font {
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
 							width="50px;" height="50px;"></button>
 					</td>
-					<td><button class="a_img" id = "free"><img
+					<td><button id = "free"><img
 							name='free'
 							src="https://s-lol-web.op.gg/images/icon/icon-rotation.svg"
 							width="50px;" height="50px;"></button>

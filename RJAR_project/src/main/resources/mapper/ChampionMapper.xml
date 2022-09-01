@@ -4,7 +4,7 @@
 <mapper namespace="com.rjar.www.dao.IchampionDao">
 
 	<select id="getChampionList" resultType="Champion">
-		SELECT CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
 		FROM STATS_SKILL_DATA
 		ORDER BY CHAMPION_KR_NAME
 	</select>
@@ -16,7 +16,7 @@
 		WHERE LANE = #{lane} AND PICKRATE!=0 AND
 		WINRATE !=0
 	</select>
-	<!-- 티어 순으로 정렬해서 검색해야 함 -->
+	<!-- 티어 순으로 정렬해서 검색해야 함/테이블 key 줘야 함 -->
 	<select id="getLaneChamp" resultType="Champion">
 		SELECT CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
 		FROM BRONZE_DETAIL
@@ -24,5 +24,11 @@
 		ORDER BY CHAMPION_KR_NAME
 	</select>
 	<!--나중에 검색대상 골드테이블로 바꿀 예정 -->
+	<select id="getRotaion" resultType="Champion">
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		FROM STATS_SKILL_DATA
+		WHERE CHAMPIONID = #{championId}
+		ORDER BY CHAMPION_KR_NAME
+	</select>
 	
 </mapper>

@@ -1,11 +1,16 @@
 package com.rjar.www.service.championDetail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.rjar.www.bean.Champion;
 import com.rjar.www.dao.IchampionDao;
 
@@ -134,6 +139,33 @@ public class ChampionDetailMM {
 		
 		String championList = makechampList(restChampionList);
 		return championList;
+	}
+
+	public String getRotationChamp() {
+	    String url = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-5abbd2a5-6403-43ab-a67b-bdc1c426bcaf";
+
+	    RestTemplate restTemplate = new RestTemplate();
+	    String apiResult = restTemplate.getForObject(url, String.class);
+	    
+	    //받아온 내용 json으로 파싱
+	    JsonParser parser = new JsonParser();
+	    JsonObject jsonObj = (JsonObject)parser.parse(apiResult);
+	    
+	    //원하는 value값 꺼내고 그걸 다시 String 배열로 파싱
+	    Gson gson = new Gson();
+	    String[] freeChampionList = gson.fromJson(jsonObj.get("freeChampionIds"), String[].class);
+	    
+	    //챔피언 아이디로 검색한 후 리스트에 담음
+	    List<Champion> rotationList = new ArrayList<>();
+	    for (int i = 0; i < freeChampionList.length; i++) {
+	    	int championId = Integer.parseInt(freeChampionList[i]);
+	    	Champion rotationChampion = champDao.getRotaion(championId);
+	    	rotationList.add(rotationChampion);
+		}
+	    //리스트를 통해 태그 생성
+	    String rotationImg = makechampList(rotationList);
+	    
+		return rotationImg;
 	}
 
 }

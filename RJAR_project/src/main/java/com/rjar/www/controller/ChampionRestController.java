@@ -27,6 +27,12 @@ public class ChampionRestController {
 		return championList;
 	}
 	
+	@GetMapping(value = "/rotation", produces="text/plain;charset=utf-8")
+	public String getRotationChamp() {
+		String rotationChamp = champmm.getRotationChamp();
+		return rotationChamp;
+	}
+	
 
 
 }

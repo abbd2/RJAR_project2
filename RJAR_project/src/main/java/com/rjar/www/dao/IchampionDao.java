@@ -14,4 +14,6 @@ public interface IchampionDao {
 
 	List<Champion> getLaneChamp(String lane);
 
+	Champion getRotaion(int championId);
+
 }
