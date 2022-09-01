@@ -53,7 +53,7 @@ public class HomeController {
 	@GetMapping(value = "/community")
 	public String community() {
 
-		return "community";
+		return "community/communityHome";
 	}
 
 	@GetMapping(value = "/lck")
