@@ -1,6 +1,7 @@
 package com.rjar.www.service.search;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +22,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.rjar.www.bean.summonersearch.GameDetailShowInfo;
-import com.rjar.www.dao.ISummonerSearch;
+import com.rjar.www.dao.ISummonerSearchDao;
 
 import lombok.extern.log4j.Log4j;
 
@@ -30,7 +31,7 @@ import lombok.extern.log4j.Log4j;
 public class SummonerSearchMM {
 
 	@Autowired
-	private ISummonerSearch isc;
+	private ISummonerSearchDao isc;
 
 	// 전적 검색에 필요한 데이터를 API로 받아오기
 	ModelAndView mav;
@@ -115,27 +116,28 @@ public class SummonerSearchMM {
 					freeWins = p.get("wins").getAsInt();
 					freeLosses = p.get("losses").getAsInt();
 					freeWinRate = Math.round(((double) freeWins / (freeWins + freeLosses)) * 100) / 100.0;
-					soloTier = "unranked";
+					soloTier = "Unranked";
 				} else {
 					soloTier = p.get("tier").getAsString();
 					soloLeaguePoint = p.get("leaguePoints").getAsInt();
 					soloWins = p.get("wins").getAsInt();
 					soloLosses = p.get("losses").getAsInt();
 					soloWinRate = Math.round(((double) soloWins / (soloWins + soloLosses)) * 100) / 100.0;
-					freeTier = "unranked";
+					freeTier = "Unranked";
 				}
 			} else {
-				soloTier = "unranked";
-				freeTier = "unranked";
+				soloTier = "Unranked";
+				freeTier = "Unranked";
 			}
 
 			System.out.println(freeTier);
 			System.out.println(freeLeaguePoint);
 			System.out.println(freeWins);
-			
+
 			// 검색한 소환사의 최근 10경기 데이터 가져오기
 			ModelAndView matchData = summonerMatchDetail(puuid, summonerName);
-
+			
+//			if(soloTier.equals("Level") || freeTier.equals("Level"))
 			mav.addObject("profileIconId", profileIconId);
 			mav.addObject("LV", summonerLevel);
 			mav.addObject("name", name);
@@ -181,16 +183,15 @@ public class SummonerSearchMM {
 		mav = new ModelAndView();
 		String summonerMatch = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + object
 				+ "/ids?start=0&count=10&api_key=" + api_key;
-		System.out.println("summonerName="+summonerName);
-		System.out.println("object="+object);
+		System.out.println("summonerName=" + summonerName);
+		System.out.println("object=" + object);
 		try {
 			String urlBr = getUrl(summonerMatch);
 			JsonParser jsonParser = new JsonParser();
 			JsonArray jsonArray = (JsonArray) jsonParser.parse(urlBr);
 			System.out.println("gameData=" + jsonArray);
-			
-			
-			//puuid로 10개의 matchId 불러오기
+
+			// puuid로 10개의 matchId 불러오기
 			ArrayList<String> matchDataList = new ArrayList<String>();
 			if (jsonArray != null) {
 				for (int i = 0; i < jsonArray.size(); i++) {
@@ -200,138 +201,133 @@ public class SummonerSearchMM {
 
 			System.out.println("gameData=" + matchDataList.get(0).replaceAll("\"", ""));
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
-			
-			boolean f = false;
+
 			List<GameDetailShowInfo> gdsList = null;
-			Map<String, Object> sdList = null;
-			// 10판 게임데이터 불러오기
+			List<GameDetailShowInfo> myGame = new ArrayList<>();
+			// 10판 게임데이터 id만 불러와서 list에 넣기
 			for (int j = 0; j < matchDataList.size(); j++) {
-				try {
-					gdsList = isc.SearchGame(matchDataList.get(j).replaceAll("\"", ""));
-//					for(int k = 0; k<10; k++) {
-//						if(summonerName.equals(gdsList.get(k).getSs_summonerName())) {
-//							
-//						}
-//					}
-					
-					System.out.println("데이터가 존재합니다.");
+				String urlBr1 = getUrl(matchUrl + matchDataList.get(j).replaceAll("\"", "") + "?api_key=" + api_key);
 
-				}
-				catch (Exception e) {
-					String urlBr1 = getUrl(matchUrl + matchDataList.get(j).replaceAll("\"", "") + "?api_key=" + api_key);
+				JsonParser jsonParser1 = new JsonParser();
+				JsonObject p = (JsonObject) jsonParser1.parse(urlBr1);
+				JsonObject info = (JsonObject) p.get("info");
+				JsonArray participants = info.getAsJsonArray("participants");
+				JsonArray team = info.getAsJsonArray("teams");
+				
+				// 1게임당 10명의 소환사 정보 불러오기
+				List<GameDetailShowInfo> gameData = new ArrayList<>();
+				for (int k = 0; k < 10; k++) {
+					Map<GameDetailShowInfo, Object> sgi = new HashMap<GameDetailShowInfo, Object>();
+					GameDetailShowInfo gds = new GameDetailShowInfo();
 
-					JsonParser jsonParser1 = new JsonParser();
-					JsonObject p = (JsonObject) jsonParser1.parse(urlBr1);
-					JsonObject info = (JsonObject) p.get("info");
-					JsonArray participants = info.getAsJsonArray("participants");
-					JsonArray team = info.getAsJsonArray("teams");
-					ArrayList<Object> gameData = new ArrayList<>();
-					// 1게임당 10명의 소환사 정보 불러오기
-					for (int k = 0; k < 10; k++) {
-						Map<String, Object> preMap = new HashMap<String, Object>();
-						ArrayList<Object> test = new ArrayList<>();
-						
-						JsonObject participant = (JsonObject) participants.get(k);
-						JsonObject challenges = (JsonObject) participant.get("challenges");
-						JsonObject perks = (JsonObject) participant.get("perks");
-						JsonArray styles = perks.getAsJsonArray("styles");
-						JsonObject PrimeSelections = (JsonObject) styles.get(0);
-						JsonObject SubSelections = (JsonObject) styles.get(1);
-						JsonArray prime = PrimeSelections.getAsJsonArray("selections");
-						JsonObject mainPrime = (JsonObject) prime.get(0);
-						JsonObject purple = (JsonObject) team.get(0);
-						JsonObject blue = (JsonObject) team.get(1);
-						
-						JsonObject dragon =null;
-						JsonObject baron =null;
-						JsonObject tower =null;
-						
-						if(k<5) {
-							JsonObject objectives = (JsonObject) purple.get("objectives");
-							baron = (JsonObject) objectives.get("baron");
-							dragon = (JsonObject) objectives.get("dragon");
-							tower = (JsonObject) objectives.get("tower");
-						}else {
-							JsonObject objectives = (JsonObject) blue.get("objectives");
-							baron = (JsonObject) objectives.get("baron");
-							dragon = (JsonObject) objectives.get("dragon");
-							tower = (JsonObject) objectives.get("tower");
-						}
-						
-						
-						preMap.put("ss_gameid", matchDataList.get(k).replaceAll("\"", ""));
-						preMap.put("ss_participantid", participant.get("participantId").getAsInt());
+					JsonObject participant = (JsonObject) participants.get(k);
+					JsonObject challenges = (JsonObject) participant.get("challenges");
+					JsonObject perks = (JsonObject) participant.get("perks");
+					JsonArray styles = perks.getAsJsonArray("styles");
+					JsonObject PrimeSelections = (JsonObject) styles.get(0);
+					JsonObject SubSelections = (JsonObject) styles.get(1);
+					JsonArray prime = PrimeSelections.getAsJsonArray("selections");
+					JsonObject mainPrime = (JsonObject) prime.get(0);
+					JsonObject purple = (JsonObject) team.get(0);
+					JsonObject blue = (JsonObject) team.get(1);
 
-						preMap.put("ss_championid", participant.get("championId").getAsInt());
-						preMap.put("ss_championname", participant.get("championName").getAsString());
-						preMap.put("ss_championlevel", participant.get("champLevel").getAsInt());
-						preMap.put("ss_summonername", participant.get("summonerName").getAsString());
+					JsonObject dragon = null;
+					JsonObject baron = null;
+					JsonObject tower = null;
+					JsonObject totalKills = null;
 
-						preMap.put("ss_win", participant.get("win").getAsString());
-						preMap.put("ss_spell1", participant.get("summoner1Id").getAsString());
-						preMap.put("ss_spell2", participant.get("summoner2Id").getAsString());
-						preMap.put("ss_mainrune", mainPrime.get("perk").getAsInt());
-						preMap.put("ss_subrune", SubSelections.get("style").getAsInt());
-
-						preMap.put("ss_kills", participant.get("kills").getAsInt());
-						preMap.put("ss_assists", participant.get("assists").getAsInt());
-						preMap.put("ss_deaths", participant.get("deaths").getAsInt());
-						
-						preMap.put("ss_killparticipation", challenges.get("killParticipation").getAsDouble());
-						preMap.put("ss_damagedealt",participant.get("totalDamageDealtToChampions").getAsInt());
-						preMap.put("ss_damagetaken", participant.get("totalDamageTaken").getAsInt());
-
-						preMap.put("ss_visionwardbuy", participant.get("visionWardsBoughtInGame").getAsInt());
-						preMap.put("ss_wardkilled", participant.get("wardsKilled").getAsInt());
-						preMap.put("ss_wardplaced", participant.get("wardsPlaced").getAsInt());
-						preMap.put("ss_cs", participant.get("totalMinionsKilled").getAsInt()+participant.get("neutralMinionsKilled").getAsInt());
-						
-                        //item들을 한 칼럼에 넣기 위해 JOIN 작업을 수행
-						ArrayList<String> items = new ArrayList<>();
-						items.add(participant.get("item0").getAsString());
-						items.add(participant.get("item1").getAsString());
-						items.add(participant.get("item2").getAsString());
-						items.add(participant.get("item3").getAsString());
-						items.add(participant.get("item4").getAsString());
-						items.add(participant.get("item5").getAsString());
-						items.add(participant.get("item6").getAsString());
-						
-						preMap.put("ss_items", String.join("|", items));
-						preMap.put("ss_earngold", participant.get("goldEarned").getAsInt());
-						
-						preMap.put("ss_dragon", dragon.get("kills").getAsInt());
-						preMap.put("ss_baron", baron.get("kills").getAsInt());
-						preMap.put("ss_tower", tower.get("kills").getAsInt());
-						
-						preMap.put("ss_gameDuration",info.get("gameDuration").getAsString());
-						preMap.put("ss_endgamedate", info.get("gameEndTimestamp").getAsString());
-						gameData.add(preMap);
-						
-						System.out.println(preMap);
-						f = isc.insertGameData(preMap);
-						
-
+					if (k < 5) {
+						JsonObject objectives = (JsonObject) purple.get("objectives");
+						baron = (JsonObject) objectives.get("baron");
+						dragon = (JsonObject) objectives.get("dragon");
+						tower = (JsonObject) objectives.get("tower");
+						totalKills = (JsonObject) objectives.get("champion");
+					} else {
+						JsonObject objectives = (JsonObject) blue.get("objectives");
+						baron = (JsonObject) objectives.get("baron");
+						dragon = (JsonObject) objectives.get("dragon");
+						tower = (JsonObject) objectives.get("tower");
+						totalKills = (JsonObject) objectives.get("champion");
 					}
-					System.out.println("gg"+gameData.getClass().getName());
-					System.out.println("insert 성공(?)");
 
-//					
+					gds.setSs_gameId(matchDataList.get(k).replaceAll("\"", ""));
+					gds.setSs_participantId(participant.get("participantId").getAsInt());
+					gds.setSs_championId(participant.get("championId").getAsInt());
+					gds.setSs_championName(participant.get("championName").getAsString());
+					gds.setSs_champLevel(participant.get("champLevel").getAsInt());
+					gds.setSs_summonerName(participant.get("summonerName").getAsString());
+
+					gds.setSs_win(participant.get("win").getAsString());
+					gds.setSs_spell1(participant.get("summoner1Id").getAsInt());
+					gds.setSs_spell2(participant.get("summoner2Id").getAsInt());
+					gds.setSs_mainRune(mainPrime.get("perk").getAsInt());
+					gds.setSs_subRune(SubSelections.get("style").getAsInt());
+
+					gds.setSs_kills(participant.get("kills").getAsInt());
+					gds.setSs_assists(participant.get("assists").getAsInt());
+					gds.setSs_deaths(participant.get("deaths").getAsInt());
+
+					gds.setSs_killParticipation(challenges.get("killParticipation").getAsDouble());
+					gds.setSs_totalDamageDealtToChampions(participant.get("totalDamageDealtToChampions").getAsInt());
+					gds.setSs_totalDamageTaken(participant.get("totalDamageTaken").getAsInt());
+
+					gds.setSs_visionWardBuy(participant.get("visionWardsBoughtInGame").getAsInt());
+					gds.setSs_wardKilled(participant.get("wardsKilled").getAsInt());
+					gds.setSs_wardPlaced(participant.get("wardsPlaced").getAsInt());
+					gds.setSs_cs(participant.get("totalMinionsKilled").getAsInt()
+							+ participant.get("neutralMinionsKilled").getAsInt());
+
+					gds.setSs_item0(participant.get("item0").getAsInt());
+					gds.setSs_item1(participant.get("item1").getAsInt());
+					gds.setSs_item2(participant.get("item2").getAsInt());
+					gds.setSs_item3(participant.get("item3").getAsInt());
+					gds.setSs_item4(participant.get("item4").getAsInt());
+					gds.setSs_item5(participant.get("item5").getAsInt());
+					gds.setSs_item6(participant.get("item6").getAsInt());
+
+					gds.setSs_earnGold(participant.get("goldEarned").getAsInt());
+					gds.setSs_dragon(dragon.get("kills").getAsInt());
+					gds.setSs_baron(baron.get("kills").getAsInt());
+					gds.setSs_tower(tower.get("kills").getAsInt());
+					gds.setSs_totalKills(totalKills.get("kills").getAsInt());
+					gds.setSs_gameDuration(info.get("gameDuration").getAsInt());
+					gds.setSs_gameEndTimestamp(info.get("gameEndTimestamp").getAsInt());
+					
+					// 검색한 소환사의 정보를 따로 저장
+					if (summonerName.equals(participant.get("summonerName").getAsString())) {
+						gameData.add(gds);
+						myGame.add(gds);
+					} else {
+						gameData.add(gds);
+					}
+
 				}
+				System.out.println("gd=" + gameData);
+				System.out.println("gg" + gameData.getClass().getName());
+				System.out.println("size="+myGame.size());
+
 			}
-			mav.setViewName("jsonView");
+			mav.addObject("myGames", makeHtml_myGameData(myGame));
 //			mav.addObject("json", GameCountMap);
 
 		} catch (Exception e) {
-			System.out.println("오류="+e.getMessage());
+			System.out.println("오류=" + e.getMessage());
 			e.printStackTrace();
-			
+
 		}
 
 		return mav;
 	}
 
-	private Map<String, Object> SummonerMainDetail(List<GameDetailShowInfo> gdsList, String summonerName) {
-		// TODO Auto-generated method stub
+	private Object makeHtml_myGameData(List<GameDetailShowInfo> myGame) {
+		StringBuffer sb = new StringBuffer();
+		for(int i=0; i<myGame.size(); i++) {
+			GameDetailShowInfo gds = myGame.get(i);
+			
+			
+			
+		}
+		
 		return null;
 	}
 
