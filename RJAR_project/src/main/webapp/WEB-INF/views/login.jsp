@@ -106,8 +106,8 @@
 		<div id="bottomDiv">
 			<input id="loginBtn" type="button" value="로그인">
 			<a id="findIdPw" href="">아이디 · 비밀번호 찾기</a>
-			<div id="text">RJAR.GG가 처음이신가요?</div>
-			<a id="join" href="">회원가입</a>
+				<div id="text">RJAR.GG가 처음이신가요?</div>
+			<a id="join" href="./join">회원가입</a>
 		</div>
 		
 	</div>

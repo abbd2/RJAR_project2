@@ -61,11 +61,29 @@ public class HomeController {
 
 		return "lck";
 	}
-	
+
 	@GetMapping(value = "/login")
 	public String login() {
 
 		return "login";
+	}
+	
+	@GetMapping(value = "/join")
+	public String join() {
+
+		return "join";
+	}
+	
+	@GetMapping(value = "/join2")
+	public String join2() {
+
+		return "join2";
+	}
+	
+	@GetMapping(value = "/join3")
+	public String join3() {
+
+		return "join3";
 	}
 
 }
