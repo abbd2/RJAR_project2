@@ -25,7 +25,7 @@
 	width: 200px;
 	height: 500px;
 	margin-left: 150px;
-	border: 1px solid gray;
+	border: 1px solid #758592;
 	background-color: #ffffff;
 	float: left;
 }
@@ -39,9 +39,7 @@
 
 .category {
 	padding-bottom: 10px;
-	float: center;
-	text-align: center;
-	align-content: center;
+	text-align: center; 
 }
 
 #writeDiv {
@@ -50,7 +48,7 @@
 	height: 500px;
 	margin-left: 50px;
 	padding: 10px;
-	border: 1px solid gray;
+	border: 1px solid #758592;
 	background-color: #ffffff;
 }
 </style>
@@ -85,6 +83,7 @@
 					<div id="topCategory" style="padding: 5px 10px 10px 10px">
 						<div id="checkBox" style="float: left;">
 							<input id="recent" type="checkbox">최신순
+								&nbsp
 							<input id="popularity" type="checkbox">인기순
 						</div>
 						

@@ -61,5 +61,11 @@ public class HomeController {
 
 		return "lck";
 	}
+	
+	@GetMapping(value = "/login")
+	public String login() {
+
+		return "login";
+	}
 
 }

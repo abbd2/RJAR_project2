@@ -125,7 +125,6 @@
 						<li class="nav-item"><a class="nav-link" href="./multiSearch">멀티서치</a></li>
 						<li class="nav-item"><a class="nav-link" href="./community">커뮤니티</a></li>
 						<li class="nav-item"><a class="nav-link" href="./lck">LCK분석</a></li>
-						
 					</ul>
 				</div>
 				<div class="summoner-search-outter-box"
@@ -138,7 +137,11 @@
 					</div>
 				</div>
 				<div class="login-box">
-				   <button id="login-btn" type="button" class="btn btn-success">로그인</button>
+					<a href="./login">
+						<button id="login-btn" type="button" class="btn btn-success">
+							로그인
+						</button>
+					</a>
 				</div>
 			</div>
 		</nav>

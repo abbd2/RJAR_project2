@@ -135,7 +135,9 @@
 					</ul>
 				</div>
 				<div class="login-box">
-					<button id="login-btn" type="button" class="btn btn-success">로그인</button>
+					<a href="./login">
+						<button id="login-btn" type="button" class="btn btn-success">로그인</button>
+					</a>
 				</div>
 			</div>
 		</nav>
@@ -149,8 +151,7 @@
 						<input type="text" class="form-control" placeholder="소환사명을 입력하세요"
 							aria-label="Recipient's username"
 							aria-describedby="button-addon2" name="summonerName">
-						<button class="w-btn w-btn-green" type="sumbmit"
-							id="summoner-search-btn">search</button>
+						<button class="w-btn w-btn-green" type="submit" id="summoner-search-btn">search</button>
 					</div>
 				</div>
 			</div>
