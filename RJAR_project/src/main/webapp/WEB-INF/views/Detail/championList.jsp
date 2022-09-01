@@ -72,10 +72,19 @@ option {
 
 .laneimg {
 	float: left;
-	width: 510px;
+	width: 500px;
 	height: 55px;
 	margin-bottom: 10px;
 	border-radius: 5px;
+}
+
+.laneimg tr td{
+	padding: 0px;
+}
+
+.a_img{
+	background-color: white;
+    border: hidden;
 }
 
 .tierList {
@@ -222,7 +231,7 @@ font {
 		</table>
 
 		<div class="tierList">
-			<table class="tierList">
+			<table class="tierList" >
 				${tierList}
 			</table>
 		</div>
@@ -233,48 +242,41 @@ font {
 		<div>
 			<table class="laneimg">
 				<tr>
-					<td class="a_img" id="all"><a class="all"
-						href="javascript:Aj('./champion_list','#champion_list')"> <img
+					<td><button class="a_img" value = "all"><img
 							name="All"
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-fill.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="top"><a class='aTop'
-						href="javascript:Aj('./Top','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "TOP"><img
 							name='Top'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="jungle"><a
-						href="javascript:Aj('./Jungle','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "JUNGLE"><img
 							name='Jungle'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="mid"><a
-						href="javascript:Aj('./Middle','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "MIDDLE"><img
 							name='Middle'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="bot"><a
-						href="javascript:Aj('./Bot','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "BOTTOM"><img
 							name='Bot'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="supporter"><a
-						href="javascript:Aj('./Supporter','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "UTILITY"><img
 							name='Supporter'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="free"><a
-						href="javascript:Aj('free','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" id = "free"><img
 							name='free'
 							src="https://s-lol-web.op.gg/images/icon/icon-rotation.svg"
-							width="50px;" height="50px;">
-					</a></td>
+							width="50px;" height="50px;"></button>
+					</td>
 				</tr>
 			</table>
 

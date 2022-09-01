@@ -75,24 +75,21 @@ $('#selectOption').on('change', function (){
 
 
 // 라인 이미지 선택 시
-$('.laneImg').click(function (){
-	let tier = $('#selectOption').val();
+$('.a_img').click(function (){
 	let lane = $(this).val();
 	
-	console.log(tier);
 	console.log(lane);
 	
 	$.ajax({
 		type : 'get',
-		url : 'tierList',
-		data : {lane: lane},
+		url : 'laneImg',
+		data : {lane: lane}
 		
-		dataType: 'json'
 	}).done(function(data){
 		console.log("성공");			
-		console.log(data);	
+		console.log(data);
 		
-		//화면에 표출될 태그 생성
+		$('.champList').html(data);
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);
@@ -114,11 +111,10 @@ $('.lane_').click(function (){
 		url : 'tierList',
 		data : {tier: tier, lane: lane},
 		
-		contentType : 'application/json;charset=UTF-8',	
-	}).done(function(data){
-		
+		contentType : 'application/json;charset=UTF-8'
+	}).done( function(tierList){
 		console.log('성공');		
-		$('.tierList').html(data);
+		$('.tierList').html(tierList);
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);
