@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-<script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="js/jquery.serializeObject.js"></script>	
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -41,19 +41,91 @@
 	</div>
 </body>
 <script type="text/javascript">
-	Aj('champion_Home','#champion_list');
+
+$(function() {
+	let key = '${tier}';
+
+	switch (key) {
+	case 'bronze':
+		$('#bronze').prop('selected', true);
+		break;
+	case 'silver':
+		$('#silver').prop('selected', true);
+		break;
+	case 'gold':
+		$('#gold').prop('selected', true);
+		break;
+	case 'platinum':
+		$('#platinum').prop('selected', true);		
+		break;
+	case 'diamond':
+		$('#diamond').prop('selected', true);
+		break;
+
+	default:
+		break;
+	}	
+});
+
+
+// 티어 옵션 선택 시
+$('#selectOption').on('change', function (){
+	$('#select').submit();
+});
+
+
+// 라인 이미지 선택 시
+$('.laneImg').click(function (){
+	let tier = $('#selectOption').val();
+	let lane = $(this).val();
 	
-	function Aj(url, position) {
-		//비동기 통신은 dataType을 json으로 받을 때만,
-		$.ajax({
-			url: url,
-			type: 'get',
-			dataType: 'html' //'json'
-		}).done((data)=>$(position).html(data))
-		  .fail((data)=>console.log(err));
-	} //Aj End
+	console.log(tier);
+	console.log(lane);
 	
-	$('option').click
+	$.ajax({
+		type : 'get',
+		url : 'tierList',
+		data : {lane: lane},
+		
+		dataType: 'json'
+	}).done(function(data){
+		console.log("성공");			
+		console.log(data);	
+		
+		//화면에 표출될 태그 생성
+	}).fail(function(err) {
+		console.log("에러");
+		console.log(err);
+		
+	})
+	
+});	
+
+//라인(버튼) 선택 시
+$('.lane_').click(function (){
+	let tier = $('#selectOption').val();
+	let lane = $(this).val();
+	
+	console.log(tier);
+	console.log(lane);
+	
+	$.ajax({
+		type : 'get',
+		url : 'tierList',
+		data : {tier: tier, lane: lane},
+		
+		contentType : 'application/json;charset=UTF-8',	
+	}).done(function(data){
+		
+		console.log('성공');		
+		$('.tierList').html(data);
+	}).fail(function(err) {
+		console.log("에러");
+		console.log(err);
+		
+	})
+	
+});
 </script>
 </head>
 </html>
