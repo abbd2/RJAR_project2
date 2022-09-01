@@ -33,7 +33,7 @@ public class MultiSearchBean {
 	private int[] deaths;
 	private int[] assists;
 	private String[] wins; // 10게임 경경기 결과
-	private long[] endGameDate; // 게임 끝난 시간
+//	private long[] endGameDate; // 게임 끝난 시간 db관련
 	private String[] agoTimeDate; // endGameDate를 이용하여 가공
 	
 	// most는 전체 게임 고려이기 때문에 따로 클래스를 만들지 고려하고 나중에

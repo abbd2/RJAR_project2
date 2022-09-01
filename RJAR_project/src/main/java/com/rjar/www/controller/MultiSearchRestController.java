@@ -106,22 +106,22 @@ public class MultiSearchRestController {
 		msbList = new ArrayList<>();
 
 		for (int i = 0; i < summonerName.length; i++) {
-			int result = msDao.checkSummonerName(summonerName[i]); // 소환사 이름으로 DB 검색
-			if (result > 0) {
-				System.out.println("result: " + result);
-				System.out.println("소환사 이름 DB검색 성공");
-				System.out.println();
+//			int result = msDao.checkSummonerName(summonerName[i]); // 소환사 이름으로 DB 검색
+//			if (result > 0) {
+//				System.out.println("result: " + result);
+//				System.out.println("소환사 이름 DB검색 성공");
+//				System.out.println();
+//
+//				if (result < 10) {
+//
+//				}
+//			} else {
+//
+//				System.out.println("result: " + result);
+//				System.out.println("소환사 이름 DB검색 실패");
+//				System.out.println();
 
-				if (result < 10) {
-
-				}
-			} else {
-
-				System.out.println("result: " + result);
-				System.out.println("소환사 이름 DB검색 실패");
-				System.out.println();
-
-//				try {
+				try {
 				System.out.println(summonerName[i] + "의 puuid 받아오는중...");
 
 				msb = new MultiSearchBean();
@@ -129,12 +129,12 @@ public class MultiSearchRestController {
 				msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
 				System.out.println(i + "명 완료...");
 				System.out.println();
-//				} catch (Exception e) {
-//					System.out.println("--------------------------");
-//					System.out.println("오류 !!!");
-//					System.out.println("--------------------------");
-//				}
-			}
+				} catch (Exception e) {
+					System.out.println("--------------------------");
+					System.out.println("오류 !!!");
+					System.out.println("--------------------------");
+				}
+//			} db관련
 		}
 		return msbList;
 	}
@@ -351,8 +351,8 @@ public class MultiSearchRestController {
 		int[] assists = new int[10];
 		String[] wins = new String[10]; // 승패 여부
 		String[] agoTimeDate = new String[10]; // 경기 끝난 날짜
-		int[] participantId = new int[10];
-		long[] endGameDate = new long[10]; // 경기 끝난 날짜(유닉스)
+//		int[] participantId = new int[10]; // db관련
+//		long[] endGameDate = new long[10]; // 경기 끝난 날짜(유닉스) db관련
 
 		// 게임이아디에서 데이터 가져오기
 		for (int i = 0; i < gameIds.length; i++) {
@@ -370,8 +370,8 @@ public class MultiSearchRestController {
 			assists[i] = Integer.parseInt(data[4].toString());
 			wins[i] = data[5].toString(); // 큰따옴표 제거
 			agoTimeDate[i] = data[6].toString();
-			participantId[i] = Integer.parseInt(data[7].toString());
-			endGameDate[i] = Long.parseLong(data[8].toString());
+//			participantId[i] = Integer.parseInt(data[7].toString()); db관련
+//			endGameDate[i] = Long.parseLong(data[8].toString()); db관련
 
 			System.out.println("---------- 받아온 데이터 ----------");
 			System.out.println(Arrays.toString(data));
@@ -386,8 +386,8 @@ public class MultiSearchRestController {
 		msb.setAssists(assists);
 		msb.setWins(wins);
 		msb.setAgoTimeDate(agoTimeDate);
-		msb.setParticipantId(participantId);
-		msb.setEndGameDate(endGameDate);
+//		msb.setParticipantId(participantId); db관련
+//		msb.setEndGameDate(endGameDate); db관련
 
 		mostLane(msb.getLanes()); // 주 라인 & 서브 라인 구하기
 
@@ -396,40 +396,40 @@ public class MultiSearchRestController {
 		System.out.println("subLane : " + msb.getSubLane()); // 서브 라인 출력
 		System.out.println("---------");
 
-		insertMultiSearchData(); // 모든 데이터 DB insert
+//		insertMultiSearchData(); // 모든 데이터 DB insert
 
 	}
 
 	// 모든 데이터 DB insert
-	public void insertMultiSearchData() {
-
-		System.out.println();
-		System.out.println("DB insert 시작");
-
-		HashMap<String, Object> hMap;
-
-		for (int i = 0; i < msb.getGameId().length; i++) {
-
-			hMap = new HashMap<>();
-
-			hMap.put("gameId", msb.getGameId()[i]);
-			hMap.put("participantId", msb.getParticipantId()[i]);
-			hMap.put("endGameDate", msb.getEndGameDate()[i]);
-			hMap.put("summonerName", msb.getSummonerName());
-			hMap.put("tier", msb.getTier());
-			hMap.put("rank", msb.getRank());
-			hMap.put("lp", msb.getLp());
-			hMap.put("championName", msb.getChampionName()[i]);
-			hMap.put("lanes", msb.getLanes()[i]);
-			hMap.put("kills", msb.getKills()[i]);
-			hMap.put("deaths", msb.getDeaths()[i]);
-			hMap.put("assists", msb.getAssists()[i]);
-
-			boolean result = msDao.insertMultiSearchTable(hMap);
-			System.out.println(result);
-		}
-
-	} // end insertMultiSearchData
+//	public void insertMultiSearchData() {
+//
+//		System.out.println();
+//		System.out.println("DB insert 시작");
+//
+//		HashMap<String, Object> hMap;
+//
+//		for (int i = 0; i < msb.getGameId().length; i++) {
+//
+//			hMap = new HashMap<>();
+//
+//			hMap.put("gameId", msb.getGameId()[i]);
+//			hMap.put("participantId", msb.getParticipantId()[i]);
+//			hMap.put("endGameDate", msb.getEndGameDate()[i]);
+//			hMap.put("summonerName", msb.getSummonerName());
+//			hMap.put("tier", msb.getTier());
+//			hMap.put("rank", msb.getRank());
+//			hMap.put("lp", msb.getLp());
+//			hMap.put("championName", msb.getChampionName()[i]);
+//			hMap.put("lanes", msb.getLanes()[i]);
+//			hMap.put("kills", msb.getKills()[i]);
+//			hMap.put("deaths", msb.getDeaths()[i]);
+//			hMap.put("assists", msb.getAssists()[i]);
+//
+//			boolean result = msDao.insertMultiSearchTable(hMap);
+//			System.out.println(result);
+//		}
+//
+//	} // end insertMultiSearchData
 
 	// 주로 가는 라인 & 라인 승률 구하기
 	public void mostLane(String[] lanes) {
@@ -567,14 +567,15 @@ public class MultiSearchRestController {
 		// 소환사 이름 저장
 		System.out.println("검색할 소환사 이름 : " + msb.getSummonerName());
 
-		Object[] data = new Object[9]; // 데이터 담을 공간
+//		Object[] data = new Object[9]; // 데이터 담을 공간 db관련
+		Object[] data = new Object[7]; // 데이터 담을 공간
 		String summonerName = "\"" + msb.getSummonerName() + "\""; // 포맷 맞춰주기
 
 		long currentTime = System.currentTimeMillis() / 1000; // 현재 시간 구하기
 		long endTimeDate = Long.parseLong(json.get("info").get("gameEndTimestamp").toString()) / 1000; // 게임이 끝난 시간
 		System.out.println("현재 유닉스 시간 : " + currentTime);
 		System.out.println("게임이 끝난 유닉스 시간 : " + endTimeDate);
-		data[8] = endTimeDate;
+//		data[8] = endTimeDate; db관련
 
 		long agoTime = currentTime - endTimeDate; // 몇시간 전에 했는지 구하기
 		System.out.println("agoTime : " + agoTime);
@@ -609,7 +610,7 @@ public class MultiSearchRestController {
 				data[3] = json.get("info").get("participants").get(j).get("deaths");
 				data[4] = json.get("info").get("participants").get(j).get("assists");
 				data[5] = json.get("info").get("participants").get(j).get("win");
-				data[7] = json.get("info").get("participants").get(j).get("participantId");
+//				data[7] = json.get("info").get("participants").get(j).get("participantId");
 
 				System.out.println(Arrays.toString(data));
 				System.out.println();
