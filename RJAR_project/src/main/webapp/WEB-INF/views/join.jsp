@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,11 +81,57 @@
 	font-size: 20px;
 	color: #ffffff;
 }
+
+.checkBox {
+	width: 20px;
+	height: 20px;
+	float: left;
+}
 </style>
 </head>
 <body>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript">
+	
+		let checkflag = "false";
+		
+		function check(field) {
+			
+			if (checkflag == "false") {
+				for (i = 0; i < field.length; i++) {
+					field[i].checked = true;}
+					checkflag = "true";
+					return "Uncheck All"; }
+			else {
+				for (i = 0; i < field.length; i++) {
+					field[i].checked = false; }
+					checkflag = "false";
+					return "Check All"; }
+			}
+
+		
+// 		$("#joinPage1").on("click", "#checkAll", function () {
+// 			  let checked = $(this).is(":checked");
+	
+// 			  if(checked){
+// 			  	$(this).siblings('input').prop("checked", true);
+// 			  } else {
+// 			  	$(this).siblings('input').prop("checked", false);
+// 			  }
+// 			});
+	
+// 			$("#joinPage1").on('click', 'input:not(#checkAll)', function () {
+// 			  let is_checked = true;
+// 			  $("#joinPage1 input:not(#checkAll)").each(function() {
+// 			  	is_checked =  is_checked && $(this).is(":checked");
+// 			  })
+// 			  $("#checkAll").prop("checked", is_checked)
+// 			});
+			
+	</script>
 
 	<div id="joinPage1">
+		<form name="form">
 		<div id="titleDiv">RJAR.GG</div>
 		<div id="joinTextDiv">회원가입</div>
 		<div id="pageSeparator">
@@ -113,7 +160,7 @@
 			</div> <!-- end termsDiv -->
 			
 			<div class="termsCheckBox">
-				<input type="checkbox" style="width: 20px; height: 20px; float: left">
+				<input name="checkbox" class="checkBox" type="checkbox" value="">
 				<div class="termsCheckBoxDiv">
 					RJAR.GG 서비스 이용약관 동의(필수)
 				</div>
@@ -171,19 +218,19 @@
 		</div>
 		<div style="height: 171px;">
 			<div class="termsCheckBox">
-				<input type="checkbox" style="width: 20px; height: 20px; float: left;">
+				<input name="checkbox" class="checkBox" type="checkbox" value="">
 				<div class="termsCheckBoxDiv">
 					RJAR.GG 개인정보 수집 동의(필수)
 				</div>
 			</div>	
 			<div class="termsCheckBox">
-				<input type="checkbox" style="width: 20px; height: 20px; float: left;">
+				<input name="checkbox" class="checkBox" type="checkbox" value="">
 				<div class="termsCheckBoxDiv">
 					이벤트 등 프로모션 알림 메일 및 푸시(선택)
 				</div>
 			</div>	
 			<div class="termsCheckBox">
-				<input type="checkbox" style="width: 20px; height: 20px; float: left;">
+				<input name="checkbox" id="checkAll" class="checkBox" value="Check All" type="checkbox" onClick="this.value=check(this.form.checkbox)">
 				<div class="termsCheckBoxDiv">
 					모두 동의
 				</div>
@@ -192,8 +239,9 @@
 				<input id="nextBtn" type="button" value="다음">
 			</a>
 		</div>
+		</form>
 
-	</div>
+	</div> <!-- end joinPage1 -->
 
 </body>
 </html>
