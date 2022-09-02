@@ -3,24 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<title>RJAR.GG</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
 
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
-
+<title>RJAR.GG</title>
+</head>
 <style type="text/css">
 .summoner-search-outter-box {
 	display: flex;
@@ -115,30 +109,38 @@
 
 </head>
 <body>
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"
+		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+		crossorigin="anonymous"></script>
+
 	<div id="header">
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="./home">RJAR</a>
 				<button class="navbar-toggler" type="button"
-					data-bs-toggle="collapse" data-bs-target="#navbarColor02"
-					aria-controls="navbarColor02" aria-expanded="false"
+					data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+					aria-controls="navbarColor01" aria-expanded="false"
 					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse" id="navbarColor02">
+				<div class="collapse navbar-collapse" id="navbarColor01">
 					<ul class="navbar-nav me-auto">
-						<li class="nav-item"><a class="nav-link" href="./championHome">챔피언분석</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="./championHome">챔피언분석</a></li>
 						<li class="nav-item"><a class="nav-link" href="./laboratory">연구소</a></li>
 						<li class="nav-item"><a class="nav-link" href="./multiSearch">멀티서치</a></li>
 						<li class="nav-item"><a class="nav-link" href="./community">커뮤니티</a></li>
 						<li class="nav-item"><a class="nav-link" href="./lck">LCK분석</a></li>
 					</ul>
 				</div>
-				<div class="login-box">
-					<a href="./login">
-						<button id="login-btn" type="button" class="btn btn-success">로그인</button>
-					</a>
-				</div>
+				<a href="./login">
+					<button id="login-btn" type="button" class="btn btn-success">로그인</button>
+				</a>
 			</div>
 		</nav>
 	</div>
@@ -151,12 +153,11 @@
 						<input type="text" class="form-control" placeholder="소환사명을 입력하세요"
 							aria-label="Recipient's username"
 							aria-describedby="button-addon2" name="summonerName">
-						<button class="w-btn w-btn-green" type="submit" id="summoner-search-btn">search</button>
+						<button type="submit" class="btn btn-success">search</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</form>
-	<div id="footer"></div>
 </body>
 </html>
