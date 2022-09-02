@@ -67,7 +67,7 @@ body{
 								let showSubImg = '';
 								
 								if(!data[i].tier){ // null 값이라면
-									data[i].tier = "Level";
+									data[i].tier = "Unranked";
 								}
 								
 								if(data[i].totalWins < 1){ // totalWins 값이 0이면
@@ -221,7 +221,7 @@ body{
 		
 	</script>
 
-	<jsp:include page="header.jsp"></jsp:include>
+<%-- 	<jsp:include page="header.jsp"></jsp:include> --%>
 	<div id="main"></div>
 	<div id="multiSearch">
 		<div id="multiSearchInput" style="height: 250px; widht: 1070px;">
