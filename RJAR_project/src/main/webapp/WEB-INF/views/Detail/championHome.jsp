@@ -29,7 +29,6 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-
 	<div id='box'>
 		<div id='main'>
 			<aside>
@@ -43,9 +42,10 @@
 <script type="text/javascript">
 
 $(function() {
+	let key = '${tier}';
 	let tier = '${tier}';
 
-	switch (tier) {
+	switch (key) {
 	case 'bronze':
 		$('#bronze').prop('selected', true);
 		break;
@@ -64,9 +64,8 @@ $(function() {
 
 	default:
 		break;
-	}
-	
-});// function
+	}	
+});
 
 
 // 티어 옵션 선택 시
@@ -76,20 +75,24 @@ $('#selectOption').on('change', function (){
 
 
 // 라인 이미지 선택 시
-$('.a_img').click(function (){
+$('.laneImg').click(function (){
+	let tier = $('#selectOption').val();
 	let lane = $(this).val();
 	
+	console.log(tier);
 	console.log(lane);
 	
 	$.ajax({
 		type : 'get',
-		url : 'laneImg',
-		data : {lane: lane}
+		url : 'tierList',
+		data : {lane: lane},
 		
+		dataType: 'json'
 	}).done(function(data){
 		console.log("성공");			
-		console.log(data);
-		$('.champList').html(data);
+		console.log(data);	
+		
+		//화면에 표출될 태그 생성
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);
@@ -103,34 +106,19 @@ $('.lane_').click(function (){
 	let tier = $('#selectOption').val();
 	let lane = $(this).val();
 	
+	console.log(tier);
+	console.log(lane);
+	
 	$.ajax({
 		type : 'get',
 		url : 'tierList',
 		data : {tier: tier, lane: lane},
 		
-		contentType : 'application/json;charset=UTF-8'
-	}).done( function(data){
+		contentType : 'application/json;charset=UTF-8',	
+	}).done(function(data){
+		
 		console.log('성공');		
 		$('.tierList').html(data);
-	}).fail(function(err) {
-		console.log("에러");
-		console.log(err);
-		
-	})
-	
-});
-
-//로테이션 챔피언 챔피언
-$('#free').click(function () {
-	
-	$.ajax({
-		type : 'get',
-		url : 'rotation',
-		
-		contentType : 'application/json;charset=UTF-8'
-	}).done( function(data){
-		console.log('성공');		
-		$('.champList').html(data);
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);
