@@ -2,12 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-
 <html>
 <head>
 <meta charset="UTF-8">
 <title>멀티서치</title>
 <style type="text/css">
+/* 배경화면 */
+body{
+/* 	background-image: url("./resources/multiSearchSample/backg"); */
+}
 .summoner-search-outter-box {
 	display: flex;
 	justify-content: center;
@@ -18,13 +21,14 @@
 	width: 216px;
 	height: 600px;
 	float: left;
- 	padding: 30px 0px 0px 0px; 
+	margin-right: 10px;
 }
 #multiList{
 	list-style: none;
-	border: 1px solid gray;
-	width: 1500px;
-	height: 600px;
+	border: 1px solid #9aa4af;
+	width: 1460px;
+	height: 570px;
+	margin: 30px 30px 0px 30px;
 }
 </style>
 </head>
@@ -34,9 +38,11 @@
 	
 		function multiSearch() {
 			
+			$('.summonerInfo').remove();
+			$('.titleAndPositions').remove();
 // 			$('#multiList').empty(); // 자식 태그 삭제
 
-			let summoners = $("#multiSearchInput").val();
+			let summoners = $("#textarea").val();
 			
 					$.ajax({
 						url : "multiSearch/executeMultiSearch",
@@ -74,6 +80,7 @@
 								
 								if(data[i].subLane != 'none'){
 									console.log(data[i].subLane)
+									
 									showSubImg = '<div class="position"  style="width:100px; height:40px; float:left;">'
 														+'<div class="positionIcon" style="width:40px; height:40px; float:left; padding: 3px;">'
 														+'<img src="./resources/laneImg/'+data[i].subLane+'.png" width="40px">' // 서브 라인 이미지
@@ -92,7 +99,8 @@
 								}
 								
 								
-								let summaryList = '<div class="tierPosition" style="width:186px; height:50px; float:center">'
+								let summaryList = '<div class="summonerInfo" style="border-right: 1px solid #9aa4af; width:220px;">' 
+										+'<div class="tierPosition" style="width:186px; height:50px; padding-left: 50px;">'
 											+ '<div class="tier" style="float:left; padding: 3px;">'
 												+ '<img src="./resources/tierImg/'+data[i].tier+'.png" width="50px">'
 											+ '</div>'
@@ -121,10 +129,12 @@
 												// 승률 그래프
 											+ '<strong class="winRatio" style="float:right; color:#e84057; font-size: 13px;">' + data[i].totalWinRate + '%' + '</strong>' // red 
 										+ '</div>';
+									+'</div>'; // end summonerInfo
 	
 								$('.summonerSummary'+i).html(summaryList); /* div추가 */
 	
-								let matchesList = '<div class="title" style="padding: 30px 0px 20px 0px; width:186px; height:16px; text-align:center; font-size: 10px;">'+'최근 플레이'+'</div>'
+								let matchesList = '<div class="titleAndPositions" style="border-right: 1px solid #9aa4af; width:220px;">' 
+								+'<div class="title" style="padding: 30px 0px 20px 0px; width:186px; height:16px; text-align:center; font-size: 10px;">'+'최근 플레이'+'</div>'
 									+'<div class="positions" style="width=200px; height:40px;">'
 										+'<div class="position"  style="width:100px; height:40px; float:left;">'
 											+'<div class="positionIcon" style="width:40px; height:40px; float:left; padding: 3px;">'
@@ -162,6 +172,7 @@
 								+'<ul class="recentGames" style="list-style:none; width:186px; height:336px; padding:15px 0px 0px 0px; font-size:13px;">'
 									+ showList(data, i)
 								+'</ul>' // end recentGames
+							+'</div>'; // end titleAndPositions
 								$('.recentMatches'+i).html(matchesList);
 							} // end for
 						},
@@ -187,14 +198,14 @@
 				}
 				
 				
-				liList += '<li style="width: 200px; height: 25px; margin:5px 0px 0px 0px">'
+				liList += '<li class="summonerMatchesList" style="width: 200px; height: 25px; margin:5px 0px 0px 0px;">'
 						+'<div class="recentGameImage" style="position:relative; float:left;">'
 						// 경로에 챔피언 이미지 등록
 							+'<img src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/'+data[idx].championName[i]+'.png" width="25" height="25" alt="'+data[idx].championName[i]+'" title="'+data[idx].championName[i]+'"'
 							+'style=" border-radius: 3px;">'
 						+'</div>'
 						+'<div class="isWin" style="float:left; width:80px; height:25px; border-radius: 3px; margin: 0px 0px 0px 10px; text-align:center; background-color:'+winColor+'; color:'+kdaColor+';">'
-							+'<span class="kill">'+data[idx].kilss[i]+'</span>'
+							+'<span class="kill">'+data[idx].kills[i]+'</span>'
 							+' /'
 							+'<span class="death">'+data[idx].deaths[i]+'</span>'
 							+' /'
@@ -213,14 +224,18 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	<div id="main"></div>
 	<div id="multiSearch">
-		<div id="textarea" style="padding: 10px;">
-			<textarea name="multiSearchInput" id="multiSearchInput"
-				style="height: 200px; width: 500px;"></textarea>
-			<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색"
-				onclick="multiSearch()">
+		<div id="multiSearchInput" style="height: 250px; widht: 1070px;">
+			<div id="search" style=" float: left; hiehgt: 250px; width: 610px; margin: 30px 30px 10px 30px; z-index: 1;">
+				<textarea id="textarea" style="height: 200px; width: 600px; margin-bottom:4px;"></textarea>
+				<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색" onclick="multiSearch()">
+			</div>
+			<div id="sample" style="float: left; width: 820px; height: 240px; margin: 30px 0px 30px 0px; text-align: center;">
+				<img alt="멀티서치 샘플" src="./resources/multiSearchSample/multiSearchSample.PNG" style="width: 425px; height: 240px; float: left;">
+				<strong style="width: 375px; height: 240px; float: right; padding: 80px 0px 0px 0px;">채팅창의 내용을 붙여 넣으면, 게임에 참여중인 모든 유저를 요약하여 볼 수 있습니다!</strong>
+			</div>
 		</div>
 
-		<div id="content" >
+		<div id="content">
 			<ul id="multiList">
 				<li class="matchesList">
 					<div class="summonerSummary0" style="width: 200px;"></div>

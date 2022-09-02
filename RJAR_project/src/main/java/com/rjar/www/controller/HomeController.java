@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.rjar.www.bean.Champion;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
 
 import lombok.extern.log4j.Log4j;
@@ -33,7 +32,6 @@ public class HomeController {
 
 	@GetMapping(value = "/championHome")
 	public ModelAndView championDetail() {
-		log.info("home 이지롱");
 		String tier = "platinum";
 		String lane = "TOP";
 		mav = champmm.getChampionInfo(tier, lane);
@@ -55,13 +53,37 @@ public class HomeController {
 	@GetMapping(value = "/community")
 	public String community() {
 
-		return "community";
+		return "community/communityHome";
 	}
 
 	@GetMapping(value = "/lck")
 	public String lck() {
 
 		return "lck";
+	}
+
+	@GetMapping(value = "/login")
+	public String login() {
+
+		return "login";
+	}
+	
+	@GetMapping(value = "/join")
+	public String join() {
+
+		return "join";
+	}
+	
+	@GetMapping(value = "/join2")
+	public String join2() {
+
+		return "join2";
+	}
+	
+	@GetMapping(value = "/join3")
+	public String join3() {
+
+		return "join3";
 	}
 
 }

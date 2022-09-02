@@ -149,7 +149,15 @@
 				</div>
 				</form>
 				<div class="login-box">
+<<<<<<< HEAD
 					<button id="login-btn" type="button" class="btn btn-success">Login</button>
+=======
+					<a href="./login">
+						<button id="login-btn" type="button" class="btn btn-success">
+							로그인
+						</button>
+					</a>
+>>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
 				</div>
 			</div>
 		</nav>

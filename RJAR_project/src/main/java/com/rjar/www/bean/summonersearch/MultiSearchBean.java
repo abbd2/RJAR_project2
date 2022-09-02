@@ -1,7 +1,5 @@
 package com.rjar.www.bean.summonersearch;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import lombok.Data;
@@ -27,13 +25,16 @@ public class MultiSearchBean {
 	private int mostLaneWinRate; // 모스트 라인 승률
 	private int subLaneWinRate; // 서브 라인 승률
 	
+	private String[] gameId;
+	private int[] participantId;
 	private String[] championName;
 	private String[] lanes;
-	private int[] kilss;
+	private int[] kills;
 	private int[] deaths;
 	private int[] assists;
 	private String[] wins; // 10게임 경경기 결과
-	private String[] agoTimeDate;
+//	private long[] endGameDate; // 게임 끝난 시간 db관련
+	private String[] agoTimeDate; // endGameDate를 이용하여 가공
 	
 	// most는 전체 게임 고려이기 때문에 따로 클래스를 만들지 고려하고 나중에
 //	private String[] mostChampionNames;
