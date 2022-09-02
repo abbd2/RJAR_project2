@@ -37,9 +37,7 @@ public class ChampionRestController {
 	
 	@GetMapping(value = "/selectChamp", produces = "application/json;charset=utf-8")
 	public List<Champion> getselectChamp(String text) {
-		System.out.println("와따");
 		List<Champion> selectChamp = champmm.getSelectChamp(text);
-		System.out.println("간다"+ selectChamp);
 		return selectChamp;
 	}
 	

@@ -39,7 +39,6 @@ public class ChampionDetailMM {
 		// 챔피언티어 정보에 들어갈 value들
 		List<Champion> tierList = champDao.getTierList(tier, lane);
 		mav.addObject("tierList", makeTierList(tierList));
-		System.out.println(makeTierList(tierList));
 		mav.setViewName("Detail/championHome");
 
 		return mav;
