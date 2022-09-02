@@ -55,6 +55,8 @@ public class GameDetailShowInfo {
 	private int ss_gameEndTimestamp;
 	
 	private String ss_gameType;
+	private String ss_kda;
+	private String ss_lane;
 
 
 }
