@@ -29,10 +29,6 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-<<<<<<< HEAD
-=======
-
->>>>>>> 91b90507febe8362d6cdb609a6bebc79e4d43cfb
 	<div id='box'>
 		<div id='main'>
 			<aside>

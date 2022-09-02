@@ -143,11 +143,12 @@
 	border: 1px solid blue;
 	float: left;
 }
-.lane{
-    width: 100px;
-    float: left;
-    border : 1px solid blue;
-    margin-left : 10	px;
+
+.lane {
+	width: 100px;
+	float: left;
+	border: 1px solid blue;
+	margin-left: 10 px;
 }
 
 #spell1, #mainRune {
@@ -165,16 +166,27 @@
 	border: 1px solid blue;
 }
 
-.KDA {
-	width: 15%;
-	float: left;
-	border: 1px solid blue;
-}
-
 .stats {
 	width: 15%;
 	float: left;
 	border: 1px solid blue;
+	text-align: center;
+}
+#kdaMain{
+    float: left;
+    height:15px;
+    
+}
+#bigKda{
+    text-align: center;
+
+}
+
+.CS {
+	width: 15%;
+	float: left;
+	border: 1px solid blue;
+	text-align: center;
 }
 
 .teamList {
@@ -297,7 +309,7 @@
 									</div>
 								</div>
 								<div class="lane">
-								    <h4>Top</h4>
+									<h4>Top</h4>
 								</div>
 							</div>
 							<div class="itemsBox">
@@ -341,15 +353,16 @@
 							</div>
 						</div>
 						<div class="stats">
-						   <div class="bigKda">
-						        <h4>4/6/11</h4>
-						   </div>
-						   <div class="kda">
-						         <p>1.45</p>
-						   </div>
-						   <div class="killParticipant">
-						          <p>45%</p>
-						   </div>
+							<div id="bigKda" style="width:100%; height:30px">
+								<h4 id="kdaMain">4/</h4>
+								<h4 id="kdaMain">6/</h4>
+								<h4 id="kdaMain">11</h4>
+							</div>
+							<div class="kdaKp">
+								<p style="height: 5px; float: none">1.45 KDA</p>
+								<p style="height: 5px; float: none">킬관여 45%</p>
+
+							</div>
 						</div>
 						<div class="CS"></div>
 						<div class="teamList"></div>
