@@ -26,11 +26,15 @@ public class MemberMM {
 
 	public String idAvailable(String m_id) {
 
-		boolean checkId= mDao.checkId(m_id);
-		if (checkId)
+		System.out.println("idAvailable 진입");
+//		boolean checkId = mDao.checkId(m_id);
+		Member checkId = mDao.checkId(m_id);
+		if (checkId != null) {
+			System.out.println("분기 진입");
 			throw new IdCheckException("사용할 수 없는 아이디입니다.");
+		}
 		return "사용할 수 있는 아이디입니다.";
-		
+
 	}
 
 }

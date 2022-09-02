@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,22 +137,7 @@
 </style>
 </head>
 <body>
-	<script type="text/javascript">
-		 ${'#checkIdBtn'}.on('click', function () {
-			if(${'#id'}.val != ''){
-				$ajax({
-					method : 'get',
-					url : 'member/checkId'
-					data : 'm_id='+$('#id').val),
-					success : function name() {
-						
-					}
-					
-				})
-					
-			}
-		})
-	</script>
+	
 
 	<div id="joinPage2">
 		<div id="titleDiv">RJAR.GG</div>
@@ -167,6 +153,7 @@
 			<div class="topInfoDiv">
 				<input id="id" type="text" name="id" placeholder="아이디를 입력해주세요.">
 				<input id="checkIdBtn" type="button" value="중복확인">
+				<div id="idCheckResult"></div>
 			</div>
 			
 			비밀번호
@@ -218,6 +205,29 @@
 		</div>
 
 	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript">
+		 $('#checkIdBtn').on('click', function() {
+			 console.log('함수호출')
+			if($('#id').val() != ''){
+				console.log('진입')
+				$.ajax({
+					method : 'get',
+					url : 'member/checkId',
+					data : 'm_id=' + $('#id').val(),
+					success : function (data) {
+						$('#idCheckResult').html(data).css('color', 'blue');
+						console.log('data : ', data);
+					},error : function (data){
+						$('#idCheckResult').html(data).css('color', 'red');
+						console.log('data : ', data);
+					}
+						
+				})
+					
+			}
+		})
+	</script>
 
 </body>
 </html>
