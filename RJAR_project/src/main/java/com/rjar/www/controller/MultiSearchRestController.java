@@ -550,7 +550,7 @@ public class MultiSearchRestController {
 	} // end laneWinRate
 
 	// 게임아이디로 데이터 가져오기
-	public Object[] getGameData(String gameId) throws IOException {
+	private Object[] getGameData(String gameId) throws IOException {
 
 		System.out.println("게임아이디를 이용해 데이터 가져오는중...");
 
