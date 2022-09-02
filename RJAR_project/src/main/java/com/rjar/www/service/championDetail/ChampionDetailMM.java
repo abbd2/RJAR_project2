@@ -66,13 +66,10 @@ public class ChampionDetailMM {
 					+ "</font></td>");
 
 			sb.append("<td>");
-			sb.append("<form action = 'championDetail' method = 'get'>");
-			sb.append("<input type = 'hidden' value = '" + tierList.get(i).getChampionId() + "' >");
-			sb.append("<div class = 'tierChamp'>");
+			sb.append("<div class = 'tierChamp' data-championId = '" + tierList.get(i).getChampionId() + "'>");
 			sb.append("<img class = 'tierChampimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getChampionName() + ".png>");
 			sb.append("</div>");
-			sb.append("</form>");
 			sb.append("</td>");
 
 			sb.append("<td class = 'kr_name'><small style = 'font-weight: bolder'>"
@@ -112,14 +109,11 @@ public class ChampionDetailMM {
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < nameIdList.size(); i++) {
-			sb.append("<form action = 'championDetail' method = 'get'>");
-			sb.append("<input type = 'hidden' value = '" + nameIdList.get(i).getChampionId() + "' >");
-			sb.append("<div class = 'champion'>");
+			sb.append("<div class = 'champion' data-championId = '" + nameIdList.get(i).getChampionId() + "'>");
 			sb.append("<img class = 'listimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ nameIdList.get(i).getChampionName() + ".png>");
 			sb.append("<br><small class = 'championName''>" + nameIdList.get(i).getChampion_kr_name() + "</small>");
 			sb.append("</div>");
-			sb.append("</form>");
 		}
 
 		return sb.toString();
