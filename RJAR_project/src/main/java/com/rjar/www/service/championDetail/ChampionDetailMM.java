@@ -1,10 +1,6 @@
 package com.rjar.www.service.championDetail;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-
-=======
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
