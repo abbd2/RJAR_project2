@@ -107,11 +107,11 @@
 </head>
 <body>
 	<!-- Option 1: Bootstrap Bundle with Popper -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 		crossorigin="anonymous"></script>
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 
@@ -136,29 +136,22 @@
 					</ul>
 				</div>
 				<form action="summonerSearch" method="Post">
-				<div class="summoner-search-outter-box"
-					style="text-align: center; vertical-align: middle;">
-					<div class="summoner-search-box"
-						style="display: block; margin-right: 3px;">
-						<input class="form-control me-sm-2" type="text"
-							placeholder="소환사명을 입력하세요" name="summonerName">
+					<div class="summoner-search-outter-box"
+						style="text-align: center; vertical-align: middle;">
+						<div class="summoner-search-box"
+							style="display: block; margin-right: 3px;">
+							<input class="form-control me-sm-2" type="text"
+								placeholder="소환사명을 입력하세요" name="summonerName">
+						</div>
+						<div class="summoner-search-button">
+							<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+						</div>
 					</div>
-					<div class="summoner-search-button">
-						<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-					</div>
-				</div>
 				</form>
-				<div class="login-box">
-<<<<<<< HEAD
-					<button id="login-btn" type="button" class="btn btn-success">Login</button>
-=======
-					<a href="./login">
-						<button id="login-btn" type="button" class="btn btn-success">
-							로그인
-						</button>
-					</a>
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
-				</div>
+				<a href="./login">
+					<button id="login-btn" type="button" class="btn btn-success">
+						로그인</button>
+				</a>
 			</div>
 		</nav>
 	</div>

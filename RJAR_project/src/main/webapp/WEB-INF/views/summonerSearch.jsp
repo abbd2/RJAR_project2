@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
@@ -34,14 +36,6 @@
 	align-content: center;
 }
 
-#detail {
-	background-color: #3C0;
-	float: left;
-	height: 500px;
-	width: 70%;
-	position: relative;
-}
-
 #summonerInfo {
 	width: 100%;
 	margin-bottom: 15px;
@@ -49,22 +43,21 @@
 
 #profileImageBox {
 	width: 100px;
-	height : 100px;
+	height: 100px;
 	float: left;
-	margin-right : 15px;
-    justify-content: center;
-}
-#profileImage{
-    position:relative;
-
+	margin-right: 15px;
+	justify-content: center;
 }
 
-#Level{
-    position: relative;
-    left : 25px;
-    top : -15px;
+#profileImage, #champImage {
+	position: relative;
 }
 
+#Level {
+	position: relative;
+	left: 30px;
+	top: -15px;
+}
 
 #profileDetail {
 	width: 70%;
@@ -86,6 +79,77 @@
 	width: 30%;
 	float: left;
 	text-align: center;
+}
+
+#detail {
+	border: 1px solid blue;
+	float: left;
+	height: 500px;
+	width: 70%;
+	position: relative;
+	padding: 5px;
+}
+
+.gameDate {
+	width: 15%;
+	float: left;
+	border: 1px solid blue;
+}
+
+.championData {
+	width: 30%;
+	height: 100px;
+	float: left;
+	border: 1px solid blue;
+}
+
+#imageLevelBox {
+	height: 50%;
+	border: 1px solid blue;
+}
+#itemsBox{
+    margin-top : 10px;
+    height:40px;
+    border: 1px solid blue;
+}
+
+#champLevel {
+	position: relative;
+	width: 40px;
+	height: 10px;
+	left: 5px;
+	top: -22px;
+}
+
+#items {
+	border: 1px solid blue;
+}
+
+#dataFlexBox {
+	display: flex;
+}
+
+#item0, #item1, #item2, #item3, #item4, #item5, #item6 {
+	float: left;
+	width: 30px;
+}
+
+.KDA {
+	width: 15%;
+	float: left;
+	border: 1px solid blue;
+}
+
+.CS {
+	width: 15%;
+	float: left;
+	border: 1px solid blue;
+}
+
+.teamList {
+	width: 25%;
+	float: left;
+	border: 1px solid blue;
 }
 
 .footer {
@@ -113,13 +177,13 @@
 			<div class="card" id="summonerInfo">
 				<div class="card-body">
 					<div id="profileImageBox">
-					    <div id="profileImage">
-						<img
-							src="http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${profileIconId}.png"
-							width="100px">
-					    </div>
+						<div id="profileImage">
+							<img
+								src="http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${profileIconId}.png"
+								width="100px">
+						</div>
 						<div id="Level">
-							<span class="badge rounded-pill bg-primary">${LV}</span>
+							<span class="badge rounded-pill bg-primary" style="color: white">${LV}</span>
 						</div>
 					</div>
 					<div id="profileDetail">
@@ -161,7 +225,77 @@
 			</div>
 		</div>
 	</div>
-	<div id="detail"></div>
+	<div id="detail">
+		<div class="matchBox">
+			<div class="mainMatch">
+				<div class="card">
+					<div class="card-body" id="dataFlexBox">
+						<div class="gameDate">
+							<div class="gameType">일반</div>
+							<div class="gameEndTime">23일전</div>
+							<div class="winOrDefeat">승리</div>
+							<div class="gameDuration">23분</div>
+						</div>
+						<div class="championData">
+							<div id="imageLevelBox">
+								<div id="champImage" style="height: 60px">
+									<img
+										src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/Aatrox.png"
+										width="50px">
+								</div>
+								<div id="champLevel">
+									<span class="badge rounded-pill bg-primary"
+										style="color: white">14</span>
+								</div>
+							</div>
+							<div id="itemsBox">
+								<div id="items">
+									<div id="item0">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+									<div id="item1">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+									<div id="item2">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+									<div id="item3">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+									<div id="item4">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+									<div id="item5">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+									<div id="item6">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
+											width="35px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="KDA"></div>
+						<div class="CS"></div>
+						<div class="teamList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="footer"></div>
 </body>
 </html>

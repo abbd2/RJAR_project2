@@ -110,11 +110,11 @@
 </head>
 <body>
 	<!-- Option 1: Bootstrap Bundle with Popper -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 		crossorigin="anonymous"></script>
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 
@@ -138,15 +138,9 @@
 						<li class="nav-item"><a class="nav-link" href="./lck">LCK분석</a></li>
 					</ul>
 				</div>
-				<div class="login-box">
-<<<<<<< HEAD
-					<button id="login-btn" type="button" class="btn btn-success">Login</button>
-=======
-					<a href="./login">
-						<button id="login-btn" type="button" class="btn btn-success">로그인</button>
-					</a>
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
-				</div>
+				<a href="./login">
+					<button id="login-btn" type="button" class="btn btn-success">로그인</button>
+				</a>
 			</div>
 		</nav>
 	</div>
@@ -159,11 +153,7 @@
 						<input type="text" class="form-control" placeholder="소환사명을 입력하세요"
 							aria-label="Recipient's username"
 							aria-describedby="button-addon2" name="summonerName">
-<<<<<<< HEAD
 						<button type="submit" class="btn btn-success">search</button>
-=======
-						<button class="w-btn w-btn-green" type="submit" id="summoner-search-btn">search</button>
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
 					</div>
 				</div>
 			</div>
