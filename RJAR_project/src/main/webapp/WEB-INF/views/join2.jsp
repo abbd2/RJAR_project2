@@ -136,6 +136,22 @@
 </style>
 </head>
 <body>
+	<script type="text/javascript">
+		 ${'#checkIdBtn'}.on('click', function () {
+			if(${'#id'}.val != ''){
+				$ajax({
+					method : 'get',
+					url : 'member/checkId'
+					data : 'm_id='+$('#id').val),
+					success : function name() {
+						
+					}
+					
+				})
+					
+			}
+		})
+	</script>
 
 	<div id="joinPage2">
 		<div id="titleDiv">RJAR.GG</div>
@@ -149,9 +165,10 @@
 		<div id="topDiv">
 			아이디
 			<div class="topInfoDiv">
-				<input id="id" type="text" placeholder="아이디를 입력해주세요.">
-				<input id="idCheckBtn" type="button" value="중복확인">
+				<input id="id" type="text" name="id" placeholder="아이디를 입력해주세요.">
+				<input id="checkIdBtn" type="button" value="중복확인">
 			</div>
+			
 			비밀번호
 			<div class="topInfoDiv">
 				<input class="topInfo" type="text" placeholder="비밀번호를 입력하세요.">

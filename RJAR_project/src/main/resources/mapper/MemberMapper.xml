@@ -14,8 +14,13 @@
 <mapper namespace="com.rjar.www.dao.IMemberDao">
 
 <!-- 	id를 함수명과 같게 할 것 -->
-	<select id="showMember" resultType="Member">
+<!-- 	<select id="showMember" resultType="Member"> -->
+<!-- 		select * from member -->
+<!-- 	</select> -->
+	
+	<select id="checkId" resultType="boolean" parameterType="String">
 		select * from member
+		where m_id = ${id}
 	</select>
 	
 </mapper>
