@@ -266,12 +266,22 @@ public class SummonerSearchMM {
 					gds.setSs_win(winDefeat);
 					gds.setSs_spell1(participant.get("summoner1Id").getAsInt());
 					gds.setSs_spell2(participant.get("summoner2Id").getAsInt());
+					gds.setSs_lane(participant.get("teamPosition").getAsString());
 					gds.setSs_mainRune(mainPrime.get("perk").getAsInt());
 					gds.setSs_subRune(SubSelections.get("style").getAsInt());
 
 					gds.setSs_kills(participant.get("kills").getAsInt());
 					gds.setSs_assists(participant.get("assists").getAsInt());
 					gds.setSs_deaths(participant.get("deaths").getAsInt());
+					
+					if(participant.get("deaths").getAsInt()==0) {
+						String kda = "perfect";
+						gds.setSs_kda(kda);
+					}else {
+					    gds.setSs_kda(String.format("%.2f", challenges.get("kda").getAsDouble()));
+						System.out.println("kda="+String.format("%.2f", challenges.get("kda").getAsDouble()));
+					}
+					
 
 					gds.setSs_killParticipation(challenges.get("killParticipation").getAsDouble());
 					gds.setSs_totalDamageDealtToChampions(participant.get("totalDamageDealtToChampions").getAsInt());
