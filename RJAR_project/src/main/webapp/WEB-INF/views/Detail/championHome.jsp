@@ -29,7 +29,7 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-	
+
 	<div id='box'>
 		<div id='main'>
 			<aside>
@@ -43,9 +43,10 @@
 <script type="text/javascript">
 
 $(function() {
-	let key = '${tier}';
+	let tier = '${tier}';
+	let searchSource = ['엽기떡볶이', '신전떡볶이', '걸작떡볶이', '신당동떡볶이'];
 
-	switch (key) {
+	switch (tier) {
 	case 'bronze':
 		$('#bronze').prop('selected', true);
 		break;
@@ -64,8 +65,9 @@ $(function() {
 
 	default:
 		break;
-	}	
-});
+	}
+	
+});// function
 
 
 // 티어 옵션 선택 시
@@ -88,7 +90,6 @@ $('.a_img').click(function (){
 	}).done(function(data){
 		console.log("성공");			
 		console.log(data);
-		
 		$('.champList').html(data);
 	}).fail(function(err) {
 		console.log("에러");
@@ -102,9 +103,6 @@ $('.a_img').click(function (){
 $('.lane_').click(function (){
 	let tier = $('#selectOption').val();
 	let lane = $(this).val();
-	
-	console.log(tier);
-	console.log(lane);
 	
 	$.ajax({
 		type : 'get',
@@ -129,7 +127,6 @@ $('#free').click(function () {
 	$.ajax({
 		type : 'get',
 		url : 'rotation',
-// 		data : {lane: lane},
 		
 		contentType : 'application/json;charset=UTF-8'
 	}).done( function(data){
@@ -143,6 +140,60 @@ $('#free').click(function () {
 	
 });
 
+
+
+	
+
+//마우스 올릴 때
+function changeBackColor_over(div){	
+  $('div').css("background-color","#CCCCCC");
+}
+
+//마우스 올리지 않을 때
+function changeBackColor_out(div){
+  $('div').css("background-color","");
+}
+
+//해당 클릭 시
+function setSearch_onclick(div){
+  $(".inputtable").val(div.innerText);
+  $("#context1").css("display","none");
+}
+
+
+$('#searchInput').keyup(function () {
+	let text = $(this).val();
+	
+	if (text == "") {
+		$(".searchResult").css("display","none");
+	}else{
+	
+		$.ajax({
+			type : 'get',
+			url : 'selectChamp',
+			data: {text:text},
+			
+			dataType: 'json',
+			contentType : 'application/json;charset=UTF-8'
+		}).done( function(data){
+			console.log('성공');
+			console.log('데이터', data);
+			let search = "";
+			$.each(data, function (i, champion){
+				search+="<div onclick='setSearch_onclick(this)' onmouseout='changeBackColor_out(this)'" 
+					  + "onmouseover='changeBackColor_over(this)'>"+champion.champion_kr_name+"</div>"
+					  + "<input  value="champion" name="champion.championId" type="hidden">"
+			})
+			$('.searchResult').html(search);
+			$(".searchResult").css("display","block");
+		}).fail(function(err) {
+			console.log("에러");
+			console.log(err);
+			
+		})
+	
+	}
+})
 </script>
 </head>
 </html>

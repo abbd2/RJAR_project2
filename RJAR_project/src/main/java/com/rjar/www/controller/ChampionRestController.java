@@ -1,6 +1,8 @@
 package com.rjar.www.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,14 @@ public class ChampionRestController {
 	public String getRotationChamp() {
 		String rotationChamp = champmm.getRotationChamp();
 		return rotationChamp;
+	}
+	
+	@GetMapping(value = "/selectChamp", produces = "application/json;charset=utf-8")
+	public List<Champion> getselectChamp(String text) {
+		System.out.println("와따");
+		List<Champion> selectChamp = champmm.getSelectChamp(text);
+		System.out.println("간다"+ selectChamp);
+		return selectChamp;
 	}
 	
 

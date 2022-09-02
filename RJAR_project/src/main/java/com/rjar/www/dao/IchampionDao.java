@@ -16,4 +16,6 @@ public interface IchampionDao {
 
 	Champion getRotaion(int championId);
 
+	List<Champion> getSelectChamp(String text);
+
 }

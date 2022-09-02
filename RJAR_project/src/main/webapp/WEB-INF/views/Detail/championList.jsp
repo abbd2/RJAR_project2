@@ -205,6 +205,7 @@ font {
 						</div>
 						<input class="lane_" value="TOP" name="lane" type="hidden">
 					</form>
+
 				</td>
 				<td class="laneTd">
 					<button class="lane_" value="TOP">
@@ -239,7 +240,11 @@ font {
 				</table>
 		</div>
 		<div>
+		<form action="championDetail">
 			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
+			<div class="searchResult"></div>
+		</form>
+			
 		</div>
 
 		<div>
