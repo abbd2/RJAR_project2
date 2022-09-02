@@ -221,7 +221,7 @@ body{
 		
 	</script>
 
-<%-- 	<jsp:include page="header.jsp"></jsp:include> --%>
+	<jsp:include page="header.jsp"></jsp:include>
 	<div id="main"></div>
 	<div id="multiSearch">
 		<div id="multiSearchInput" style="height: 250px; widht: 1070px;">
