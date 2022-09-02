@@ -230,8 +230,6 @@ public class SummonerSearchMM {
 					JsonObject mainPrime = (JsonObject) prime.get(0);
 					JsonObject purple = (JsonObject) team.get(0);
 					JsonObject blue = (JsonObject) team.get(1);
-
-<<<<<<< HEAD
 					JsonObject dragon = null;
 					JsonObject baron = null;
 					JsonObject tower = null;

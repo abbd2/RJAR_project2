@@ -367,7 +367,6 @@ public class MultiSearchRestController {
 		msb.setAssists(assists);
 		msb.setWins(wins);
 		msb.setAgoTimeDate(endTimeDate);
-<<<<<<< HEAD
 
 		mostLane(msb.getLanes()); // 주 라인 & 서브 라인 구하기
 
@@ -495,10 +494,6 @@ public class MultiSearchRestController {
 
 	} // end laneWinRate
 
-=======
-	}
-
->>>>>>> 872ee7ab971e8f35afedbbbb2626b579f0d085ff
 	// 게임아이디로 데이터 가져오기
 	private Object[] getGameData(String gameId) throws IOException {
 
