@@ -67,7 +67,7 @@ body{
 								let showSubImg = '';
 								
 								if(!data[i].tier){ // null 값이라면
-									data[i].tier = "Level";
+									data[i].tier = "Unranked";
 								}
 								
 								if(data[i].totalWins < 1){ // totalWins 값이 0이면

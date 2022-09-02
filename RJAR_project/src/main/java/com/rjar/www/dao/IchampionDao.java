@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.rjar.www.bean.Champion;
-
+// commit
 public interface IchampionDao {
 
 	List<Champion> getChampionList();
