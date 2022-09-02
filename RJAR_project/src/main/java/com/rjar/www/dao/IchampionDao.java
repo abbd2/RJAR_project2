@@ -2,11 +2,6 @@ package com.rjar.www.dao;
 
 import java.util.List;
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 33f2b520a353617e195dfad65a7a01f597adf93f
 import org.apache.ibatis.annotations.Param;
 
 import com.rjar.www.bean.Champion;

@@ -26,10 +26,6 @@
 		crossorigin="anonymous"></script>
 		
 	<jsp:include page="../header.jsp"></jsp:include>
-<<<<<<< HEAD
-=======
-
->>>>>>> 33f2b520a353617e195dfad65a7a01f597adf93f
 	<div id='box'>
 		<div id='main'>
 			<aside>
