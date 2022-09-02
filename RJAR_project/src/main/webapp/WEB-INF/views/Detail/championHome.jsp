@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
+<script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="js/jquery.serializeObject.js"></script>	
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -46,6 +48,8 @@
 		}).done((data)=>$(position).html(data))
 		  .fail((data)=>console.log(err));
 	} //Aj End
+	
+	$('option').click
 </script>
 </head>
 </html>

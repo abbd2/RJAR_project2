@@ -302,59 +302,6 @@ public class SummonerSearchMM {
 						gameData.add(gds);
 					}
 
-=======
-						preMap.put("ss_championid", participant.get("championId").getAsInt());
-						preMap.put("ss_championname", participant.get("championName").getAsString());
-						preMap.put("ss_championlevel", participant.get("champLevel").getAsInt());
-						preMap.put("ss_summonername", participant.get("summonerName").getAsString());
-
-						preMap.put("ss_win", participant.get("win").getAsString());
-						preMap.put("ss_spell1", participant.get("summoner1Id").getAsString());
-						preMap.put("ss_spell2", participant.get("summoner2Id").getAsString());
-						preMap.put("ss_mainrune", mainPrime.get("perk").getAsInt());
-						preMap.put("ss_subrune", SubSelections.get("style").getAsInt());
-
-						preMap.put("ss_kills", participant.get("kills").getAsInt());
-						preMap.put("ss_assists", participant.get("assists").getAsInt());
-						preMap.put("ss_deaths", participant.get("deaths").getAsInt());
-						
-						preMap.put("ss_killparticipation", challenges.get("killParticipation").getAsDouble());
-						preMap.put("ss_damagedealt",participant.get("totalDamageDealtToChampions").getAsInt());
-						preMap.put("ss_damagetaken", participant.get("totalDamageTaken").getAsInt());
-
-						preMap.put("ss_visionwardbuy", participant.get("visionWardsBoughtInGame").getAsInt());
-						preMap.put("ss_wardkilled", participant.get("wardsKilled").getAsInt());
-						preMap.put("ss_wardplaced", participant.get("wardsPlaced").getAsInt());
-						preMap.put("ss_cs", participant.get("totalMinionsKilled").getAsInt()+participant.get("neutralMinionsKilled").getAsInt());
-						
-                        //item들을 한 칼럼에 넣기 위해 JOIN 작업을 수행
-						ArrayList<String> items = new ArrayList<>();
-						items.add(participant.get("item0").getAsString());
-						items.add(participant.get("item1").getAsString());
-						items.add(participant.get("item2").getAsString());
-						items.add(participant.get("item3").getAsString());
-						items.add(participant.get("item4").getAsString());
-						items.add(participant.get("item5").getAsString());
-						items.add(participant.get("item6").getAsString());
-						
-						preMap.put("ss_items", String.join("|", items));
-						preMap.put("ss_earngold", participant.get("goldEarned").getAsInt());
-						
-						preMap.put("ss_dragon", dragon.get("kills").getAsInt());
-						preMap.put("ss_baron", baron.get("kills").getAsInt());
-						preMap.put("ss_tower", tower.get("kills").getAsInt());
-						
-						preMap.put("ss_gameDuration",info.get("gameDuration").getAsString());
-						preMap.put("ss_endgamedate", info.get("gameEndTimestamp").getAsString());
-						gameData.add(preMap);
-						
-						System.out.println(preMap);
-						System.out.println("isc="+isc);
-						f = isc.insertGameData(preMap);
-					}
-					System.out.println("gg"+gameData.getClass().getName());
-					System.out.println("insert 성공(?)");		
->>>>>>> 872ee7ab971e8f35afedbbbb2626b579f0d085ff
 				}
 				System.out.println("gd=" + gameData);
 				System.out.println("gg" + gameData.getClass().getName());
