@@ -198,7 +198,7 @@ $("#searchInput").keydown(function(key) {                
 	if (key.keyCode == 13) {                    
 		$('#selectForm').submit();
 	}
-}
+});
 
 //챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
 $('.champion').click(function (){
