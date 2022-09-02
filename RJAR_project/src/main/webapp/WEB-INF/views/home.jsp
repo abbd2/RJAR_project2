@@ -138,15 +138,9 @@
 						<li class="nav-item"><a class="nav-link" href="./lck">LCK분석</a></li>
 					</ul>
 				</div>
-				<div class="login-box">
-<<<<<<< HEAD
-					<button id="login-btn" type="button" class="btn btn-success">Login</button>
-=======
-					<a href="./login">
-						<button id="login-btn" type="button" class="btn btn-success">로그인</button>
-					</a>
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
-				</div>
+				<a href="./login">
+					<button id="login-btn" type="button" class="btn btn-success">로그인</button>
+				</a>
 			</div>
 		</nav>
 	</div>
@@ -159,11 +153,7 @@
 						<input type="text" class="form-control" placeholder="소환사명을 입력하세요"
 							aria-label="Recipient's username"
 							aria-describedby="button-addon2" name="summonerName">
-<<<<<<< HEAD
 						<button type="submit" class="btn btn-success">search</button>
-=======
-						<button class="w-btn w-btn-green" type="submit" id="summoner-search-btn">search</button>
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
 					</div>
 				</div>
 			</div>

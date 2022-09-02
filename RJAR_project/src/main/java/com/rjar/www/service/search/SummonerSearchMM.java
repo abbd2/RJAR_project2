@@ -255,8 +255,15 @@ public class SummonerSearchMM {
 					gds.setSs_championName(participant.get("championName").getAsString());
 					gds.setSs_champLevel(participant.get("champLevel").getAsInt());
 					gds.setSs_summonerName(participant.get("summonerName").getAsString());
+					
+					String winDefeat = null;
+					if(participant.get("win").getAsString().equals("true")) {
+						winDefeat = "승리";
+					}else {
+						winDefeat = "패배";
+					}
 
-					gds.setSs_win(participant.get("win").getAsString());
+					gds.setSs_win(winDefeat);
 					gds.setSs_spell1(participant.get("summoner1Id").getAsInt());
 					gds.setSs_spell2(participant.get("summoner2Id").getAsInt());
 					gds.setSs_mainRune(mainPrime.get("perk").getAsInt());
@@ -294,7 +301,27 @@ public class SummonerSearchMM {
 					
 					// 검색한 소환사의 정보를 따로 저장
 					if (summonerName.equals(participant.get("summonerName").getAsString())) {
+						String gameType = null;
+						switch (info.get("queueId").getAsInt()) {
+						case 420:
+							gameType = "솔랭";
+							break;
+						case 430:
+							gameType = "일반";
+							break;
+						case 440:
+							gameType = "자유 5:5 랭크";
+							break;
+						case 450:
+							gameType = "무작위 총력전";
+							break;
+						case 1400:
+							gameType = "궁극기 주문서";
+							break;
+						}
+						System.out.println(gameType);
 						gameData.add(gds);
+						gds.setSs_gameType(gameType);
 						myGame.add(gds);
 					} else {
 						gameData.add(gds);

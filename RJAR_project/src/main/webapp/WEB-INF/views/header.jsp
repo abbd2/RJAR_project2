@@ -136,29 +136,22 @@
 					</ul>
 				</div>
 				<form action="summonerSearch" method="Post">
-				<div class="summoner-search-outter-box"
-					style="text-align: center; vertical-align: middle;">
-					<div class="summoner-search-box"
-						style="display: block; margin-right: 3px;">
-						<input class="form-control me-sm-2" type="text"
-							placeholder="소환사명을 입력하세요" name="summonerName">
+					<div class="summoner-search-outter-box"
+						style="text-align: center; vertical-align: middle;">
+						<div class="summoner-search-box"
+							style="display: block; margin-right: 3px;">
+							<input class="form-control me-sm-2" type="text"
+								placeholder="소환사명을 입력하세요" name="summonerName">
+						</div>
+						<div class="summoner-search-button">
+							<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+						</div>
 					</div>
-					<div class="summoner-search-button">
-						<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-					</div>
-				</div>
 				</form>
-				<div class="login-box">
-<<<<<<< HEAD
-					<button id="login-btn" type="button" class="btn btn-success">Login</button>
-=======
-					<a href="./login">
-						<button id="login-btn" type="button" class="btn btn-success">
-							로그인
-						</button>
-					</a>
->>>>>>> cf11b425f0b3ac82e859968c0deeebef1b39140f
-				</div>
+				<a href="./login">
+					<button id="login-btn" type="button" class="btn btn-success">
+						로그인</button>
+				</a>
 			</div>
 		</nav>
 	</div>
