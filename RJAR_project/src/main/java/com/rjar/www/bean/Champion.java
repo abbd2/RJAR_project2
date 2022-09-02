@@ -31,4 +31,7 @@ public class Champion {
    private String counter8;
    private String counter9;
    private String counter10;
+   
+   private String spell1;
+   private String spell2;
 }

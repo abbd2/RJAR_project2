@@ -17,5 +17,7 @@ public interface IchampionDao {
 	Champion getRotaion(int championId);
 
 	List<Champion> getSelectChamp(String text);
+	
+	Champion getSpellList(@Param("championName") String championName,@Param("lane")String lane);
 
 }

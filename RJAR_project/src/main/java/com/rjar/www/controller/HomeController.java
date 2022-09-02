@@ -1,5 +1,7 @@
 package com.rjar.www.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,16 @@ public class HomeController {
 		mav = champmm.getChampionInfo(tier, lane);
 		return mav;
 	}
+	
+	@GetMapping(value = "/championDetail")
+	public ModelAndView championDetailInfo(HttpServletRequest request, String championName, String lane) {
+		log.info("championDetail");
+		championName = request.getParameter("championName");
+		lane = request.getParameter("lane");
+		mav = champmm.getChampionDetailInfo(championName, lane);
+		
+		return mav;
+	   }
 
 	@GetMapping(value = "/laboratory")
 	public String laboratory() {
