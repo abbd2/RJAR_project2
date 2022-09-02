@@ -44,7 +44,6 @@
 
 $(function() {
 	let tier = '${tier}';
-	let searchSource = ['엽기떡볶이', '신전떡볶이', '걸작떡볶이', '신당동떡볶이'];
 
 	switch (tier) {
 	case 'bronze':
@@ -140,27 +139,25 @@ $('#free').click(function () {
 	
 });
 
-
-
-	
-
 //마우스 올릴 때
 function changeBackColor_over(div){	
-  $('div').css("background-color","#CCCCCC");
+  $(div).css("background-color","skyblue");
 }
 
 //마우스 올리지 않을 때
 function changeBackColor_out(div){
-  $('div').css("background-color","");
+  $(div).css("background-color","");
 }
 
-//해당 클릭 시
-function setSearch_onclick(div){
-  $(".inputtable").val(div.innerText);
-  $("#context1").css("display","none");
+//해당 클릭 시 --> 챔피언이름을 파라미터로 분석 상세 페이지로 이동(url : selectDetail)
+function setSearch_onclick(){
+	console.log($(this).innerText);
+	$(".searchResult").css("display","none");
+	$("#searchInput").attr("value", $(this).innerText);
+	$("#selectForm").submit();
 }
 
-
+//검색
 $('#searchInput').keyup(function () {
 	let text = $(this).val();
 	
@@ -180,9 +177,10 @@ $('#searchInput').keyup(function () {
 			console.log('데이터', data);
 			let search = "";
 			$.each(data, function (i, champion){
-				search+="<div onclick='setSearch_onclick(this)' onmouseout='changeBackColor_out(this)'" 
-					  + "onmouseover='changeBackColor_over(this)'>"+champion.champion_kr_name+"</div>"
-					  + "<input  value="champion" name="champion.championId" type="hidden">"
+				search+= "<div class='championDetail' onclick='setSearch_onclick(this)' style = 'font-weight: bold;'" 
+					  + "onmouseout='changeBackColor_out(this)'onmouseover='changeBackColor_over(this)'>"
+					  +	"<img class = 'selectImg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+					  + champion.championName + ".png>"+champion.champion_kr_name+"</div>";
 			})
 			$('.searchResult').html(search);
 			$(".searchResult").css("display","block");
@@ -193,6 +191,30 @@ $('#searchInput').keyup(function () {
 		})
 	
 	}
+})
+
+//엔터 입력 시 포워딩
+$("#searchInput").keydown(function(key) {                
+	if (key.keyCode == 13) {                    
+		$('#selectForm').submit();
+	}
+}
+
+//챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
+$('.champion').click(function (){
+	let data_championId = $(this).attr("data-championId");
+	let $form = $("<form action='clickDetail' method ='get'></form>");
+	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
+	$form.appendTo("body"); //body태그 안에 있어야 submit 작동함
+	$form.submit();
+})
+
+$('.tierChamp').click(function (){
+	let data_championId = $(this).attr('data-championId');
+	let $form = $("<form action='clickDetail' method ='get'></form>");
+	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
+	$form.appendTo("body");
+	$form.submit();
 })
 </script>
 </head>

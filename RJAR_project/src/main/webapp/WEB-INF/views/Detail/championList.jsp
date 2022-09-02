@@ -69,13 +69,36 @@ option {
 	white-space: nowrap;
 	font-weight: bold;
 }
+/* 검색 자동완성 */
+.searchResult {
+	position: absolute;
+	background-color: white;
+	width: 500px; 
+}
 
+.championDetail {
+	height: 45px;
+	border-bottom: 1px solid lightgray;
+	padding-top: 5px;
+}
+.selectImg {
+	margin-right: 10px;
+	width:35px;
+	height:35px;
+	border-radius: 3px;
+}
+/* 검색 자동완성 */
 .laneimg {
 	float: left;
 	width: 500px;
 	height: 55px;
 	margin-bottom: 10px;
 	border-radius: 5px;
+	positon :relative;
+}
+
+.championList {
+	positon :relative;
 }
 
 .laneimg tr td{
@@ -240,10 +263,10 @@ font {
 				</table>
 		</div>
 		<div>
-		<form action="championDetail">
-			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
-			<div class="searchResult"></div>
+		<form id="selectForm" action="selectDetail">
+			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)" name ="championName">
 		</form>
+			<div class="searchResult"></div>
 			
 		</div>
 
