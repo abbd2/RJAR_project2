@@ -9,34 +9,33 @@
 
 
 <style type="text/css">
-.tierVersion{
+.tierVersion {
 	width: 549px;
 }
 
-.selectOption {
+#selectOption {
 	width: 200px;
 	height: 55px;
 	margin: 5px;
-	color: #006fff;
 	border-radius: 7px;
 	border: 2px solid black;
- 	font-size: 20px;
+	font-size: 20px;
 	font-weight: bold;
 }
 
-option{
+option {
 	font-weight: bold;
 }
 
-.laneDiv{
+.laneTd {
 	border: 1px solid gray;
 	width: 200px;
+	padding: 0px;
 }
 
-.lane {
-	margin-left: 18px;;
-	width: 89px;
-	height: 60px;
+.lane_ {
+	width: 130px;
+	height: 66px;
 	background-color: white;
 	border: hidden;
 	text-align: center;
@@ -49,6 +48,7 @@ option{
 
 .champion { /* 이미지 감싼 태그 */
 	margin-left: 10px;
+	margin-top: 3px;
 	float: left;
 	width: 60px;
 	height: 80px;
@@ -69,17 +69,62 @@ option{
 	white-space: nowrap;
 	font-weight: bold;
 }
+/* 검색 자동완성 */
+.searchResult {
+	position: absolute;
+	background-color: white;
+	width: 500px; 
+}
 
-.Laneimg {
+.championDetail {
+	height: 45px;
+	border-bottom: 1px solid lightgray;
+	padding-top: 5px;
+}
+.selectImg {
+	margin-right: 10px;
+	width:35px;
+	height:35px;
+	border-radius: 3px;
+}
+/* 검색 자동완성 */
+.laneimg {
 	float: left;
 	width: 500px;
 	height: 55px;
 	margin-bottom: 10px;
+	border-radius: 5px;
+	positon :relative;
+}
+
+.championList {
+	positon :relative;
+}
+
+.laneimg tr td{
+	padding: 0px;
+}
+#free{
+	background-color: white;
+    border: hidden;
+}
+
+.a_img{
+	background-color: white;
+    border: hidden;
 }
 
 .tierList {
 	float: right;
-	width: 600px;
+	width: 650px;
+}
+
+.tierList th {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 12px;
+	text-align: center;
+	"
 }
 
 .tierList tr {
@@ -112,7 +157,6 @@ option{
 	margin-left: 0px;
 	margin-top: 10px;
 	text-align: center;
-	
 }
 
 .rate {
@@ -132,7 +176,7 @@ small {
 
 font {
 	margin-left: 17px;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .ui-autocomplete {
@@ -156,7 +200,6 @@ font {
 	width: 500px;
 	height: 45px;
 	margin-bottom: 10px;
-/* 	margin-left: 20px; */
 	border-radius: 5px;
 	border: solid 2px lightgray;
 }
@@ -170,106 +213,101 @@ font {
 </head>
 <body>
 	<div style="width: 1200px; margin: auto;">
-			<form action="">
-				<table style="width: 1200px;">
-					<tr>
-						<td style="width: 450px;">
-							<div class="tierVersion">
-								<select class="selectOption">
-									<option value="platinum" style ="color: #006fff;">+Platinum</option>
-									<option value="bronze" style ="color: #964b00;">+Bronze</option>
-									<option value="silver" style ="color: #c0c0c0;">+Silver</option>
-									<option value="gold" style ="color: #ffd700;">+Gold</option>
-									<option value="diamond" style ="color: #87cefa;">+Diamond</option>
-								</select>
-								<!-- 		</select> <select id="versionSelect" class="selectOption"> -->
-								<!-- 			<option value="12.14.456.5556">12.14</option> -->
-								<!-- 			<option value="12.13.456.5556">12.13</option> -->
-								<!-- 		</select> -->
-							</div>
-							</td>
-						<td class = "laneDiv" style="width: 110px;">
-							<button class="lane">
-								<span>탑</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>정글</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>미드</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>원딜</span>
-							</button>
-						</td>
-						<td class = "laneDiv" style="width: 110px">
-							<button class="lane">
-								<span>서폿</span>
-							</button>
-						</td>
-					</tr>
-				</table>
-			</form>
+		<table style="width: 1200px;">
+			<tr>
+				<td style="width: 450px;">
+					<form id="select" action="tierOrLane" method="get">
+						<div class="tierVersion">
+							<select id="selectOption" name="tier">
+								<option id="bronze" value="bronze" style="color: #964b00;">+Bronze</option>
+								<option id="silver" value="silver" style="color: #c0c0c0;">+Silver</option>
+								<option id="gold" value="gold" style="color: #ffd700;">+Gold</option>
+								<option id="platinum" value="platinum" style="color: #006fff;">+Platinum</option>
+								<option id="diamond" value="diamond" style="color: #87cefa;">+Diamond</option>
+							</select>
+						</div>
+						<input class="lane_" value="TOP" name="lane" type="hidden">
+					</form>
+
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="TOP">
+						<span>탑</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="JUNGLE">
+						<span>정글</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="MIDDLE">
+						<span>미드</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="BOTTOM">
+						<span>원딜</span>
+					</button>
+				</td>
+				<td class="laneTd">
+					<button class="lane_" value="UTILITY">
+						<span>서폿</span>
+					</button>
+				</td>
+			</tr>
+		</table>
+
 		<div class="tierList">
-			<table class="tierList">${tierList}
-			</table>
+				<table class="tierList">${tierList}
+				</table>
 		</div>
 		<div>
-			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)">
+		<form id="selectForm" action="selectDetail">
+			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)" name ="championName">
+		</form>
+			<div class="searchResult"></div>
+			
 		</div>
 
-		<div style="width: 500px;">
-
-			<table class="Laneimg" style="width: 500px;">
+		<div>
+			<table class="laneimg">
 				<tr>
-					<td class="a_img" id="all"><a class="all"
-						href="javascript:Aj('./champion_list','#champion_list')"> <img
+					<td><button class="a_img" value = "all"><img
 							name="All"
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-fill.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="top"><a class='aTop'
-						href="javascript:Aj('./Top','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "TOP"><img
 							name='Top'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="jungle"><a
-						href="javascript:Aj('./Jungle','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "JUNGLE"><img
 							name='Jungle'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="mid"><a
-						href="javascript:Aj('./Middle','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "MIDDLE"><img
 							name='Middle'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="bot"><a
-						href="javascript:Aj('./Bot','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "BOTTOM"><img
 							name='Bot'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="supporter"><a
-						href="javascript:Aj('./Supporter','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button class="a_img" value = "UTILITY"><img
 							name='Supporter'
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
-							width="50px;" height="50px;">
-					</a></td>
-					<td class="a_img" id="free"><a
-						href="javascript:Aj('free','#champion_list')"> <img
+							width="50px;" height="50px;"></button>
+					</td>
+					<td><button id = "free"><img
 							name='free'
-							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
-							width="50px;" height="50px;">
-					</a></td>
+							src="https://s-lol-web.op.gg/images/icon/icon-rotation.svg"
+							width="50px;" height="50px;"></button>
+					</td>
 				</tr>
 			</table>
 
@@ -278,22 +316,6 @@ font {
 	</div>
 </body>
 <script type="text/javascript">
-	$('.chamImg').click(
-			function() {
-				let data_eName = $(this).attr("data-eName");
-				let data_lane = $(this).attr("data-lane");
-				let data_code = $(this).attr("data-code");
-				let $form = $("<form></form>");
-				$form.attr("action", "champInfo");
-				$("<input>").attr("name", "img")
-						.val($(this).attr("data-eName")).appendTo($form);
-				$("<input>").attr("name", "lane")
-						.val($(this).attr("data-lane")).appendTo($form);
-				$("<input>").attr("name", "code")
-						.val($(this).attr("data-code")).appendTo($form);
-
-				$form.appendTo("body");
-				$form.submit();
-			});
+	
 </script>
 </html>

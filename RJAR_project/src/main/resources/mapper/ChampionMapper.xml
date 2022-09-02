@@ -2,18 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rjar.www.dao.IchampionDao">
-   
-   <select id="getChampionList" resultType="Champion">
-   SELECT CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME 
-   FROM STATS_SKILL_DATA
-   ORDER BY CHAMPION_KR_NAME
-   </select>
-<!--    CHAMPIONID : 첫페이지 이후 검색할 때의 파라미터용 -->
-   <select id="getTierList" resultType="Champion">
-   	SELECT CHAMPIONNAME, CHAMPION_KR_NAME, WINRATE, PICKRATE, 
-   	BANRATE, COUNTER1, COUNTER2, COUNTER3 
-   	FROM ${tier}_DETAIL
-	WHERE LANE = #{lane} AND PICKRATE!=0
-   </select>
-   
+
+	<select id="getChampionList" resultType="Champion">
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		FROM STATS_SKILL_DATA
+		ORDER BY CHAMPION_KR_NAME
+	</select>
+	<!-- CHAMPIONID : 첫페이지 이후 검색할 때의 파라미터용 -->
+	<select id="getTierList" resultType="Champion">
+		SELECT /*+INDEX_DESC(${tier}_DETAIL SYS_C0032134)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME, WINRATE, PICKRATE,
+		BANRATE, COUNTER1, COUNTER2, COUNTER3
+		FROM ${tier}_DETAIL
+		WHERE LANE = #{lane} AND PICKRATE!=0 AND
+		WINRATE !=0
+	</select>
+	<!-- 티어 순으로 정렬해서 검색해야 함/테이블 key 줘야 함 -->
+	<select id="getLaneChamp" resultType="Champion">
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0032117)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		FROM BRONZE_DETAIL
+		WHERE LANE = #{lane} AND PICKRATE > 0
+		ORDER BY CHAMPION_KR_NAME
+	</select>
+	<!--나중에 검색대상 해당 티어로 바꿀 예정 -->
+	<select id="getRotaion" resultType="Champion">
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		FROM STATS_SKILL_DATA
+		WHERE CHAMPIONID = #{championId}
+		ORDER BY CHAMPION_KR_NAME
+	</select>
+	
+	<select id="getSelectChamp" resultType="Champion">
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPION_KR_NAME
+		FROM STATS_SKILL_DATA
+		WHERE CHAMPION_KR_NAME LIKE '%'||#{text}||'%' OR CHAMPIONNAME LIKE '%'||#{text}||'%'
+		ORDER BY CHAMPION_KR_NAME
+	</select>
 </mapper>
