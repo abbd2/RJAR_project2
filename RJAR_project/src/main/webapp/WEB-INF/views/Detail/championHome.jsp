@@ -108,7 +108,6 @@ $('.lane_').click(function (){
 		url : 'tierList',
 		data : {tier: tier, lane: lane},
 		
-		contentType : 'application/json;charset=UTF-8'
 	}).done( function(data){
 		console.log('성공');		
 		$('.tierList').html(data);
@@ -127,7 +126,6 @@ $('#free').click(function () {
 		type : 'get',
 		url : 'rotation',
 		
-		contentType : 'application/json;charset=UTF-8'
 	}).done( function(data){
 		console.log('성공');		
 		$('.champList').html(data);

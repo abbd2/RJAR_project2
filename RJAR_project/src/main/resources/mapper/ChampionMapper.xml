@@ -27,7 +27,9 @@
 	<select id="getRotaion" resultType="Champion">
 		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
 		FROM STATS_SKILL_DATA
-		WHERE CHAMPIONID = #{championId}
+		WHERE CHAMPIONID IN(#{championId1},#{championId2},#{championId3},#{championId4},#{championId5},#{championId6},
+		#{championId7},#{championId8},#{championId9},#{championId10},#{championId11},#{championId12},#{championId13},#{championId14},
+		#{championId15},#{championId16})
 		ORDER BY CHAMPION_KR_NAME
 	</select>
 	
@@ -36,5 +38,20 @@
 		FROM STATS_SKILL_DATA
 		WHERE CHAMPION_KR_NAME LIKE '%'||#{text}||'%' OR CHAMPIONNAME LIKE '%'||#{text}||'%'
 		ORDER BY CHAMPION_KR_NAME
+	</select>
+	
+	<select id="getChampionName" resultType="Champion">
+		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM SKILL_STATS_DATA
+		WHERE CHAMPIONID = ${championId}
+	</select>
+	
+	<select id="getChampionName1" resultType="Champion">
+		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM SKILL_STATS_DATA
+		WHERE CHAMPIONID = ${championId}
+	</select>
+	
+	<select id="getChampionName2" resultType="Champion">
+		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM SKILL_STATS_DATA
+		WHERE CHAMPIONID = #{championName}
 	</select>
 </mapper>

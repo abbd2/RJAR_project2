@@ -136,42 +136,63 @@ public class ChampionDetailMM {
 		} else {
 			restChampionList = champDao.getLaneChamp(lane);
 		}
-		
+
 		String championList = makechampList(restChampionList);
 		return championList;
 	}
 
 	public String getRotationChamp() {
-	    String url = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-5abbd2a5-6403-43ab-a67b-bdc1c426bcaf";
+		String url = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=RGAPI-5abbd2a5-6403-43ab-a67b-bdc1c426bcaf";
 
-	    RestTemplate restTemplate = new RestTemplate();
-	    String apiResult = restTemplate.getForObject(url, String.class);
-	    
-	    //받아온 내용 json으로 파싱
-	    JsonParser parser = new JsonParser();
-	    JsonObject jsonObj = (JsonObject)parser.parse(apiResult);
-	    
-	    //원하는 value값 꺼내고 그걸 다시 String 배열로 파싱
-	    Gson gson = new Gson();
-	    String[] freeChampionList = gson.fromJson(jsonObj.get("freeChampionIds"), String[].class);
-	    
-	    //챔피언 아이디로 검색한 후 리스트에 담음
-	    List<Champion> rotationList = new ArrayList<>();
-	    for (int i = 0; i < freeChampionList.length; i++) {
-	    	int championId = Integer.parseInt(freeChampionList[i]);
-	    	Champion rotationChampion = champDao.getRotaion(championId);
-	    	rotationList.add(rotationChampion);
+		RestTemplate restTemplate = new RestTemplate();
+		String apiResult = restTemplate.getForObject(url, String.class);
+
+		// 받아온 내용 json으로 파싱
+		JsonParser parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject) parser.parse(apiResult);
+
+		// 원하는 value값 꺼내고 그걸 다시 String 배열로 파싱
+		Gson gson = new Gson();
+		String[] freeChampionList = gson.fromJson(jsonObj.get("freeChampionIds"), String[].class);
+
+		// 챔피언 아이디로 검색한 후 리스트에 담음
+		int[] freeList = new int[16];
+		for (int i = 0; i < freeChampionList.length; i++) {
+			freeList[i] = Integer.parseInt(freeChampionList[i]);
 		}
-	    //리스트를 통해 태그 생성
-	    String rotationImg = makechampList(rotationList);
-	    
+		List<Champion> rotationChampion = champDao.getRotaion(freeList[0], freeList[1], freeList[2], freeList[3],
+				freeList[4], freeList[5], freeList[6], freeList[7], freeList[8], freeList[9], freeList[10],
+				freeList[11], freeList[12], freeList[13], freeList[14], freeList[15]);
+		// 리스트를 통해 태그 생성
+		String rotationImg = makechampList(rotationChampion);
+
 		return rotationImg;
 	}
 
 	public List<Champion> getSelectChamp(String text) {
 		List<Champion> selectResult = champDao.getSelectChamp(text);
-		
+
 		return selectResult;
+	}
+
+	public ModelAndView clickDetail(int championId) {
+		mav = new ModelAndView();
+		
+		Champion championName1 = champDao.getChampionName1(championId);
+		mav.addObject("championName", championName1.getChampionName());
+		mav.addObject("champion_kr_name", championName1.getChampion_kr_name());
+		mav.setViewName("Detail/championDetail");
+		return mav;
+	}
+
+	public ModelAndView selectDetail(String championName) {
+		mav = new ModelAndView();
+		
+		Champion championName2 = champDao.getChampionName2(championName);
+		mav.addObject("championName", championName2.getChampionName());
+		mav.addObject("champion_kr_name", championName2.getChampion_kr_name());
+		mav.setViewName("Detail/championDetail");
+		return mav;
 	}
 
 }

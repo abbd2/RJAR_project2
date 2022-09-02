@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.rjar.www.bean.Champion;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
 
-import lombok.extern.log4j.Log4j;
 
 @Controller
 public class ChampionDetailController {
@@ -24,6 +23,18 @@ public class ChampionDetailController {
 		return mav;
 	}
 	
-
+	@GetMapping(value = "/clickDetail")
+	public ModelAndView clickDetail(Champion champ){
+		mav = champmm.clickDetail(champ.getChampionId());
+		return mav;
+	}
+	//검색창 입력 후 엔터 쳤을 때
+	@GetMapping(value = "/selectDetail")
+	public ModelAndView selectDetail(Champion champ){
+		mav = champmm.selectDetail(champ.getChampionName());
+		return mav;
+	}
+	
+	
 
 }
