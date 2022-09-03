@@ -103,14 +103,15 @@
 	border: 1px solid blue;
 }
 
-#imageLevelBox {
-	height: 50%;
+.imageLevelBox {
+	height: 60px;
 	border: 1px solid blue;
 }
-#itemsBox{
-    margin-top : 10px;
-    height:40px;
-    border: 1px solid blue;
+
+.itemsBox {
+	height: 40px;
+	border: 1px solid blue;
+	justify-content: space-around;
 }
 
 #champLevel {
@@ -121,8 +122,36 @@
 	top: -22px;
 }
 
-#items {
+#champImage {
+	width: 50px;
+}
+
+.items {
 	border: 1px solid blue;
+	margin-top: 3px;
+}
+
+.imageLevel {
+	height: 50px;
+	width: 55px;
+	border: 1px solid blue;
+	float: left;
+}
+
+.spellBox, .runeBox {
+	width: 30px;
+	border: 1px solid blue;
+	float: left;
+}
+.lane{
+    width: 100px;
+    float: left;
+    border : 1px solid blue;
+    margin-left : 10	px;
+}
+
+#spell1, #mainRune {
+	margin-bottom: 3px;
 }
 
 #dataFlexBox {
@@ -131,7 +160,9 @@
 
 #item0, #item1, #item2, #item3, #item4, #item5, #item6 {
 	float: left;
-	width: 30px;
+	width: 35px;
+	margin-left: 2px;
+	border: 1px solid blue;
 }
 
 .KDA {
@@ -140,7 +171,7 @@
 	border: 1px solid blue;
 }
 
-.CS {
+.stats {
 	width: 15%;
 	float: left;
 	border: 1px solid blue;
@@ -237,58 +268,89 @@
 							<div class="gameDuration">23분</div>
 						</div>
 						<div class="championData">
-							<div id="imageLevelBox">
-								<div id="champImage" style="height: 60px">
-									<img
-										src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/Aatrox.png"
-										width="50px">
+							<div class="imageLevelBox">
+								<div class="imageLevel">
+									<div id="champImage" style="height: 60px">
+										<img
+											src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/Aatrox.png"
+											width="50px">
+									</div>
+									<div id="champLevel">
+										<span class="badge rounded-pill bg-primary"
+											style="color: white">14</span>
+									</div>
 								</div>
-								<div id="champLevel">
-									<span class="badge rounded-pill bg-primary"
-										style="color: white">14</span>
+								<div class="spellBox">
+									<div id="spell1">
+										<img src="./resources/spell/4.png" width="25px">
+									</div>
+									<div id="spell2">
+										<img src="./resources/spell/1.png" width="25px">
+									</div>
+								</div>
+								<div class="runeBox">
+									<div id="mainRune">
+										<img src="./resources/runes/8000.png" width="25px">
+									</div>
+									<div id="subRune">
+										<img src="./resources/runes/8112.png" width="25px">
+									</div>
+								</div>
+								<div class="lane">
+								    <h4>Top</h4>
 								</div>
 							</div>
-							<div id="itemsBox">
-								<div id="items">
+							<div class="itemsBox">
+								<div class="items">
 									<div id="item0">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 									<div id="item1">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 									<div id="item2">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 									<div id="item3">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 									<div id="item4">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 									<div id="item5">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 									<div id="item6">
 										<img
 											src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/3108.png"
-											width="35px">
+											width="30px">
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="KDA"></div>
+						<div class="stats">
+						   <div class="bigKda">
+						        <h4>4/6/11</h4>
+						   </div>
+						   <div class="kda">
+						         <p>1.45</p>
+						   </div>
+						   <div class="killParticipant">
+						          <p>45%</p>
+						   </div>
+						</div>
 						<div class="CS"></div>
 						<div class="teamList"></div>
 					</div>

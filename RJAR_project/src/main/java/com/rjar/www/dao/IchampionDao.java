@@ -20,6 +20,8 @@ public interface IchampionDao {
 	         @Param("championId13") int championId13, @Param("championId14") int championId14, @Param("championId15") int championId15, @Param("championId16") int championId16);
 
 	List<Champion> getSelectChamp(String text);
+	
+	Champion getSpellList(@Param("championName") String championName,@Param("lane")String lane);
 
 	Champion getChampionName1(int championId);
 

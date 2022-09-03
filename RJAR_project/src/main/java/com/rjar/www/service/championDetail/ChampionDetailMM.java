@@ -174,6 +174,24 @@ public class ChampionDetailMM {
 
 		return selectResult;
 	}
+	
+	 public ModelAndView getChampionDetailInfo(String championName, String lane) {
+	      mav = new ModelAndView();	      
+	      log.info("lane=" + lane);
+	      log.info("championName=" + championName);
+	      
+	      mav.addObject("championName",championName);
+	      mav.addObject("lane",lane);
+	      
+	      Champion spell = champDao.getSpellList(championName, lane);
+		  mav.addObject("spell1", spell.getSpell1());
+
+		  mav.addObject("spell2", spell.getSpell2());
+		  log.info("spell2="+spell.getSpell2());
+
+	      mav.setViewName("Detail/championDetail");
+	      return mav;
+	   }
 
 	public ModelAndView clickDetail(int championId) {
 		mav = new ModelAndView();
