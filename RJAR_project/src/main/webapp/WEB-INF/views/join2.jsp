@@ -151,9 +151,9 @@
 		<div id="topDiv">
 			아이디
 			<div class="topInfoDiv">
-				<input id="id" type="text" name="id" placeholder="아이디를 입력해주세요.">
+				<input id="id" type="text" name="m_id" placeholder="아이디를 입력해주세요.">
 				<input id="checkIdBtn" type="button" value="중복확인">
-				<div id="idCheckResult"></div>
+				<div id="idCheckResult" style="font-size: 13px; padding-left: 100px;"></div>
 			</div>
 			
 			비밀번호
@@ -210,23 +210,30 @@
 		 $('#checkIdBtn').on('click', function() {
 			 console.log('함수호출')
 			if($('#id').val() != ''){
-				console.log('진입')
+				console.log('id != ""');
 				$.ajax({
 					method : 'get',
 					url : 'member/checkId',
 					data : 'm_id=' + $('#id').val(),
-					success : function (data) {
+					success : function (data, status, xhr) {
 						$('#idCheckResult').html(data).css('color', 'blue');
-						console.log('data : ', data);
-					},error : function (data){
-						$('#idCheckResult').html(data).css('color', 'red');
-						console.log('data : ', data);
+						console.log('data = ', data);
+						console.log("xhr = ", xhr);
+						console.log("status = ", status);
+					},
+					error : function (xhr, status){
+						$('#idCheckResult').html(xhr.responseText).css('color', 'red');
+						console.log('xhr.responseText = ', xhr.responseText);
+						console.log("xhr = ", xhr);
+						console.log("status = ", status);
 					}
-						
-				})
-					
+				}); // end ajax
+			} else{
+				console.log('id == ""');
+				$('#idCheckResult').html('아이디를 입력해 주세요.').css('color', 'red');
 			}
-		})
+		 }); // end on
+
 	</script>
 
 </body>
