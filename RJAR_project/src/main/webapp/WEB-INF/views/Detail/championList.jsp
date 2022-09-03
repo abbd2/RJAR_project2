@@ -264,7 +264,7 @@ font {
 		</div>
 		<div>
 		<form id="selectForm" action="selectDetail">
-			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)" name ="championName">
+			<input id="searchInput" type="text" placeholder="챔피언 검색(가렌, 그라가스...)" name ="champion_kr_name">
 		</form>
 			<div class="searchResult"></div>
 			

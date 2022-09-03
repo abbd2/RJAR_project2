@@ -199,7 +199,6 @@ public class ChampionDetailMM {
 
 	public ModelAndView selectDetail(String championName) {
 		mav = new ModelAndView();
-		
 		Champion championName2 = champDao.getChampionName2(championName);
 		mav.addObject("championName", championName2.getChampionName());
 		mav.addObject("champion_kr_name", championName2.getChampion_kr_name());

@@ -19,7 +19,7 @@
 	<!-- 티어 순으로 정렬해서 검색해야 함/테이블 key 줘야 함 -->
 	<select id="getLaneChamp" resultType="Champion">
 		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0032117)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
-		FROM BRONZE_DETAIL
+		FROM PLATINUM_DETAIL
 		WHERE LANE = #{lane} AND PICKRATE > 0
 		ORDER BY CHAMPION_KR_NAME
 	</select>
@@ -40,11 +40,6 @@
 		ORDER BY CHAMPION_KR_NAME
 	</select>
 	
-	<select id="getChampionName" resultType="Champion">
-		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM SKILL_STATS_DATA
-		WHERE CHAMPIONID = ${championId}
-	</select>
-	
 	<select id="getChampionName1" resultType="Champion">
 		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM STATS_SKILL_DATA
 		WHERE CHAMPIONID = ${championId}
@@ -52,6 +47,6 @@
 	
 	<select id="getChampionName2" resultType="Champion">
 		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM STATS_SKILL_DATA
-		WHERE CHAMPIONID = #{championName}
+		WHERE CHAMPION_KR_NAME = #{championName} OR CHAMPIONNAME = #{championName}
 	</select>
 </mapper>

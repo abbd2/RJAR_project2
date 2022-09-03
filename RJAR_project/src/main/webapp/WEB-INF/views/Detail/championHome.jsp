@@ -155,14 +155,23 @@ function setSearch_onclick(){
 	$("#selectForm").submit();
 }
 
+//엔터 입력 시 포워딩
+$("#searchInput").keydown(function(key) {                
+	if (key.keyCode == 13) {                    
+		$('#selectForm').submit();
+	}
+});
+
 //검색
 $('#searchInput').keyup(function () {
-	let text = $(this).val();
-	
-	if (text == "") {
+	let text = $(this).val().trim();
+
+	if (text === '') {
+		console.log(text);
 		$(".searchResult").css("display","none");
+		console.log('발동함');
 	}else{
-	
+		console.log('text', text);
 		$.ajax({
 			type : 'get',
 			url : 'selectChamp',
@@ -182,21 +191,17 @@ $('#searchInput').keyup(function () {
 			})
 			$('.searchResult').html(search);
 			$(".searchResult").css("display","block");
+			text = "";
 		}).fail(function(err) {
 			console.log("에러");
 			console.log(err);
 			
 		})
-	
+
 	}
+
 })
 
-//엔터 입력 시 포워딩
-$("#searchInput").keydown(function(key) {                
-	if (key.keyCode == 13) {                    
-		$('#selectForm').submit();
-	}
-});
 
 //챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
 $('.champion').click(function (){
