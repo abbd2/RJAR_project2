@@ -151,18 +151,18 @@
 		<div id="topDiv">
 			아이디
 			<div class="topInfoDiv">
-				<input id="id" type="text" name="m_id" placeholder="아이디를 입력해주세요.">
+				<input id="id" type="text" placeholder="아이디를 입력해주세요.">
 				<input id="checkIdBtn" type="button" value="중복확인">
 				<div id="idCheckResult" style="font-size: 13px; padding-left: 100px;"></div>
 			</div>
 			
 			비밀번호
 			<div class="topInfoDiv">
-				<input class="topInfo" type="text" placeholder="비밀번호를 입력하세요.">
+				<input id="pw" class="topInfo" type="text" placeholder="비밀번호를 입력하세요.">
 			</div>
 			비밀번호 확인
 			<div class="topInfoDiv">
-				<input class="topInfo" type="text" placeholder="비밀번호를 다시 입력하세요.">
+				<input id="pwCheck" class="topInfo" type="text" placeholder="비밀번호를 다시 입력하세요.">
 			</div>
 			이름
 			<div class="topInfoDiv">
@@ -184,8 +184,9 @@
 					<option>알뜰폰 LG U+</option>
 				</select>
 				<input id="phone" type="text" placeholder="핸드폰 번호">
-				<input id="certified" type="button" value="인증">
+				<input id="certified" type="button" value="인증" onclick="certified($('#selectPhone').val(), $('#phone').val());">
 				<input id="certifiedNum" type="text" placeholder="인증번호 입력">
+				<div id="selectTel" style="float: right; padding-right: 80px;"></div>
 			</div>
 			비밀번호 찾기 질문
 			<div>
@@ -207,7 +208,13 @@
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
+	
+	let idCheck = false;
+	let pwCheck = false;
+	
+	// id 중복확인
 		 $('#checkIdBtn').on('click', function() {
+			 console.log('id 중복확인');
 			if($('#id').val() != ''){
 				$.ajax({
 					method : 'get',
@@ -215,20 +222,46 @@
 					data : 'm_id=' + $('#id').val(),
 					success : function (data, status, xhr) {
 						$('#idCheckResult').html(data).css('color', 'blue');
+						idCheck = true
 					},
 					error : function (xhr, status){
 						$('#idCheckResult').html(xhr.responseText).css('color', 'red');
+						idCheck = false;
 					}
 				}); // end ajax
 			} else{
 				$('#idCheckResult').html('아이디를 입력해 주세요.').css('color', 'red');
+				idCheck = false;
 			}
 		 }); // end on
 		 
-		 $('#joinBtn').on('click', function () {
-			
+		 // 인증번호
+		 function certified(tel, pNum) {
+			 console.log('선택한 통신사 : ', tel);
+			 console.log('핸드폰 번호 : ', pNum);
+			 $('#selectTel').html('').css('color', 'red');
+			 
+			// 통신사 선택 여부 확인
+			 if(tel == '통신사'){
+				 $('#selectTel').html('통신사를 선택해 주세요.').css('color', 'red');
+			 } else if(!pNum){ // 핸드폰 번호 입력 여부 확인
+				 $('#selectTel').html('핸드폰 번호를 입력해 주세요.').css('color', 'red');
+			 }
+			 
+			 $('#selectPhone').options
+			$('#certified').html('alert("준비중입니다.")');
+		};
+		 
+		// 가입하기
+		$('#joinBtn').on('click', function() {
+			console.log('가입하기');
+			if($('#pw') == $('#pwCheck')){
+				pwCheck = true;
+			}
+			if (idCheck && pwCheck) {
+				
+			}
 		}); // end on
-
 	</script>
 
 </body>

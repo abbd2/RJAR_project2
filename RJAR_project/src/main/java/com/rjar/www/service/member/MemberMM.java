@@ -36,7 +36,7 @@ public class MemberMM {
 		if (checkId != null) {
 			System.out.println("분기 진입");
 			// 오류를 발생시킴
-			throw new IdCheckException("사용할 수 없는 아이디입니다.");
+			throw new IdCheckException("이미 사용중인 아이디입니다.");
 		} else if (m_id.length() < 5 || m_id.length() > 20 || !(Pattern.matches("[0-9|a-z]*", m_id))) {
 			throw new IdCheckException("5~20자의 영문 소문자, 숫자만 사용 가능합니다.");
 		}
