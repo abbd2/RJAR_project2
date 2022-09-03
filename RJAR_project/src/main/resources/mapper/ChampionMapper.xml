@@ -46,12 +46,12 @@
 	</select>
 	
 	<select id="getChampionName1" resultType="Champion">
-		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM SKILL_STATS_DATA
+		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM STATS_SKILL_DATA
 		WHERE CHAMPIONID = ${championId}
 	</select>
 	
 	<select id="getChampionName2" resultType="Champion">
-		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM SKILL_STATS_DATA
+		SELECT CHAMPIONNAME, CHAMPION_KR_NAME FROM STATS_SKILL_DATA
 		WHERE CHAMPIONID = #{championName}
 	</select>
 </mapper>
