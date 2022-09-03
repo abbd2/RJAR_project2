@@ -1,6 +1,5 @@
 package com.rjar.www.service.championDetail;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,7 @@ import com.google.gson.JsonParser;
 import com.rjar.www.bean.Champion;
 import com.rjar.www.dao.IchampionDao;
 
-import lombok.extern.log4j.Log4j;
 
-@Log4j
 @Service
 public class ChampionDetailMM {
 
