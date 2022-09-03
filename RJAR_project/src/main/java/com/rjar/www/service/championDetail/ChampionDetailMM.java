@@ -174,8 +174,6 @@ public class ChampionDetailMM {
 	
 	 public ModelAndView getChampionDetailInfo(String championName, String lane) {
 	      mav = new ModelAndView();	      
-	      log.info("lane=" + lane);
-	      log.info("championName=" + championName);
 	      
 	      mav.addObject("championName",championName);
 	      mav.addObject("lane",lane);
@@ -184,7 +182,6 @@ public class ChampionDetailMM {
 		  mav.addObject("spell1", spell.getSpell1());
 
 		  mav.addObject("spell2", spell.getSpell2());
-		  log.info("spell2="+spell.getSpell2());
 
 	      mav.setViewName("Detail/championDetail");
 	      return mav;
