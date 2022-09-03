@@ -208,31 +208,26 @@
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 		 $('#checkIdBtn').on('click', function() {
-			 console.log('함수호출')
 			if($('#id').val() != ''){
-				console.log('id != ""');
 				$.ajax({
 					method : 'get',
 					url : 'member/checkId',
 					data : 'm_id=' + $('#id').val(),
 					success : function (data, status, xhr) {
 						$('#idCheckResult').html(data).css('color', 'blue');
-						console.log('data = ', data);
-						console.log("xhr = ", xhr);
-						console.log("status = ", status);
 					},
 					error : function (xhr, status){
 						$('#idCheckResult').html(xhr.responseText).css('color', 'red');
-						console.log('xhr.responseText = ', xhr.responseText);
-						console.log("xhr = ", xhr);
-						console.log("status = ", status);
 					}
 				}); // end ajax
 			} else{
-				console.log('id == ""');
 				$('#idCheckResult').html('아이디를 입력해 주세요.').css('color', 'red');
 			}
 		 }); // end on
+		 
+		 $('#joinBtn').on('click', function () {
+			
+		}); // end on
 
 	</script>
 
