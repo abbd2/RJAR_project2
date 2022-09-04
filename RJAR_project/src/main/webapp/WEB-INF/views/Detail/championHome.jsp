@@ -148,10 +148,9 @@ function changeBackColor_out(div){
 }
 
 //해당 클릭 시 --> 챔피언이름을 파라미터로 분석 상세 페이지로 이동(url : selectDetail)
-function setSearch_onclick(){
-	console.log($(this).attr("data-championName"));
+function setSearch_onclick(div){
 	$(".searchResult").css("display","none");
-	$("#searchInput").attr("value", $(this).attr("data-championName"));
+	$("#searchInput").val($(div).attr("data-championName"));
 	$("#selectForm").submit();
 }
 
@@ -169,7 +168,7 @@ $('#searchInput').keyup(function () {
 	if (text === '') {
 		console.log(text);
 		$(".searchResult").css("display","none");
-		console.log('발동함');
+		console.log('읍다');
 	}else{
 		console.log('text', text);
 		$.ajax({
@@ -181,7 +180,6 @@ $('#searchInput').keyup(function () {
 			contentType : 'application/json;charset=UTF-8'
 		}).done( function(data){
 			console.log('성공');
-			console.log('데이터', data);
 			let search = "";
 			$.each(data, function (i, champion){
 				search+= "<div class='championDetail' onclick='setSearch_onclick(this)' style = 'font-weight: bold;'" 
