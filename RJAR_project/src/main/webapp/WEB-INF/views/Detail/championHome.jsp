@@ -149,9 +149,9 @@ function changeBackColor_out(div){
 
 //해당 클릭 시 --> 챔피언이름을 파라미터로 분석 상세 페이지로 이동(url : selectDetail)
 function setSearch_onclick(){
-	console.log($(this).innerText);
+	console.log($(this).attr("data-championName"));
 	$(".searchResult").css("display","none");
-	$("#searchInput").attr("value", $(this).innerText);
+	$("#searchInput").attr("value", $(this).attr("data-championName"));
 	$("#selectForm").submit();
 }
 
@@ -185,7 +185,7 @@ $('#searchInput').keyup(function () {
 			let search = "";
 			$.each(data, function (i, champion){
 				search+= "<div class='championDetail' onclick='setSearch_onclick(this)' style = 'font-weight: bold;'" 
-					  + "onmouseout='changeBackColor_out(this)'onmouseover='changeBackColor_over(this)'>"
+					  + "onmouseout='changeBackColor_out(this)'onmouseover='changeBackColor_over(this)' data-championName='"+champion.champion_kr_name+"'>"
 					  +	"<img class = 'selectImg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					  + champion.championName + ".png>"+champion.champion_kr_name+"</div>";
 			})

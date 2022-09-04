@@ -31,7 +31,7 @@ public class ChampionDetailController {
 	//검색창 입력 후 엔터 쳤을 때
 	@GetMapping(value = "/selectDetail")
 	public ModelAndView selectDetail(Champion champ){
-		System.out.println(champ.getChampion_kr_name());
+		System.out.println("챔피언 이름은 "+champ.getChampion_kr_name());
 		mav = champmm.selectDetail(champ.getChampion_kr_name());			
 		return mav;
 	}

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -10,6 +10,100 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div class="wholeBox">
+		<div class="vsBox">
+			<div class="championImg"></div>
 
+			<div class="outerVsGraghBox">
+
+				<div>
+					<font>챔피언</font>
+				</div>
+				<div>
+					<font>카운터</font>
+				</div>
+				<div class="innerVsGraghBox">
+					<div class="vsGragh" id="vsGragh1">챔피언</div>
+					<div class="vsGragh" id="vsGragh2">카운터</div>
+				</div>
+
+			</div>
+
+			<div class="championImg"></div>
+		</div>
+
+
+
+
+		<div class="wholeGraghBox">
+
+			<div class="outerLanekillBox">
+				<div>
+					<font>확률</font>
+				</div>
+				<div>
+					<font>확률</font>
+				</div>
+
+				<div class="innerLanekillBox">
+					<div class="lanekillRate"></div>
+					<div class="lanekillRate"></div>
+				</div>
+			</div>
+
+
+			<div class="outerKDABox">
+				<div>
+					<font>확률</font>
+				</div>
+				<div>
+					<font>확률</font>
+				</div>
+
+				<div class="innerKDABox">
+					<div class="kda"></div>
+					<div class="kda"></div>
+				</div>
+			</div>
+
+
+			<div class="outerPostionBox">
+				<div>
+					<font>승률</font>
+				</div>
+				<div>
+					<font>승률</font>
+				</div>
+
+				<div class="outerPostionBox">
+					<div class="positionWin"></div>
+					<div class="positionWin"></div>
+				</div>
+			</div>
+
+			<div class="outerPostionBox">
+				<div>
+					<font>승률</font>
+				</div>
+				<div>
+					<font>승률</font>
+				</div>
+
+				<div class="outerPostionBox">
+					<div class="positionWin"></div>
+					<div class="positionWin"></div>
+				</div>
+			</div>
+
+
+		</div>
+
+	
+	<div class="counterWhole">
+	<table class="counterList">
+	</table>
+	</div>
+	
+	</div><!-- wholeBox End -->
 </body>
 </html>
