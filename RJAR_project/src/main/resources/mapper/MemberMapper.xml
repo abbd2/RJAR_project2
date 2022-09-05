@@ -22,6 +22,11 @@
 		select * from member
 		where m_id = #{m_id}
 	</select>
+	<insert id="insertMember">
+		insert into member
+		values(m_num_seq.NEXTVAL, #{m_id}, #{m_nick}, #{m_pw},
+		#{m_name}, #{m_tel}, #{m_que}, #{m_ans}, #{m_phone})
+	</insert>
 	
 </mapper>
 
