@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.rjar.www.bean.Champion;
+import com.rjar.www.bean.ChampionDetail;
 
 public interface IchampionDao {
 
@@ -23,8 +24,14 @@ public interface IchampionDao {
 	
 	Champion getSpellList(@Param("championName") String championName,@Param("lane")String lane);
 
-	Champion getChampionName1(int championId);
+	List<ChampionDetail> getChampionName1(@Param("championId") int championId, @Param("tier") String tier);
 
-	Champion getChampionName2(String championName);
+	List<ChampionDetail> getChampionName2(@Param("championName") String championName, @Param("tier") String tier);
+	
+	List<ChampionDetail> getChampionRunes(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
+	
+	ChampionDetail rune_pickWin(@Param("main_rune")int main_rune, @Param("main_under1")int main_under1, @Param("main_under2")int main_under2, 
+			@Param("main_under3")int main_under3, @Param("main_under4")int main_under4, @Param("sub_rune")int sub_rune, @Param("sub_under1")int sub_under1, 
+			@Param("sub_under2")int sub_under2, @Param("statperks3")String statperks3, @Param("championName")String championName, @Param("lane")String lane);
 
 }

@@ -1,6 +1,8 @@
 package com.rjar.www.service.championDetail;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.rjar.www.bean.Champion;
+import com.rjar.www.bean.ChampionDetail;
 import com.rjar.www.dao.IchampionDao;
 
 
@@ -179,29 +182,147 @@ public class ChampionDetailMM {
 	      mav.addObject("lane",lane);
 	      
 	      Champion spell = champDao.getSpellList(championName, lane);
-		  mav.addObject("spell1", spell.getSpell1());
+//		  mav.addObject("spell1", spell.getSpell1());
 
-		  mav.addObject("spell2", spell.getSpell2());
+//		  mav.addObject("spell2", spell.getSpell2());
 
 	      mav.setViewName("Detail/championDetail");
 	      return mav;
 	   }
 
-	public ModelAndView clickDetail(int championId) {
+	public ModelAndView clickDetail(int championId, String tier) {
 		mav = new ModelAndView();
 		
-		Champion championName1 = champDao.getChampionName1(championId);
-		mav.addObject("championName", championName1.getChampionName());
-		mav.addObject("champion_kr_name", championName1.getChampion_kr_name());
+		//챔피언이름/주로 가는 2가지 라인 		
+		List<ChampionDetail> championNameLane = champDao.getChampionName1(championId, tier);
+		
+		String champion_eg_name = championNameLane.get(0).getChampionName();
+		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
+		String lane1 = championNameLane.get(0).getLane();
+		String lane2 = championNameLane.get(1).getLane();
+		
+		mav.addObject("championName", champion_eg_name);
+		mav.addObject("champion_kr_name", champion_kr_name);
+		mav.addObject("lane1", lane1);
+		mav.addObject("lane2", lane2);
+		
+		
+		
+		//해당 챔피언 룬 (2개 띄어야 함)
+		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1);
+		
+		ChampionDetail runes = championRunes.get(0);
+	
+		String statperks = championRunes.get(0).getStatperks();
+		StringTokenizer st1 = new StringTokenizer(statperks, "|");
+		
+		mav.addObject("runes", runes);
+		mav.addObject("statperks1", st1.nextToken());
+		mav.addObject("statperks2", st1.nextToken());
+		mav.addObject("statperks3", st1.nextToken());
+		
+		
+		ChampionDetail runes2 = championRunes.get(1);
+		
+		String statperks2 = championRunes.get(1).getStatperks();
+		StringTokenizer st2 = new StringTokenizer(statperks2, "|");
+		
+		mav.addObject("runes2", runes2);
+		mav.addObject("statperks2_1", st2.nextToken());
+		mav.addObject("statperks2_2", st2.nextToken());
+		mav.addObject("statperks2_3", st2.nextToken());
+		
+		
+		
+		//룬에 따른 판수/승률
+		List<ChampionDetail> rune_pickWin = new ArrayList<>();
+		for (int i = 0; i < 2; i++) {
+			int main_rune = championRunes.get(i).getMain_rune();
+			int main_under1 = championRunes.get(i).getMain_under1();
+			int main_under2 = championRunes.get(i).getMain_under2();
+			int main_under3 = championRunes.get(i).getMain_under3();
+			int main_under4 = championRunes.get(i).getMain_under4();
+			int sub_rune = championRunes.get(i).getSub_rune();
+			int sub_under1 = championRunes.get(i).getSub_under1();
+			int sub_under2 = championRunes.get(i).getSub_under2();
+			String statperks3 = championRunes.get(i).getStatperks();
+			
+			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
+					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1));
+			
+		}		
+		
+		mav.addObject("rune_pickWin1", rune_pickWin.get(0));
+		mav.addObject("rune_pickWin2", rune_pickWin.get(1));
+		
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
 
-	public ModelAndView selectDetail(String championName) {
+	public ModelAndView selectDetail(String championName, String tier) {
 		mav = new ModelAndView();
-		Champion championName2 = champDao.getChampionName2(championName);
-		mav.addObject("championName", championName2.getChampionName());
-		mav.addObject("champion_kr_name", championName2.getChampion_kr_name());
+		//챔피언이름/주로 가는 2가지 라인 		
+		List<ChampionDetail> championNameLane = champDao.getChampionName2(championName, tier);
+		
+		String champion_eg_name = championNameLane.get(0).getChampionName();
+		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
+		String lane1 = championNameLane.get(0).getLane();
+		String lane2 = championNameLane.get(1).getLane();
+		
+		mav.addObject("championName", champion_eg_name);
+		mav.addObject("champion_kr_name", champion_kr_name);
+		mav.addObject("lane1", lane1);
+		mav.addObject("lane2", lane2);
+		
+		
+		
+		//해당 챔피언 룬 (2개 띄어야 함)
+		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1);
+		
+		ChampionDetail runes = championRunes.get(0);
+	
+		String statperks = championRunes.get(0).getStatperks();
+		StringTokenizer st1 = new StringTokenizer(statperks, "|");
+		
+		mav.addObject("runes", runes);
+		mav.addObject("statperks1", st1.nextToken());
+		mav.addObject("statperks2", st1.nextToken());
+		mav.addObject("statperks3", st1.nextToken());
+		
+		
+		ChampionDetail runes2 = championRunes.get(1);
+		
+		String statperks2 = championRunes.get(1).getStatperks();
+		StringTokenizer st2 = new StringTokenizer(statperks2, "|");
+		
+		mav.addObject("runes2", runes2);
+		mav.addObject("statperks2_1", st2.nextToken());
+		mav.addObject("statperks2_2", st2.nextToken());
+		mav.addObject("statperks2_3", st2.nextToken());
+		
+		
+		
+		//룬에 따른 판수/승률
+		List<ChampionDetail> rune_pickWin = new ArrayList<>();
+		for (int i = 0; i < 2; i++) {
+			int main_rune = championRunes.get(i).getMain_rune();
+			int main_under1 = championRunes.get(i).getMain_under1();
+			int main_under2 = championRunes.get(i).getMain_under2();
+			int main_under3 = championRunes.get(i).getMain_under3();
+			int main_under4 = championRunes.get(i).getMain_under4();
+			int sub_rune = championRunes.get(i).getSub_rune();
+			int sub_under1 = championRunes.get(i).getSub_under1();
+			int sub_under2 = championRunes.get(i).getSub_under2();
+			String statperks3 = championRunes.get(i).getStatperks();
+			
+			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
+					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1));
+			
+		}
+		
+		mav.addObject("rune_pickWin1", rune_pickWin.get(0));
+		mav.addObject("rune_pickWin2", rune_pickWin.get(1));
+		
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
