@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.rjar.www.bean.Member;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
+import com.rjar.www.service.member.MemberMM;
 
 import lombok.extern.log4j.Log4j;
 
@@ -17,6 +19,8 @@ public class HomeController {
 
 	@Autowired
 	private ChampionDetailMM champmm;
+	@Autowired
+	private MemberMM membermm;
 
 	ModelAndView mav;
 
@@ -93,7 +97,9 @@ public class HomeController {
 	}
 	
 	@GetMapping(value = "/join3")
-	public String join3() {
+	public String join3(Member mm) {
+		log.info(mm);
+		membermm.memberJoin(mm);
 
 		return "join3";
 	}

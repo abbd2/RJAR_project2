@@ -23,7 +23,11 @@ public class MemberMM {
 
 	ModelAndView mav;
 
-	public ModelAndView memberJoin() {
+	public ModelAndView memberJoin(Member mm) {
+		
+		int result = mDao.insertMember(mm);
+		log.info(mm);
+		log.info(result);
 
 		return mav;
 	}
