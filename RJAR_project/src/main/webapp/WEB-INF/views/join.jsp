@@ -218,17 +218,12 @@
 		let checkflag = false;
 		
 		function checkBox() {
-			if(!($('#check1').is('checked')) || !($('#check2').is('checked')) || !($('#check3').is('checked'))){
+			if(checkflag){
 				$('#checkAll').prop('checked', false);
-				console.log('unChecked');
 				checkflag = false;
-			}else if($('#check1').is('checked') && $('#check2').is('checked') && $('#check3').is('checked')){
-				$('#checkAll').prop('checked', true);
-				console.log('checked');
-				checkflag = true;
 			}
+			
 		}
-		
 	
 		function check(field) {
 			if (!checkflag) {
@@ -236,20 +231,25 @@
 					field[i].checked = true;
 				}
 				checkflag = true;
-				return "Uncheck All";
+				return "check All";
 				
 			}else {
 				for (i = 0; i < field.length; i++) {
 					field[i].checked = false;
 				}
 				checkflag = false;
-				return "Check All";
+				return "unCheck All";
 			}
 		} // end check()
 
 		function chekcBoxTrue() {
-		if ($('#checkAll').is('checked')) {
+			if (checkflag) {
 				console.log('체크');
+				checkflag = false;
+				return true
+			} else if ($('#checkBox1').is('checked') && $('#checkBox2').is('checked') && $('#checkBox3').is('checked')) {
+				$('#checkAll').prop('checked', true);
+				checkflag = true;
 				return true
 			} else {
 				alert('약관에 동의해 주세요.')
