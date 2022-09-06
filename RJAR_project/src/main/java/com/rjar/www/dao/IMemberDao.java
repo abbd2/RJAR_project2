@@ -5,7 +5,9 @@ import com.rjar.www.bean.Member;
 public interface IMemberDao {
 
 	// MemberMapper.xml에서 함수명을 기반으로 찾는다
-	Member getMemberInfo(String m_id);
+	Member checkId(String m_id);
 	
-	int insertMember(Member mm);
+	Member checkNick(String m_nick);
+	
+	boolean insertMember(Member mm);
 }

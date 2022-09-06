@@ -5,6 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
+	crossorigin="anonymous">
+	
 <title>회원가입</title>
 <style type="text/css">
 #joinPage1 {
@@ -75,11 +82,11 @@
 	width: 120px;
 	height: 50px;
 	margin: 5px 0px 0px 190px;
-	border-radius: 5px;
-	border: 0px;
-	background-color: #5383e8;
-	font-size: 20px;
-	color: #ffffff;
+/* 	border-radius: 5px;
+/* 	border: 0px; */
+/* 	background-color: #5383e8; */
+/* 	font-size: 20px; */
+/* 	color: #ffffff; */
 }
 
 .checkBox {
@@ -87,59 +94,21 @@
 	height: 20px;
 	float: left;
 }
+
 </style>
 </head>
 <body>
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script type="text/javascript">
-	
-		let checkflag = "false";
-		
-		function check(field) {
-			
-			if (checkflag == "false") {
-				for (i = 0; i < field.length; i++) {
-					field[i].checked = true;}
-					checkflag = "true";
-					return "Uncheck All"; }
-			else {
-				for (i = 0; i < field.length; i++) {
-					field[i].checked = false; }
-					checkflag = "false";
-					return "Check All"; }
-			}
-
-		
-// 		$("#joinPage1").on("click", "#checkAll", function () {
-// 			  let checked = $(this).is(":checked");
-	
-// 			  if(checked){
-// 			  	$(this).siblings('input').prop("checked", true);
-// 			  } else {
-// 			  	$(this).siblings('input').prop("checked", false);
-// 			  }
-// 			});
-	
-// 			$("#joinPage1").on('click', 'input:not(#checkAll)', function () {
-// 			  let is_checked = true;
-// 			  $("#joinPage1 input:not(#checkAll)").each(function() {
-// 			  	is_checked =  is_checked && $(this).is(":checked");
-// 			  })
-// 			  $("#checkAll").prop("checked", is_checked)
-// 			});
-			
-	</script>
-
+<%-- <jsp:include page="header.jsp"></jsp:include> --%>
 	<div id="joinPage1">
-		<form name="form">
 		<div id="titleDiv">RJAR.GG</div>
 		<div id="joinTextDiv">회원가입</div>
 		<div id="pageSeparator">
-			<div class="circle" style="background-color: #5383e8;"></div>
+			<div class="circle" style="background-color: #333333;"></div>
 			<div class="circle"></div>
 			<div class="circle"></div>
 		</div>
 		
+	<form action="" onsubmit="return chekcBoxTrue()">
 		<div id="topDiv">
 			<div class="termsDiv">
 				<strong>이용약관</strong>
@@ -160,7 +129,7 @@
 			</div> <!-- end termsDiv -->
 			
 			<div class="termsCheckBox">
-				<input name="checkbox" class="checkBox" type="checkbox" value="">
+				<input id="checkBox1" name="checkbox" class="checkBox" type="checkbox" value="" onclick="checkBox()">
 				<div class="termsCheckBoxDiv">
 					RJAR.GG 서비스 이용약관 동의(필수)
 				</div>
@@ -218,30 +187,76 @@
 		</div>
 		<div style="height: 171px;">
 			<div class="termsCheckBox">
-				<input name="checkbox" class="checkBox" type="checkbox" value="">
+				<input id="checkBox2" name="checkbox" class="checkBox" type="checkbox" value="" onclick="checkBox()">
 				<div class="termsCheckBoxDiv">
 					RJAR.GG 개인정보 수집 동의(필수)
 				</div>
 			</div>	
 			<div class="termsCheckBox">
-				<input name="checkbox" class="checkBox" type="checkbox" value="">
+				<input id="checkBox3" name="checkbox" class="checkBox" type="checkbox" value="" onclick="checkBox()">
 				<div class="termsCheckBoxDiv">
 					이벤트 등 프로모션 알림 메일 및 푸시(선택)
 				</div>
 			</div>	
 			<div class="termsCheckBox">
-				<input name="checkbox" id="checkAll" class="checkBox" value="Check All" type="checkbox" onClick="this.value=check(this.form.checkbox)">
+				<input name="checkbox" id="checkAll" class="checkBox" value="CheckAll" type="checkbox" onClick="this.value=check(this.form.checkbox)">
 				<div class="termsCheckBoxDiv">
 					모두 동의
 				</div>
 			</div>
-			<a href="./join2">
-				<input id="nextBtn" type="button" value="다음">
-			</a>
+<!-- 			<input id="nextBtn" class="btn btn-primary btn-lg" type="submit" value="다음"> -->
+			<input id="nextBtn" type="submit" class="btn btn-primary btn-lg" value="다음">
 		</div>
 		</form>
-
 	</div> <!-- end joinPage1 -->
+	
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript">
+	
+	
+	
+		let checkflag = false;
+		
+		function checkBox() {
+			if(!($('#check1').is('checked')) || !($('#check2').is('checked')) || !($('#check3').is('checked'))){
+				$('#checkAll').prop('checked', false);
+				console.log('unChecked');
+				checkflag = false;
+			}else if($('#check1').is('checked') && $('#check2').is('checked') && $('#check3').is('checked')){
+				$('#checkAll').prop('checked', true);
+				console.log('checked');
+				checkflag = true;
+			}
+		}
+		
+	
+		function check(field) {
+			if (!checkflag) {
+				for (i = 0; i < field.length; i++) {
+					field[i].checked = true;
+				}
+				checkflag = true;
+				return "Uncheck All";
+				
+			}else {
+				for (i = 0; i < field.length; i++) {
+					field[i].checked = false;
+				}
+				checkflag = false;
+				return "Check All";
+			}
+		} // end check()
+
+		function chekcBoxTrue() {
+		if ($('#checkAll').is('checked')) {
+				console.log('체크');
+				return true
+			} else {
+				alert('약관에 동의해 주세요.')
+				return false
+			}
+		}
+	</script>
 
 </body>
 </html>
