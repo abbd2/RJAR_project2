@@ -22,6 +22,19 @@
 <title>RJAR.GG</title>
 </head>
 <style type="text/css">
+.header {
+	width: 1500px;
+	/* 	height: 500px;
+	position: relative; */
+}
+
+.container-fluid {
+	width: 1100px;
+	
+}
+
+
+
 .summoner-search-outter-box {
 	display: flex;
 	justify-content: center;
