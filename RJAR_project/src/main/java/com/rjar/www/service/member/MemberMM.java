@@ -2,6 +2,9 @@ package com.rjar.www.service.member;
 
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,6 @@ import com.rjar.www.dao.IMemberDao;
 import com.rjar.www.exception.CheckException;
 
 import lombok.extern.log4j.Log4j;
-
 
 @Log4j
 @Service
@@ -28,17 +30,17 @@ public class MemberMM {
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		mm.setM_pw(pwEncoder.encode(mm.getM_pw()));
 		System.out.println("암호화된 밀번호 : " + mm.getM_pw());
-		
-		// TODO
-		// 나중에 뒤로가기했을 때의 접근 처리 해야함
+
 		if (mDao.insertMember(mm)) {
 			mav = new ModelAndView();
 			mav.addObject("m_nick", mm.getM_nick());
-			mav.setViewName("join3");
+			mav.setViewName("redirect:/join3");
 			System.out.println("insert 성공");
-		}else {
+			System.out.println("회원가입 페이지3으로 이동");
+		} else {
 			System.out.println("insert 실패");
 		}
+
 		return mav;
 	}
 

@@ -13,10 +13,27 @@
 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
 	crossorigin="anonymous">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
+	rel="stylesheet">
+
 <title>Insert title here</title>
 
 
 <style type="text/css">
+.header {
+	width: 1500px;
+	/* 	height: 500px;
+	position: relative; */
+}
+
+.container-fluid {
+	width: 1100px;
+	
+}
+
 .summoner-search-outter-box {
 	display: flex;
 	justify-content: center;
@@ -38,70 +55,6 @@
 	margin-left: -150px;
 	width: 500px;
 }
-
-.w-btn {
-	position: relative;
-	border: none;
-	display: inline-block;
-	padding: 15px 30px;
-	border-radius: 15px;
-	font-family: "paybooc-Light", sans-serif;
-	font-size: 16px;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-	text-decoration: none;
-	font-weight: 700;
-	transition: 0.25s;
-}
-
-.w-btn-outline {
-	position: relative;
-	padding: 15px 30px;
-	border-radius: 15px;
-	font-family: "paybooc-Light", sans-serif;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-	text-decoration: none;
-	font-weight: 600;
-	transition: 0.25s;
-}
-
-.w-btn-green {
-	background-color: #77af9c;
-	color: #d7fff1;
-}
-
-.w-btn-green-outline {
-	border: 3px solid #77af9c;
-	color: darkgray;
-}
-
-.w-btn-green-outline:hover {
-	background-color: #77af9c;
-	color: #d7fff1;
-}
-
-.w-btn:hover {
-	letter-spacing: 1.5px;
-	transform: scale(1.2);
-	cursor: pointer;
-}
-
-.w-btn-outline:hover {
-	letter-spacing: 1.5px;
-	transform: scale(1.2);
-	cursor: pointer;
-}
-
-.w-btn:active {
-	transform: scale(1.2);
-}
-
-.w-btn-outline:active {
-	transform: scale(1.2);
-}
-
-#summoner-search-btn:focus {
-	outline: none;
-}
 </style>
 
 </head>
@@ -115,7 +68,7 @@
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 
-	<div id="header">
+	<div class="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="./home">RJAR</a>
@@ -128,14 +81,18 @@
 				<div class="collapse navbar-collapse" id="navbarColor01">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link"
-							href="./championHome">챔피언분석</a></li>
-						<li class="nav-item"><a class="nav-link" href="./laboratory">연구소</a></li>
-						<li class="nav-item"><a class="nav-link" href="./multiSearch">멀티서치</a></li>
-						<li class="nav-item"><a class="nav-link" href="./community">커뮤니티</a></li>
-						<li class="nav-item"><a class="nav-link" href="./lck">LCK분석</a></li>
+							href="./championHome" style="font-family: 'Poor Story', cursive">챔피언분석</a></li>
+						<li class="nav-item"><a class="nav-link" href="./laboratory"
+							style="font-family: 'Poor Story', cursive">연구소</a></li>
+						<li class="nav-item"><a class="nav-link" href="./multiSearch"
+							style="font-family: 'Poor Story', cursive">멀티서치</a></li>
+						<li class="nav-item"><a class="nav-link" href="./myPage"
+							style="font-family: 'Poor Story', cursive">커뮤니티</a></li>
+						<li class="nav-item"><a class="nav-link" href="./lck"
+							style="font-family: 'Poor Story', cursive">LCK분석</a></li>
 					</ul>
 				</div>
-				<form action="summonerSearch" method="Post">
+				<form action="summonerSearch" method="Get">
 					<div class="summoner-search-outter-box"
 						style="text-align: center; vertical-align: middle;">
 						<div class="summoner-search-box"
@@ -149,11 +106,12 @@
 					</div>
 				</form>
 				<a href="./login">
-					<button id="login-btn" type="button" class="btn btn-success">
-						로그인</button>
+					<button id="login-btn" type="button" class="btn btn-success"
+						style="font-family: 'Poor Story', cursive">로그인</button>
 				</a>
 			</div>
 		</nav>
 	</div>
+
 </body>
 </html>

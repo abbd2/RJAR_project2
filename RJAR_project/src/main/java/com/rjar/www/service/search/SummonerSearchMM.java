@@ -65,88 +65,114 @@ public class SummonerSearchMM {
 			urlBr = getUrl(apiUrl1);
 			JsonArray jsonArray = (JsonArray) jsonParser.parse(urlBr);
 
+
+			// 위에 jsonArray를 parser하고난 후에 json object를 구하기 위한 과정이다.
+			// solo rank와 free rank가 추출되는데, 둘다, 둘중 하나 혹은 하나도 출력되지 않는 경우도 있기에 아래와 같이 수식을 작성하였다.
 			String freeTier = null;
+			String freeRank = null;
 			int freeLeaguePoint = 0;
 			int freeWins = 0;
 			int freeLosses = 0;
 			double freeWinRate = 0;
-
+			
 			String soloTier = null;
+			String soloRank = null;
 			int soloLeaguePoint = 0;
 			int soloWins = 0;
 			int soloLosses = 0;
 			double soloWinRate = 0;
-
-			// 위에 jsonArray를 parser하고난 후에 json object를 구하기 위한 과정이다.
-			// solo rank와 free rank가 추출되는데, 둘다, 둘중 하나 혹은 하나도 출력되지 않는 경우도 있기에 아래와 같이 수식을
-			// 작성하였다.
+			// solo, free 둘다 출력되는 경우
 			if (jsonArray.size() == 2) {
 				JsonObject p = (JsonObject) jsonArray.get(0);
 				JsonObject p1 = (JsonObject) jsonArray.get(1);
 
 				if (p.get("queueType").getAsString().equals("RANKED_FLEX_SR")) {
 					freeTier = p.get("tier").getAsString();
+					freeRank = p.get("rank").getAsString();
 					freeLeaguePoint = p.get("leaguePoints").getAsInt();
 					freeWins = p.get("wins").getAsInt();
 					freeLosses = p.get("losses").getAsInt();
 					freeWinRate = Math.round(((double) freeWins / (freeWins + freeLosses)) * 100) / 100.0;
 					soloTier = p1.get("tier").getAsString();
+					soloRank = p1.get("rank").getAsString();
 					soloLeaguePoint = p1.get("leaguePoints").getAsInt();
 					soloWins = p1.get("wins").getAsInt();
 					soloLosses = p1.get("losses").getAsInt();
 					soloWinRate = Math.round(((double) soloWins / (soloWins + soloLosses)) * 100) / 100.0;
 				} else {
 					freeTier = p1.get("tier").getAsString();
+					freeRank = p1.get("rank").getAsString();
 					freeLeaguePoint = p1.get("leaguePoints").getAsInt();
 					freeWins = p1.get("wins").getAsInt();
 					freeLosses = p1.get("losses").getAsInt();
 					freeWinRate = Math.round(((double) freeWins / (freeWins + freeLosses)) * 100) / 100.0;
 					soloTier = p.get("tier").getAsString();
+					soloRank = p.get("rank").getAsString();
 					soloLeaguePoint = p.get("leaguePoints").getAsInt();
 					soloWins = p.get("wins").getAsInt();
 					soloLosses = p.get("losses").getAsInt();
 					soloWinRate = Math.round(((double) soloWins / (soloWins + soloLosses)) * 100) / 100.0;
 
 				}
+				// solo 혹은 free 둘중 하나만 출력되는 경우
 			} else if (jsonArray.size() == 1) {
 				JsonObject p = (JsonObject) jsonArray.get(0);
+				// free 데이터 출력
 				if (p.get("queueType").getAsString().equals("RANKED_FLEX_SR")) {
 					freeTier = p.get("tier").getAsString();
+					freeRank = p.get("rank").getAsString();
 					freeLeaguePoint = p.get("leaguePoints").getAsInt();
 					freeWins = p.get("wins").getAsInt();
 					freeLosses = p.get("losses").getAsInt();
 					freeWinRate = Math.round(((double) freeWins / (freeWins + freeLosses)) * 100) / 100.0;
 					soloTier = "Unranked";
+				// solo 데이터 출력
 				} else {
 					soloTier = p.get("tier").getAsString();
+					soloRank = p.get("rank").getAsString();
 					soloLeaguePoint = p.get("leaguePoints").getAsInt();
 					soloWins = p.get("wins").getAsInt();
 					soloLosses = p.get("losses").getAsInt();
 					soloWinRate = Math.round(((double) soloWins / (soloWins + soloLosses)) * 100) / 100.0;
 					freeTier = "Unranked";
 				}
+				// solo, free 둘다 없을경우 unranked를 삽입
 			} else {
 				soloTier = "Unranked";
 				freeTier = "Unranked";
 			}
+			
+			
+			// master, grandmaster, challenger는 rank 숫자가 없지만, api에서는 1을 제공한다.
+			// 따라서 해당 티어들인 경우에는 null을 넘겨준다
+			if(soloTier.equals("MASTER") || soloTier.equals("GRANDMASTER") || soloTier.equals("CHALLENGER")) {
+				soloRank = null;
+			}
+			
+			if(freeTier.equals("MASTER") || freeTier.equals("GRANDMASTER") || freeTier.equals("CHALLENGER")) {
+				freeRank = null;
+			}
+			
+			String loginDate = TimeCalculate(k.get("revisionDate").getAsLong());
+			System.out.println("loginDate="+loginDate);
+			
 
-			System.out.println(freeTier);
-			System.out.println(freeLeaguePoint);
-			System.out.println(freeWins);
 
 			// 검색한 소환사의 최근 10경기 데이터 가져오기
 			ModelAndView matchData = summonerMatchDetail(puuid, summonerName);
-			
-//			if(soloTier.equals("Level") || freeTier.equals("Level"))
+
 			mav.addObject("profileIconId", profileIconId);
+			mav.addObject("loginDate", loginDate);
 			mav.addObject("LV", summonerLevel);
 			mav.addObject("name", name);
 			mav.addObject("freeTier", freeTier);
+			mav.addObject("freeRank", freeRank);
 			mav.addObject("freeLeaguePoint", freeLeaguePoint);
 			mav.addObject("freeWins", freeWins);
 			mav.addObject("freeLosses", freeLosses);
 			mav.addObject("freeWinRate", (int) (freeWinRate * 100));
 			mav.addObject("soloTier", soloTier);
+			mav.addObject("soloRank", soloRank);
 			mav.addObject("soloLeaguePoint", soloLeaguePoint);
 			mav.addObject("soloWins", soloWins);
 			mav.addObject("soloLosses", soloLosses);
@@ -178,13 +204,13 @@ public class SummonerSearchMM {
 		return result;
 	}
 
-	private ModelAndView summonerMatchDetail(Object object, String summonerName) {
+	private ModelAndView summonerMatchDetail(Object puuid, String summonerName) {
 
 		mav = new ModelAndView();
-		String summonerMatch = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + object
-				+ "/ids?start=0&count=10&api_key=" + api_key;
+		String summonerMatch = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid
+				+ "/ids?start=0&count=20&api_key=" + api_key;
 		System.out.println("summonerName=" + summonerName);
-		System.out.println("object=" + object);
+		System.out.println("puuid=" + puuid);
 		try {
 			String urlBr = getUrl(summonerMatch);
 			JsonParser jsonParser = new JsonParser();
@@ -202,8 +228,15 @@ public class SummonerSearchMM {
 			System.out.println("gameData=" + matchDataList.get(0).replaceAll("\"", ""));
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
 
-			List<GameDetailShowInfo> gdsList = null;
+			List<List<GameDetailShowInfo>> totalGameData = new ArrayList<>();
+			List<List<GameDetailShowInfo>> totalSoloGameData = new ArrayList<>();
+			List<List<GameDetailShowInfo>> totalFreeGameData = new ArrayList<>();
+			List<List<GameDetailShowInfo>> totalOtherGameData = new ArrayList<>();
+			
 			List<GameDetailShowInfo> myGame = new ArrayList<>();
+			List<GameDetailShowInfo> mySoloGame = new ArrayList<>();
+			List<GameDetailShowInfo> myFreeGame = new ArrayList<>();
+			List<GameDetailShowInfo> myOtherGame = new ArrayList<>();
 			// 10판 게임데이터 id만 불러와서 list에 넣기
 			for (int j = 0; j < matchDataList.size(); j++) {
 				String urlBr1 = getUrl(matchUrl + matchDataList.get(j).replaceAll("\"", "") + "?api_key=" + api_key);
@@ -213,11 +246,15 @@ public class SummonerSearchMM {
 				JsonObject info = (JsonObject) p.get("info");
 				JsonArray participants = info.getAsJsonArray("participants");
 				JsonArray team = info.getAsJsonArray("teams");
-				
+
 				// 1게임당 10명의 소환사 정보 불러오기
 				List<GameDetailShowInfo> gameData = new ArrayList<>();
+				List<GameDetailShowInfo> soloGameData = new ArrayList<>();
+				List<GameDetailShowInfo> freeGameData = new ArrayList<>();
+				List<GameDetailShowInfo> otherGameData = new ArrayList<>();
+				
 				for (int k = 0; k < 10; k++) {
-					Map<GameDetailShowInfo, Object> sgi = new HashMap<GameDetailShowInfo, Object>();
+//					Map<GameDetailShowInfo, Object> sgi = new HashMap<GameDetailShowInfo, Object>();
 					GameDetailShowInfo gds = new GameDetailShowInfo();
 
 					JsonObject participant = (JsonObject) participants.get(k);
@@ -234,13 +271,16 @@ public class SummonerSearchMM {
 					JsonObject baron = null;
 					JsonObject tower = null;
 					JsonObject totalKills = null;
-
+					
+					// blue팀과 purple팀의 object kills을 각각 구하는 과정
+					// blue팀 objects
 					if (k < 5) {
 						JsonObject objectives = (JsonObject) purple.get("objectives");
 						baron = (JsonObject) objectives.get("baron");
 						dragon = (JsonObject) objectives.get("dragon");
 						tower = (JsonObject) objectives.get("tower");
 						totalKills = (JsonObject) objectives.get("champion");
+				    // purple팀 objects
 					} else {
 						JsonObject objectives = (JsonObject) blue.get("objectives");
 						baron = (JsonObject) objectives.get("baron");
@@ -249,19 +289,104 @@ public class SummonerSearchMM {
 						totalKills = (JsonObject) objectives.get("champion");
 					}
 
+					// 승리여부를 화면에 띄우기 위한 용어로 변환
+					String winDefeat = null;
+					if (participant.get("win").getAsString().equals("true")) {
+						winDefeat = "승리";
+					} else {
+						winDefeat = "패배";
+					}
+					// death가 0일때 perfect를 부여하는 과정
+					if (participant.get("deaths").getAsInt() == 0) {
+						String kda = "perfect";
+						gds.setSs_kda(kda);
+					} else {
+						gds.setSs_kda(String.format("%.2f",
+								(double) (participant.get("kills").getAsInt() + participant.get("assists").getAsInt())
+										/ participant.get("deaths").getAsInt()));
+					}
+
+					// 해당 챔피언이 어떤 킬을 했는지 확인하는 과정
+					String killType = null;
+					if (participant.get("pentaKills").getAsInt() == 1) {
+						killType = "펜타킬";
+					} else if (participant.get("quadraKills").getAsInt() == 1) {
+						killType = "쿼드라킬";
+					} else if (participant.get("tripleKills").getAsInt() == 1) {
+						killType = "트리플킬";
+					} else if (participant.get("doubleKills").getAsInt() == 1) {
+						killType = "더블킬";
+					} else {
+						killType = "없음";
+					}
+					
+					// 게임 끝난 시간 및 게임 시간을 구하는 과정
+					String endGameTime = TimeCalculate(info.get("gameEndTimestamp").getAsLong());
+					String playTime = (info.get("gameDuration").getAsInt()) / 60 + "분 "
+							+ (info.get("gameDuration").getAsInt()) % 60 + "초";
+
+					// 7개의 아이템들을 리스트에 넣어 저장
+					List<Integer> items = new ArrayList<Integer>();
+					items.add(participant.get("item0").getAsInt());
+					items.add(participant.get("item1").getAsInt());
+					items.add(participant.get("item2").getAsInt());
+					items.add(participant.get("item3").getAsInt());
+					items.add(participant.get("item4").getAsInt());
+					items.add(participant.get("item5").getAsInt());
+					items.add(participant.get("item6").getAsInt());
+
+					// 분당 cs를 구하는 과정
+					double perCs1 = ((double) (participant.get("totalMinionsKilled").getAsInt()
+							+ participant.get("neutralMinionsKilled").getAsInt())
+							/ (info.get("gameDuration").getAsInt() / 60));
+					String perCs = String.format("%.1f", perCs1);
+					// 킬관여율 계산
+					String killParticipant = String.format("%.0f",
+							(double) (participant.get("kills").getAsInt() + participant.get("assists").getAsInt())
+									/ totalKills.get("kills").getAsInt() * 100);
+
+					// 피들스틱 챔피언 이름 변경
+					String champName = null;
+					if (participant.get("championName").getAsString().equals("FiddleSticks")) {
+						gds.setSs_championName("Fiddlesticks");
+					} else {
+						gds.setSs_championName(participant.get("championName").getAsString());
+					}
+					
+					// 게임타입을 작성
+					String gameType = null;
+					switch (info.get("queueId").getAsInt()) {
+					case 420:
+						gameType = "솔랭";
+						break;
+					case 430:
+						gameType = "일반";
+						break;
+					case 440:
+						gameType = "자유 5:5 랭크";
+						break;
+					case 450:
+						gameType = "무작위 총력전";
+						break;
+					case 1400:
+						gameType = "궁극기 주문서";
+						break;
+					case 840:
+						gameType = "AI대전(초급)";
+						break;
+					case 850:
+						gameType = "AI대전(중급)";
+						break;
+					case 700:
+						gameType = "격전";
+					}
+
+					// json object로 가져온것들을 bean에 주입시키는 과정
 					gds.setSs_gameId(matchDataList.get(k).replaceAll("\"", ""));
 					gds.setSs_participantId(participant.get("participantId").getAsInt());
 					gds.setSs_championId(participant.get("championId").getAsInt());
-					gds.setSs_championName(participant.get("championName").getAsString());
 					gds.setSs_champLevel(participant.get("champLevel").getAsInt());
 					gds.setSs_summonerName(participant.get("summonerName").getAsString());
-					
-					String winDefeat = null;
-					if(participant.get("win").getAsString().equals("true")) {
-						winDefeat = "승리";
-					}else {
-						winDefeat = "패배";
-					}
 
 					gds.setSs_win(winDefeat);
 					gds.setSs_spell1(participant.get("summoner1Id").getAsInt());
@@ -273,17 +398,9 @@ public class SummonerSearchMM {
 					gds.setSs_kills(participant.get("kills").getAsInt());
 					gds.setSs_assists(participant.get("assists").getAsInt());
 					gds.setSs_deaths(participant.get("deaths").getAsInt());
-					
-					if(participant.get("deaths").getAsInt()==0) {
-						String kda = "perfect";
-						gds.setSs_kda(kda);
-					}else {
-					    gds.setSs_kda(String.format("%.2f", challenges.get("kda").getAsDouble()));
-						System.out.println("kda="+String.format("%.2f", challenges.get("kda").getAsDouble()));
-					}
-					
 
-					gds.setSs_killParticipation(challenges.get("killParticipation").getAsDouble());
+					gds.setSs_killType(killType);
+					gds.setSs_killParticipation(killParticipant);
 					gds.setSs_totalDamageDealtToChampions(participant.get("totalDamageDealtToChampions").getAsInt());
 					gds.setSs_totalDamageTaken(participant.get("totalDamageTaken").getAsInt());
 
@@ -292,59 +409,81 @@ public class SummonerSearchMM {
 					gds.setSs_wardPlaced(participant.get("wardsPlaced").getAsInt());
 					gds.setSs_cs(participant.get("totalMinionsKilled").getAsInt()
 							+ participant.get("neutralMinionsKilled").getAsInt());
+					gds.setSs_perCs(perCs);
 
-					gds.setSs_item0(participant.get("item0").getAsInt());
-					gds.setSs_item1(participant.get("item1").getAsInt());
-					gds.setSs_item2(participant.get("item2").getAsInt());
-					gds.setSs_item3(participant.get("item3").getAsInt());
-					gds.setSs_item4(participant.get("item4").getAsInt());
-					gds.setSs_item5(participant.get("item5").getAsInt());
-					gds.setSs_item6(participant.get("item6").getAsInt());
+					gds.setSs_items(items);
 
 					gds.setSs_earnGold(participant.get("goldEarned").getAsInt());
 					gds.setSs_dragon(dragon.get("kills").getAsInt());
 					gds.setSs_baron(baron.get("kills").getAsInt());
 					gds.setSs_tower(tower.get("kills").getAsInt());
 					gds.setSs_totalKills(totalKills.get("kills").getAsInt());
-					gds.setSs_gameDuration(info.get("gameDuration").getAsInt());
-					gds.setSs_gameEndTimestamp(info.get("gameEndTimestamp").getAsInt());
-					
+				
+					gds.setSs_gameDuration(playTime);
+					gds.setSs_gameEndTimestamp(endGameTime);
+					gds.setSs_gameType(gameType);
 					// 검색한 소환사의 정보를 따로 저장
-					if (summonerName.equals(participant.get("summonerName").getAsString())) {
-						String gameType = null;
-						switch (info.get("queueId").getAsInt()) {
-						case 420:
-							gameType = "솔랭";
-							break;
-						case 430:
-							gameType = "일반";
-							break;
-						case 440:
-							gameType = "자유 5:5 랭크";
-							break;
-						case 450:
-							gameType = "무작위 총력전";
-							break;
-						case 1400:
-							gameType = "궁극기 주문서";
-							break;
-						}
-						System.out.println(gameType);
+					if (puuid.equals(participant.get("puuid").getAsString())) {
+						// puuid가 일치한 본인의 게임 데이터를 가져와 따로 저장한다
+						// 메인에 기본적으로 띄워지는 본인 경기를 출력하기 위함
+						
 						gameData.add(gds);
-						gds.setSs_gameType(gameType);
+						soloGameData.add(gds);
+						freeGameData.add(gds);
+						otherGameData.add(gds);
+											
 						myGame.add(gds);
+						mySoloGame.add(gds);
+						myFreeGame.add(gds);
+						myOtherGame.add(gds);
+						
 					} else {
 						gameData.add(gds);
+						soloGameData.add(gds);
+						freeGameData.add(gds);
+						otherGameData.add(gds);
 					}
 
 				}
-				System.out.println("gd=" + gameData);
-				System.out.println("gg" + gameData.getClass().getName());
-				System.out.println("size="+myGame.size());
+							
+				// 리스트로 묶인 각각의 게임을 다시 리스트로 넣는다.
+				// make_html로 출력하기 위함
+				soloGameData.removeIf(gds -> !gds.getSs_gameType().equals("솔랭"));
+				freeGameData.removeIf(gds -> !gds.getSs_gameType().equals("자유 5:5 랭크"));
+				otherGameData.removeIf(gds -> gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크"));
+//				System.out.println("1="+soloGameData);
+//				System.out.println(soloGameData.size());
+				
+				if(soloGameData.size()==10) {
+					totalSoloGameData.add(soloGameData);
+				}
+				
+				if(freeGameData.size()==10) {
+					totalFreeGameData.add(freeGameData);
+				}
+				
+				if(otherGameData.size()==10) {
+					totalOtherGameData.add(otherGameData);
+				}
+
+				totalGameData.add(gameData);
 
 			}
-			mav.addObject("myGames", makeHtml_myGameData(myGame));
-//			mav.addObject("json", GameCountMap);
+			mySoloGame.removeIf(gds -> !gds.getSs_gameType().equals("솔랭"));
+			myFreeGame.removeIf(gds -> !gds.getSs_gameType().equals("자유 5:5 랭크"));
+			myOtherGame.removeIf(gds -> gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크"));
+			
+			
+			System.out.println(myFreeGame);
+			System.out.println(myFreeGame.size());
+			System.out.println("1="+totalFreeGameData);
+			System.out.println(totalFreeGameData.size());
+			
+			
+			mav.addObject("myGames", makeHtml_myGameData(myGame, totalGameData));
+			mav.addObject("mySoloGames", makeHtml_myGameData(mySoloGame, totalSoloGameData));
+			mav.addObject("myFreeGame", makeHtml_myGameData(myFreeGame, totalFreeGameData));
+			mav.addObject("myOtherGame", makeHtml_myGameData(myOtherGame, totalOtherGameData));
 
 		} catch (Exception e) {
 			System.out.println("오류=" + e.getMessage());
@@ -355,16 +494,471 @@ public class SummonerSearchMM {
 		return mav;
 	}
 
-	private Object makeHtml_myGameData(List<GameDetailShowInfo> myGame) {
+	private Object makeHtml_myGameData(List<GameDetailShowInfo> myGame, List<List<GameDetailShowInfo>> totalGameData) {
 		StringBuffer sb = new StringBuffer();
-		for(int i=0; i<myGame.size(); i++) {
-			GameDetailShowInfo gds = myGame.get(i);
-			
-			
-			
-		}
 		
-		return null;
+		// 전적 및 잘못된 소환사 이름일 경우 띄우는 div 메시지
+		if (myGame.size() == 0) {
+			sb.append("<div class=\"card\">");
+			sb.append("<div class=\"card-body\">");
+			sb.append("<p class=\"card-text\" style=\"font-family: 'Poor Story', cursive\">기록된 전적이 없습니다.</p>");
+			sb.append("</div>");
+			sb.append("</div>");
+
+		} else {
+			for (int i = 0; i < myGame.size(); i++) {
+				// 본인 전적검색의 정보 가져오기
+				GameDetailShowInfo gds = myGame.get(i);
+				// 상세정보 클릭시의 전체 정보를 가져오기
+				List<GameDetailShowInfo> ml = totalGameData.get(i);
+				
+				// 본인 전적검색의 승리여부를 배경색이나 글자 색으로 표현하기 위한 수식
+				String backgroundColor = null;
+				String itemBoxColor = null;
+				String fontColor = null;
+				int blueTotalGoldEarn = 0;
+				int purpleTotalGoldEarn = 0;
+
+				if (gds.getSs_win().equals("승리")) {
+					backgroundColor = "#A5C6F6";
+					itemBoxColor = "#5F90D9";
+					fontColor = "blue";
+				} else {
+					backgroundColor = "#FEC0C0";
+					itemBoxColor = "#D38389";
+					fontColor = "red";
+				}
+				
+				// 상세보기 클릭시 본인 및 타인의 전적검색 승리여부를 배경색이나 글자 색으로 표현하기 위한 수식
+				String blueBackgroundColor = null;
+				String purpleBackgroundColor = null;
+				String blueItemBoxColor = null;
+				String purpleItemBoxColor = null;
+				String blueGraphColor = null;
+				String purpleGraphColor = null;
+				String blueFontColor = null; 
+				String purpleFontColor = null; 
+				
+				if(ml.get(0).getSs_win().equals("승리")) {
+					blueBackgroundColor = "table-info";
+					purpleBackgroundColor = "table-danger";
+					blueItemBoxColor = "#5F90D9";
+					purpleItemBoxColor = "#D38389";
+					blueGraphColor = "progress-bar bg-info";
+					purpleGraphColor = "progress-bar bg-danger";
+					blueFontColor = "blue";
+					purpleFontColor = "red";
+					
+					
+				}else if(ml.get(5).getSs_win().equals("승리")) {
+					blueBackgroundColor = "table-danger";
+					purpleBackgroundColor = "table-info";
+					blueItemBoxColor = "#D38389";
+					purpleItemBoxColor = "#5F90D9";
+					blueGraphColor = "progress-bar bg-danger";
+					purpleGraphColor = "progress-bar bg-info";
+					blueFontColor = "red";
+					purpleFontColor = "blue";
+				}
+				
+				// 받은피해량과 가한피해량의 max값 구하기 
+				// 각각 소환사의 받은피해량과 가한피해량의 %를 구해 그래프에 대입하기위한 방식
+				int maxDamageDealt = ml.get(0).getSs_totalDamageDealtToChampions();
+				int maxDamageTaken = ml.get(0).getSs_totalDamageTaken();
+				
+				for(int p=0; p<10; p++) {
+					if(maxDamageDealt<ml.get(p).getSs_totalDamageDealtToChampions()) {						
+						maxDamageDealt = ml.get(p).getSs_totalDamageDealtToChampions();
+					}
+					if(maxDamageTaken<ml.get(p).getSs_totalDamageTaken()) {
+						maxDamageTaken =  ml.get(p).getSs_totalDamageTaken();
+					}
+				}
+				
+				
+				sb.append("<div class=\"card\" style=\"background-color:" + backgroundColor + "; margin-bottom:5px\">");
+				sb.append("<div class=\"card-body\" id=\"dataFlexBox\" style=\"padding:5px\">");
+				sb.append("<div class=\"gameDate\">");
+				sb.append(
+						"<div class=\"gameType\" style=\"color:" + fontColor + "; font-family: 'Poor Story', cursive\">" + gds.getSs_gameType() + "</div>");
+				sb.append("<div class=\"gameEndTime\" style=\"font-family: 'Poor Story', cursive\">" + gds.getSs_gameEndTimestamp() + "</div>");
+				sb.append("<div class=\"winOrDefeat\" style=\"color:" + fontColor + ";font-family: 'Poor Story', cursive\">" + gds.getSs_win() + "</div>");
+				sb.append("<div class=\"gameDuration\" style=\"font-family: 'Poor Story', cursive\">" + gds.getSs_gameDuration() + "</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"championData\">");
+				sb.append("<div class=\"imageLevelBox\">");
+				sb.append("<div class=\"imageLevel\">");
+				sb.append("<div id=\"champImage\" style=\"height: 60px\">");
+				sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+						+ gds.getSs_championName() + ".png\" width=\"50px\">");
+				sb.append("</div>");
+				sb.append("<div id=\"champLevel\">");
+				sb.append("<span class=\"badge rounded-pill bg-primary\" style=\"color: white; height:20px; font-size :10px;\">"
+						+ gds.getSs_champLevel() + "</span>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"spellBox\">");
+				sb.append("<div id=\"spell1\">");
+				sb.append("<img src=\"./resources/spell/" + gds.getSs_spell1() + ".png\" width=\"25px\">");
+				sb.append("</div>");
+				sb.append("<div id=\"spell2\">");
+				sb.append("<img src=\"./resources/spell/" + gds.getSs_spell2() + ".png\" width=\"25px\">");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"runeBox\">");
+				sb.append("<div id=\"mainRune\">");
+				sb.append("<img src=\"./resources/runes/" + gds.getSs_mainRune() + ".png\" width=\"25px\">");
+				sb.append("</div>");
+				sb.append("<div id=\"subRune\">");
+				sb.append("<img src=\"./resources/runes/" + gds.getSs_subRune() + ".png\" width=\"25px\">");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"lane\">");
+				sb.append("<h6>" + gds.getSs_lane() + "</h6>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"itemsBox\">");
+				sb.append("<div class=\"items\">");
+
+				for (int j = 0; j < 7; j++) {
+					if (gds.getSs_items().get(j) == 0) {
+						sb.append("<div id=\"item\" style=\"background-color:" + itemBoxColor + "\" >");
+						sb.append("</div>");
+					} else {
+						sb.append("<div id=\"item\">");
+						sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/"
+								+ gds.getSs_items().get(j) + ".png\" width=\"28px\">");
+						sb.append("</div>");
+					}
+				}
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"stats\">");
+				sb.append("<div id=\"bigKda\" style=\"width: 100%; height: 30px\">");
+				sb.append("<span>" + gds.getSs_kills() + "</span> / <span style=\"color:red\">" + gds.getSs_deaths()
+						+ "</span> / <span>" + gds.getSs_assists() + "</span>");
+				sb.append("</div>");
+				sb.append("<div class=\"kdaKp\" style=\"margin-top:-5px\">");
+				sb.append("<p style=\"height: 5px; float: none\">KDA " + gds.getSs_kda() + "</p>");
+				sb.append("<p style=\"height: 5px; float: none\"><span style=\"font-family: 'Poor Story', cursive\">킬관여</span> " + gds.getSs_killParticipation() + "%</p>");
+				sb.append("</div>");
+
+				if (gds.getSs_killType().equals("없음")) {
+					sb.append("<div class =\"killType\">");
+					sb.append("</div>");
+				} else {
+					sb.append("<div class =\"killType\" style=\"margin-top:10px\">");
+					sb.append(" <span class=\"badge rounded-pill bg-danger\" style=\"font-family: 'Poor Story', cursive\">" + gds.getSs_killType() + "</span>");
+					sb.append("</div>");
+				}
+
+				sb.append("</div>");
+				sb.append("<div class=\"CS\">");
+				sb.append("<p style=\"height: 5px\">CS " + gds.getSs_cs() + "</p>");
+				sb.append("<p style=\"height: 5px\">(" + gds.getSs_perCs() + "/분)</p>");
+				sb.append("<p style=\"height: 5px\">" + gds.getSs_visionWardBuy() + "</p>");
+				sb.append("<p style=\"height: 5px\">" + gds.getSs_wardPlaced() + "/" + gds.getSs_wardKilled() + "</p>");
+				sb.append("</div>");
+				sb.append("<div class=\"teamList\">");
+				sb.append("<div class=\"blueTeam\">");
+
+				for (int k = 0; k < 5; k++) {
+					blueTotalGoldEarn += ml.get(k).getSs_earnGold();
+					
+					sb.append("<div class=\"summoner\">");
+					sb.append("<div class=\"miniSumImage\" style=\"margin-right:1.5px\">");
+					sb.append(
+							"<img class=\"minichampImg\" src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+									+ ml.get(k).getSs_championName() + ".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("<div class=\"miniSumName\" style=\"font-family: 'Poor Story', cursive;\">");
+					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="
+							+ ml.get(k).getSs_summonerName() + "' class=\"miniName\">" + ml.get(k).getSs_summonerName()
+							+ "</a>");
+					sb.append("</div>");
+					sb.append("</div>");
+				}
+				
+				sb.append("</div>");
+				sb.append("<div class=\"purpleTeam\">");
+
+				for (int k = 5; k < 10; k++) {
+					purpleTotalGoldEarn += ml.get(k).getSs_earnGold();
+					
+					if (gds.getSs_gameType().equals("AI대전(초급)") || gds.getSs_gameType().equals("AI대전(중급)")) {
+						sb.append("<div class=\"summoner\">");
+						sb.append("<div class=\"miniSumImage\" style=\"margin-right:1.5px;\">");
+						sb.append(
+								"<img class=\"minichampImg\" src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+										+ ml.get(k).getSs_championName() + ".png\" width=\"18px\">");
+						sb.append("</div>");
+						sb.append("<div class=\"miniSumName\" style=\"font-family: 'Poor Story', cursive;\">");
+						sb.append("<p>(봇)</p>");
+						sb.append("</div>");
+						sb.append("</div>");
+
+					} else {
+						sb.append("<div class=\"summoner\">");
+						sb.append("<div class=\"miniSumImage\" style=\"margin-right:1.5px\">");
+						sb.append(
+								"<img class=\"minichampImg\" src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
+										+ ml.get(k).getSs_championName() + ".png\" width=\"18px\">");
+						sb.append("</div>");
+						sb.append("<div class=\"miniSumName\" style=\"font-family: 'Poor Story', cursive;\">");
+						sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="
+								+ ml.get(k).getSs_summonerName() + "' class=\"miniName\">"
+								+ ml.get(k).getSs_summonerName() + "</a>");
+						sb.append("</div>");
+						sb.append("</div>");
+					}
+				}
+
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"arrowBox\">");
+				sb.append("<div class=\"arrow-wrap\">");
+				sb.append("<span class=\"arrow-top\">⋁</span> <span class=\"arrow-bottom\">⋀</span>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("</div>");
+				sb.append("<div class=\"otherPlayerList\">");
+				sb.append("<table class=\"table table-hover\">");
+				sb.append("<thead style=\"height: 5px; text-align: center\">");
+				sb.append("<tr>");
+				sb.append("<th scope=\"col\">Type</th>");
+				sb.append("<th scope=\"col\">KDA</th>");
+				sb.append("<th scope=\"col\" style=\"font-family: 'Poor Story', cursive\">가한 피해량</th>");
+				sb.append("<th scope=\"col\" style=\"font-family: 'Poor Story', cursive\">받은 피해량</th>");
+				sb.append("<th scope=\"col\" style=\"font-family: 'Poor Story', cursive\">와드</th>");
+				sb.append("<th scope=\"col\">CS</th>");
+				sb.append("<th scope=\"col\" style=\"font-family: 'Poor Story', cursive\">아이템</th>");
+				sb.append("</tr>");
+				sb.append("</thead>");
+				sb.append("<tbody>");
+				
+				// blue 팀 데이터 출력
+				for(int k=0; k<5; k++) {			
+					sb.append("<tr class="+blueBackgroundColor+" style=\"height: 50px\">");
+					sb.append("<th scope=\"row\" style=\"width: 24%; padding-right : 5px\">");
+					sb.append("<div class=\"otherChampImageLevel\">");
+					sb.append("<div id=\"champImage\">");
+					sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"+ml.get(k).getSs_championName()+".png\" width=\"35px\">");
+					sb.append("</div>");
+					sb.append("<div id=\"otherChampLevel\">");
+					sb.append("<span class=\"badge rounded-pill bg-primary\" id=\"otherImage\" style=\"color: white; height: 11px; font-size: 5px\">"+ml.get(k).getSs_champLevel()+"</span>");
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("<div class=\"otherSpellBox\">");
+					sb.append("<div id=\"otherSpell1\">");
+					sb.append("<img class=\"miniSpell\" src=\"./resources/spell/"+ml.get(k).getSs_spell1()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("<div id=\"otherSpell2\">");
+					sb.append("<img class=\"miniSpell\" src=\"./resources/spell/"+ml.get(k).getSs_spell2()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("<div class=\"otherRuneBox\">");
+					sb.append("<div id=\"otherMainRune\">");
+					sb.append("<img class=\"miniRune\" src=\"./resources/runes/"+ml.get(k).getSs_mainRune()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("<div id=\"otherSubRune\">");
+					sb.append("<img class=\"miniRune\" src=\"./resources/runes/"+ml.get(k).getSs_subRune()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("<div class=\"otherSummonerName\">");
+					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" style=\"font-family: 'Poor Story', cursive;\">" + ml.get(k).getSs_summonerName()+ "</a>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">"+ml.get(k).getSs_lane()+"</p>");
+					sb.append("</div>");
+					sb.append("</th>");
+					sb.append("<td style=\"width: 10%\">");
+					sb.append("<div class=\"otherKda\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; font-weight: bold;\">"+ml.get(k).getSs_kills()+"/"+ml.get(k).getSs_deaths()+"/"+ml.get(k).getSs_assists()+"("+ml.get(k).getSs_killParticipation()+"%)</p>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">KDA "+ml.get(k).getSs_kda()+"</p>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 13%\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; text-align: center\">"+ml.get(k).getSs_totalDamageDealtToChampions()+"</p>");
+					sb.append("<div class=\"progress\">");
+					sb.append("<div class=\"progress-bar bg-danger\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(ml.get(k).getSs_totalDamageDealtToChampions())/maxDamageDealt*100)+"%;\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 13%\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; text-align: center\">"+ml.get(k).getSs_totalDamageTaken()+"</p>");
+					sb.append("<div class=\"progress\">");
+					sb.append("<div class=\"progress-bar\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(ml.get(k).getSs_totalDamageTaken())/maxDamageTaken*100)+"%;\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 7%\">");
+					sb.append("<div class=\"otherWard\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; font-weight: bold;\">"+ml.get(k).getSs_visionWardBuy()+"</p>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">"+ml.get(k).getSs_wardPlaced()+"/"+ml.get(k).getSs_wardKilled()+"</p>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 8%\">");
+					sb.append("<div class=\"otherCs\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; font-weight: bold;\">"+ml.get(k).getSs_cs()+"</p>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">("+ml.get(k).getSs_perCs()+"/분)</p>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 25%; padding-left:5px; padding-right:5px\">");
+					sb.append("<div class=\"otherItemsBox\">");
+					sb.append("<div class=\"items\">");
+					
+					for (int j = 0; j < 7; j++) {
+						if (ml.get(k).getSs_items().get(j) == 0) {
+							sb.append("<div id=\"item\" style=\"background-color:" + blueItemBoxColor + "\" >");
+							sb.append("</div>");
+						} else {
+							sb.append("<div id=\"item\">");
+							sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/"
+									+ ml.get(k).getSs_items().get(j) + ".png\" width=\"28px\">");
+							sb.append("</div>");
+						}
+					}
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("</tr>");
+			
+				}
+				// blue, purple팀의 Object 및 기타 게임정보 출력	
+				sb.append("<tr class=\"table-light\">");
+				sb.append("<td style=\"color:"+blueFontColor+"\">Baron : <span style=\"color:black\">"+ml.get(0).getSs_baron()+"</span> Dragon : <span style=\"color:black\">"+ml.get(0).getSs_dragon()+"</span> Tower : <span style=\"color:black\">"+ml.get(0).getSs_tower()+"</span></td>");
+				sb.append("<td colspan=\"5\" style=\"text-align: center; height: 20px;\">");
+				sb.append("<p class=\"graphTitle\" style=\"top: -2.5px\">Total Kill</p>");
+				sb.append("<div class=\"progress\" style=\"margin-top: -25px;\">");
+				sb.append("<div class=\""+blueGraphColor+"\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(ml.get(0).getSs_totalKills())/(ml.get(0).getSs_totalKills()+ml.get(5).getSs_totalKills())*100)+"%; text-align: left\" aria-valuenow=\"15\" aria-valuemin=\"0\" aria-valuemax=\"100\">"+ml.get(0).getSs_totalKills()+"</div>");
+				sb.append("<div class=\""+purpleGraphColor+"\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(ml.get(5).getSs_totalKills())/(ml.get(0).getSs_totalKills()+ml.get(5).getSs_totalKills())*100)+"%; text-align: right\" aria-valuenow=\"30\" aria-valuemin=\"0\" aria-valuemax=\"100\">"+ml.get(5).getSs_totalKills()+"</div>");
+				sb.append("</div>");
+				sb.append("<p class=\"graphTitle\" style=\"top: 3px\">Total Gold</p>");
+				sb.append("<div class=\"progress\" style=\"margin-top: -20px;\">");
+				sb.append("<div class=\""+blueGraphColor+"\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(blueTotalGoldEarn)/(blueTotalGoldEarn+purpleTotalGoldEarn)*100)+"%; text-align: left\" aria-valuenow=\"15\" aria-valuemin=\"0\" aria-valuemax=\"100\">"+blueTotalGoldEarn+"</div>");
+				sb.append("<div class=\""+purpleGraphColor+"\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(purpleTotalGoldEarn)/(blueTotalGoldEarn+purpleTotalGoldEarn)*100)+"%; text-align: right\" aria-valuenow=\"30\" aria-valuemin=\"0\" aria-valuemax=\"100\">"+purpleTotalGoldEarn+"</div>");
+				sb.append("</div>");
+				sb.append("</td>");
+				sb.append("<td style=\"text-align: right; color:"+purpleFontColor+"\">Baron : <span style=\"color:black\">"+ml.get(5).getSs_baron()+"</span> Dragon : <span style=\"color:black\">"+ml.get(5).getSs_dragon()+"</span> Tower : <span style=\"color:black\">"+ml.get(5).getSs_tower()+"</span></td>");
+				sb.append("</tr>");
+				
+				
+				// purple 팀 데이터 출력
+				for(int k=5; k<10; k++) {
+					
+					
+					sb.append("<tr class="+purpleBackgroundColor+" style=\"height: 50px\">");
+					sb.append("<th scope=\"row\" style=\"width: 24%; padding-right : 5px\">");
+					sb.append("<div class=\"otherChampImageLevel\">");
+					sb.append("<div id=\"champImage\">");
+					sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"+ml.get(k).getSs_championName()+".png\" width=\"35px\">");
+					sb.append("</div>");
+					sb.append("<div id=\"otherChampLevel\">");
+					sb.append("<span class=\"badge rounded-pill bg-primary\" id=\"otherImage\" style=\"color: white; height: 11px; font-size: 5px\">"+ml.get(k).getSs_champLevel()+"</span>");
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("<div class=\"otherSpellBox\">");
+					sb.append("<div id=\"otherSpell1\">");
+					sb.append("<img class=\"miniSpell\" src=\"./resources/spell/"+ml.get(k).getSs_spell1()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("<div id=\"otherSpell2\">");
+					sb.append("<img class=\"miniSpell\" src=\"./resources/spell/"+ml.get(k).getSs_spell2()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("<div class=\"otherRuneBox\">");
+					sb.append("<div id=\"otherMainRune\">");
+					sb.append("<img class=\"miniRune\" src=\"./resources/runes/"+ml.get(k).getSs_mainRune()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("<div id=\"otherSubRune\">");
+					sb.append("<img class=\"miniRune\" src=\"./resources/runes/"+ml.get(k).getSs_subRune()+".png\" width=\"18px\">");
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("<div class=\"otherSummonerName\">");
+					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" style=\"font-family: 'Poor Story', cursive;\">" + ml.get(k).getSs_summonerName()+ "</a>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">"+ml.get(k).getSs_lane()+"</p>");
+					sb.append("</div>");
+					sb.append("</th>");
+					sb.append("<td style=\"width: 10%\">");
+					sb.append("<div class=\"otherKda\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; font-weight: bold;\">"+ml.get(k).getSs_kills()+"/"+ml.get(k).getSs_deaths()+"/"+ml.get(k).getSs_assists()+"("+ml.get(k).getSs_killParticipation()+"%)</p>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">KDA "+ml.get(k).getSs_kda()+"</p>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 13%\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; text-align: center\">"+ml.get(k).getSs_totalDamageDealtToChampions()+"</p>");
+					sb.append("<div class=\"progress\">");
+					sb.append("<div class=\"progress-bar bg-danger\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(ml.get(k).getSs_totalDamageDealtToChampions())/maxDamageDealt*100)+"%;\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 13%\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; text-align: center\">"+ml.get(k).getSs_totalDamageTaken()+"</p>");
+					sb.append("<div class=\"progress\">");
+					sb.append("<div class=\"progress-bar\" role=\"progressbar\" style=\"width:"+String.format("%.0f", (double)(ml.get(k).getSs_totalDamageTaken())/maxDamageTaken*100)+"%;\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 7%\">");
+					sb.append("<div class=\"otherWard\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; font-weight: bold;\">"+ml.get(k).getSs_visionWardBuy()+"</p>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">"+ml.get(k).getSs_wardPlaced()+"/"+ml.get(k).getSs_wardKilled()+"</p>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 8%\">");
+					sb.append("<div class=\"otherCs\">");
+					sb.append("<p style=\"height: 5px; font-size: 15px; font-weight: bold;\">"+ml.get(k).getSs_cs()+"</p>");
+					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">("+ml.get(k).getSs_perCs()+"/분)</p>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("<td style=\"width: 25%; padding-left:5px; padding-right:5px \">");
+					sb.append("<div class=\"otherItemsBox\">");
+					sb.append("<div class=\"items\">");
+					
+					for (int j = 0; j < 7; j++) {
+						if (ml.get(k).getSs_items().get(j) == 0) {
+							sb.append("<div id=\"item\" style=\"background-color:" + purpleItemBoxColor + "\" >");
+							sb.append("</div>");
+						} else {
+							sb.append("<div id=\"item\">");
+							sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/"
+									+ ml.get(k).getSs_items().get(j) + ".png\" width=\"28px\">");
+							sb.append("</div>");
+						}
+					}
+					sb.append("</div>");
+					sb.append("</div>");
+					sb.append("</td>");
+					sb.append("</tr>");
+			
+				}
+				
+				sb.append("</tbody>");
+				sb.append("</table>");
+				sb.append("</div>");	
+										
+			}
+		}
+		return sb.toString();
+	}
+	
+
+	private String TimeCalculate(long asLong) {
+		long currentTime = System.currentTimeMillis() / 1000; // 현재 시간 구하기
+		long calculateTime = asLong / 1000; // 게임이 끝난 시간
+		long agoTime = currentTime - calculateTime; // 몇시간 전에 했는지 구하기
+
+		String timeDate = null;
+//		// 맞춰진 형식으로 띄우기 위해 계산
+		if (agoTime / 2592000 >= 1) {
+			long monTime = agoTime / 2592000;
+			timeDate = monTime + "달 전";
+		} else if (agoTime / 86400 >= 1) { // 일 계산
+			long dayTime = agoTime / 86400;
+			timeDate = dayTime + "일 전"; // 하루 이상이면
+		} else if (agoTime / 3600 >= 1) {
+			long hourTime = agoTime / 3600;
+			timeDate = hourTime + "시간 전"; // 1시간 이상이면
+		} else if (agoTime / 60 >= 1) {
+			long minTime = agoTime / 60;
+			timeDate = minTime + "분 전"; // 1분 이상이면
+		}
+		return timeDate;
 	}
 
 }

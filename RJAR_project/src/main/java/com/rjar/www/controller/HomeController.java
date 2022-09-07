@@ -1,6 +1,11 @@
 package com.rjar.www.controller;
 
+import java.net.http.HttpRequest;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,10 +72,11 @@ public class HomeController {
 		return "multiSearch";
 	}
 
-	@GetMapping(value = "/community")
-	public String community() {
+	@GetMapping(value = "/myPage")
+	public String myPage() {
+		System.out.println("myPage");
 
-		return "community/communityHome";
+		return "myPage";
 	}
 
 	@GetMapping(value = "/lck")
@@ -105,7 +111,6 @@ public class HomeController {
 
 	@GetMapping(value = "/join3")
 	public String join3() {
-		System.out.println("회원가입 페이지3으로 이동");
 		return "join3";
 	}
 
