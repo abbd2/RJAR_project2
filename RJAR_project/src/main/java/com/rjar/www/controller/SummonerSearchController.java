@@ -2,10 +2,10 @@ package com.rjar.www.controller;
 
 import java.io.IOException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.rjar.www.service.search.SummonerSearchMM;
@@ -21,7 +21,7 @@ public class SummonerSearchController {
     
 	ModelAndView mav;
 
-	@PostMapping(value = "/summonerSearch")
+	@GetMapping(value = "/summonerSearch")
 	public ModelAndView summonerSearch(String summonerName) throws Exception {
 		
 		long beforeTime = System.currentTimeMillis(); // 코드 실행 전의 시간

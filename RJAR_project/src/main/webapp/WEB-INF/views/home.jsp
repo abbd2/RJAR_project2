@@ -13,6 +13,12 @@
 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
 	crossorigin="anonymous">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
+	rel="stylesheet">
+
 <title>RJAR.GG</title>
 </head>
 <style type="text/css">
@@ -118,7 +124,7 @@
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 
-	<div id="header">
+	<div id="header" style="width: 1500px">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="./home">RJAR</a>
@@ -131,21 +137,21 @@
 				<div class="collapse navbar-collapse" id="navbarColor01">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link"
-							href="./championHome">챔피언분석</a></li>
-						<li class="nav-item"><a class="nav-link" href="./laboratory">연구소</a></li>
-						<li class="nav-item"><a class="nav-link" href="./multiSearch">멀티서치</a></li>
-						<li class="nav-item"><a class="nav-link" href="./community">커뮤니티</a></li>
-						<li class="nav-item"><a class="nav-link" href="./lck">LCK분석</a></li>
+							href="./championHome" style="font-family: 'Poor Story', cursive">챔피언분석</a></li>
+						<li class="nav-item"><a class="nav-link" href="./laboratory" style="font-family: 'Poor Story', cursive">연구소</a></li>
+						<li class="nav-item"><a class="nav-link" href="./multiSearch" style="font-family: 'Poor Story', cursive">멀티서치</a></li>
+						<li class="nav-item"><a class="nav-link" href="./community" style="font-family: 'Poor Story', cursive">커뮤니티</a></li>
+						<li class="nav-item"><a class="nav-link" href="./lck" style="font-family: 'Poor Story', cursive">LCK분석</a></li>
 					</ul>
 				</div>
 				<a href="./login">
-					<button id="login-btn" type="button" class="btn btn-success">로그인</button>
+					<button id="login-btn" type="button" class="btn btn-success" style="font-family: 'Poor Story', cursive">로그인</button>
 				</a>
 			</div>
 		</nav>
 	</div>
-	<form action="summonerSearch" method="Post">
-		<div class="main">
+	<form action="summonerSearch" method="Get">
+		<div class="main" style="width:500px">
 			<div class="container">
 				<div class="main-text-center">
 					<h1 class="main-text">RJAR.GG</h1>
