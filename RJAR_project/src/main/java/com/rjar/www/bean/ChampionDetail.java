@@ -17,7 +17,6 @@ public class ChampionDetail {
 	private String spell2;
 	private double spellwinrate;
 	private int spellpick;
-	
 	private int main_rune;
 	private int main_under1;
 	private int main_under2;
@@ -29,6 +28,9 @@ public class ChampionDetail {
 	private String statperks; //처음에 검색한 결과값
 	private double rune_winRate;
 	private int rune_pick;
+	
+	private int runes_id;
+	private String runes_icon;
 	
 	
 
