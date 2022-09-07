@@ -19,10 +19,11 @@
 	href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
 	rel="stylesheet">
 
-<title>Insert title here</title>
-
-
 <style type="text/css">
+body, html {
+	height: 100%;
+}
+
 .header {
 	width: 1500px;
 	/* 	height: 500px;
@@ -31,32 +32,43 @@
 
 .container-fluid {
 	width: 1100px;
-	
 }
 
-.summoner-search-outter-box {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-right: 100px;
+.main {
+	width: 1500px;
+	height: 100%;
+	background-color: white;
+	position: relative;
 }
 
-.main-text-center {
-	width: 500px;
-	height: 300px;
+.middle {
+	width: 1100px;
+	height: 100%;
+	background-color: red;
 	position: absolute;
-	left: 50%;
 	top: 50%;
-	margin-left: -150px;
-	margin-top: -100px;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
-#summoner-search-box {
-	margin-left: -150px;
-	width: 500px;
+.middleleft {
+	width: 200px;
+	height: 100%;
+	background-color: green;
+	margin: auto;
+	float: left;
+}
+
+.middleDetail {
+	width: 900px;
+	height: 100%;
+	background-color: yellow;
+	margin: auto;
+	float: left;
 }
 </style>
 
+<title>Insert title here</title>
 </head>
 <body>
 	<!-- Option 1: Bootstrap Bundle with Popper -->
@@ -81,37 +93,28 @@
 				<div class="collapse navbar-collapse" id="navbarColor01">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link"
-							href="./championHome" style="font-family: 'Poor Story', cursive">챔피언분석</a></li>
-						<li class="nav-item"><a class="nav-link" href="./laboratory"
-							style="font-family: 'Poor Story', cursive">연구소</a></li>
-						<li class="nav-item"><a class="nav-link" href="./multiSearch"
-							style="font-family: 'Poor Story', cursive">멀티서치</a></li>
-						<li class="nav-item"><a class="nav-link" href="./myPage"
-							style="font-family: 'Poor Story', cursive">커뮤니티</a></li>
-						<li class="nav-item"><a class="nav-link" href="./lck"
-							style="font-family: 'Poor Story', cursive">LCK분석</a></li>
+							style="font-family: 'Poor Story', cursive">마이페이지</a></li>
 					</ul>
 				</div>
-				<form action="summonerSearch" method="Get">
-					<div class="summoner-search-outter-box"
-						style="text-align: center; vertical-align: middle;">
-						<div class="summoner-search-box"
-							style="display: block; margin-right: 3px;">
-							<input class="form-control me-sm-2" type="text"
-								placeholder="소환사명을 입력하세요" name="summonerName">
-						</div>
-						<div class="summoner-search-button">
-							<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-						</div>
-					</div>
-				</form>
-				<a href="./login">
-					<button id="login-btn" type="button" class="btn btn-success"
-						style="font-family: 'Poor Story', cursive">로그인</button>
-				</a>
 			</div>
 		</nav>
 	</div>
+	<div class="main">
+		<div class="middle">
+			<div class="middleleft"></div>
+			<div class="middleDetail"></div>
+		</div>
+	</div>
+	<div class="footer"></div>
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>

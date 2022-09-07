@@ -521,7 +521,7 @@ public class SummonerSearchMM {
 				
 				
 				sb.append("<div class=\"card\" style=\"background-color:" + backgroundColor + "; margin-bottom:5px\">");
-				sb.append("<div class=\"card-body\" id=\"dataFlexBox\">");
+				sb.append("<div class=\"card-body\" id=\"dataFlexBox\" style=\"padding:5px\">");
 				sb.append("<div class=\"gameDate\">");
 				sb.append(
 						"<div class=\"gameType\" style=\"color:" + fontColor + "; font-family: 'Poor Story', cursive\">" + gds.getSs_gameType() + "</div>");
@@ -558,7 +558,7 @@ public class SummonerSearchMM {
 				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("<div class=\"lane\">");
-				sb.append("<h4>" + gds.getSs_lane() + "</h4>");
+				sb.append("<h6>" + gds.getSs_lane() + "</h6>");
 				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("<div class=\"itemsBox\">");
@@ -571,7 +571,7 @@ public class SummonerSearchMM {
 					} else {
 						sb.append("<div id=\"item\">");
 						sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/"
-								+ gds.getSs_items().get(j) + ".png\" width=\"30px\">");
+								+ gds.getSs_items().get(j) + ".png\" width=\"28px\">");
 						sb.append("</div>");
 					}
 				}
@@ -583,7 +583,7 @@ public class SummonerSearchMM {
 				sb.append("<span>" + gds.getSs_kills() + "</span> / <span style=\"color:red\">" + gds.getSs_deaths()
 						+ "</span> / <span>" + gds.getSs_assists() + "</span>");
 				sb.append("</div>");
-				sb.append("<div class=\"kdaKp\">");
+				sb.append("<div class=\"kdaKp\" style=\"margin-top:-5px\">");
 				sb.append("<p style=\"height: 5px; float: none\">KDA " + gds.getSs_kda() + "</p>");
 				sb.append("<p style=\"height: 5px; float: none\"><span style=\"font-family: 'Poor Story', cursive\">킬관여</span> " + gds.getSs_killParticipation() + "%</p>");
 				sb.append("</div>");
@@ -592,7 +592,7 @@ public class SummonerSearchMM {
 					sb.append("<div class =\"killType\">");
 					sb.append("</div>");
 				} else {
-					sb.append("<div class =\"killType\">");
+					sb.append("<div class =\"killType\" style=\"margin-top:10px\">");
 					sb.append(" <span class=\"badge rounded-pill bg-danger\" style=\"font-family: 'Poor Story', cursive\">" + gds.getSs_killType() + "</span>");
 					sb.append("</div>");
 				}
@@ -685,7 +685,7 @@ public class SummonerSearchMM {
 				// blue 팀 데이터 출력
 				for(int k=0; k<5; k++) {			
 					sb.append("<tr class="+blueBackgroundColor+" style=\"height: 50px\">");
-					sb.append("<th scope=\"row\" style=\"width: 24%;\">");
+					sb.append("<th scope=\"row\" style=\"width: 24%; padding-right : 5px\">");
 					sb.append("<div class=\"otherChampImageLevel\">");
 					sb.append("<div id=\"champImage\">");
 					sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"+ml.get(k).getSs_championName()+".png\" width=\"35px\">");
@@ -745,7 +745,7 @@ public class SummonerSearchMM {
 					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">("+ml.get(k).getSs_perCs()+"/분)</p>");
 					sb.append("</div>");
 					sb.append("</td>");
-					sb.append("<td style=\"width: 25%\">");
+					sb.append("<td style=\"width: 25%; padding-left:5px; padding-right:5px\">");
 					sb.append("<div class=\"otherItemsBox\">");
 					sb.append("<div class=\"items\">");
 					
@@ -756,7 +756,7 @@ public class SummonerSearchMM {
 						} else {
 							sb.append("<div id=\"item\">");
 							sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/"
-									+ ml.get(k).getSs_items().get(j) + ".png\" width=\"30px\">");
+									+ ml.get(k).getSs_items().get(j) + ".png\" width=\"28px\">");
 							sb.append("</div>");
 						}
 					}
@@ -790,7 +790,7 @@ public class SummonerSearchMM {
 					
 					
 					sb.append("<tr class="+purpleBackgroundColor+" style=\"height: 50px\">");
-					sb.append("<th scope=\"row\" style=\"width: 24%;\">");
+					sb.append("<th scope=\"row\" style=\"width: 24%; padding-right : 5px\">");
 					sb.append("<div class=\"otherChampImageLevel\">");
 					sb.append("<div id=\"champImage\">");
 					sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"+ml.get(k).getSs_championName()+".png\" width=\"35px\">");
@@ -850,7 +850,7 @@ public class SummonerSearchMM {
 					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">("+ml.get(k).getSs_perCs()+"/분)</p>");
 					sb.append("</div>");
 					sb.append("</td>");
-					sb.append("<td style=\"width: 25%\">");
+					sb.append("<td style=\"width: 25%; padding-left:5px; padding-right:5px \">");
 					sb.append("<div class=\"otherItemsBox\">");
 					sb.append("<div class=\"items\">");
 					
@@ -861,7 +861,7 @@ public class SummonerSearchMM {
 						} else {
 							sb.append("<div id=\"item\">");
 							sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/"
-									+ ml.get(k).getSs_items().get(j) + ".png\" width=\"30px\">");
+									+ ml.get(k).getSs_items().get(j) + ".png\" width=\"28px\">");
 							sb.append("</div>");
 						}
 					}

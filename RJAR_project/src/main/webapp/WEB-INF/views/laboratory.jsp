@@ -28,15 +28,20 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
-.middleHead{
-    width: 1000px;
-    height: 500px;
-    /* position: absolute; */
-    background-color : green;
-    margin : auto;
+
+.middleHead {
+	width: 1100px;
+	height: 200px;
+	position: absolute;
+	background-color: green;
+	margin: auto;
 }
 
-
+.middleDetail {
+	width: 1000px;
+	height: 500px;
+	background-color: yello;
+}
 </style>
 
 </head>
@@ -49,12 +54,14 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
-		
+
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="main">
 		<div class="middle">
-		    <div class="middleHead"></div>
-		    <div class="middleDetail"></div>
+			<div class="middleHead">
+			
+			</div>
+			<div class="middleDetail"></div>
 		</div>
 	</div>
 	<div class="footer"></div>
