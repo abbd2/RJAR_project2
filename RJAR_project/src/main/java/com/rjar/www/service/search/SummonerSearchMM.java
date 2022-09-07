@@ -208,7 +208,7 @@ public class SummonerSearchMM {
 
 		mav = new ModelAndView();
 		String summonerMatch = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid
-				+ "/ids?start=0&count=10&api_key=" + api_key;
+				+ "/ids?start=0&count=20&api_key=" + api_key;
 		System.out.println("summonerName=" + summonerName);
 		System.out.println("puuid=" + puuid);
 		try {
@@ -229,7 +229,14 @@ public class SummonerSearchMM {
 			String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/";
 
 			List<List<GameDetailShowInfo>> totalGameData = new ArrayList<>();
+			List<List<GameDetailShowInfo>> totalSoloGameData = new ArrayList<>();
+			List<List<GameDetailShowInfo>> totalFreeGameData = new ArrayList<>();
+			List<List<GameDetailShowInfo>> totalOtherGameData = new ArrayList<>();
+			
 			List<GameDetailShowInfo> myGame = new ArrayList<>();
+			List<GameDetailShowInfo> mySoloGame = new ArrayList<>();
+			List<GameDetailShowInfo> myFreeGame = new ArrayList<>();
+			List<GameDetailShowInfo> myOtherGame = new ArrayList<>();
 			// 10판 게임데이터 id만 불러와서 list에 넣기
 			for (int j = 0; j < matchDataList.size(); j++) {
 				String urlBr1 = getUrl(matchUrl + matchDataList.get(j).replaceAll("\"", "") + "?api_key=" + api_key);
@@ -242,7 +249,11 @@ public class SummonerSearchMM {
 
 				// 1게임당 10명의 소환사 정보 불러오기
 				List<GameDetailShowInfo> gameData = new ArrayList<>();
-				for (int k = 0; k < matchDataList.size(); k++) {
+				List<GameDetailShowInfo> soloGameData = new ArrayList<>();
+				List<GameDetailShowInfo> freeGameData = new ArrayList<>();
+				List<GameDetailShowInfo> otherGameData = new ArrayList<>();
+				
+				for (int k = 0; k < 10; k++) {
 //					Map<GameDetailShowInfo, Object> sgi = new HashMap<GameDetailShowInfo, Object>();
 					GameDetailShowInfo gds = new GameDetailShowInfo();
 
@@ -341,6 +352,34 @@ public class SummonerSearchMM {
 					} else {
 						gds.setSs_championName(participant.get("championName").getAsString());
 					}
+					
+					// 게임타입을 작성
+					String gameType = null;
+					switch (info.get("queueId").getAsInt()) {
+					case 420:
+						gameType = "솔랭";
+						break;
+					case 430:
+						gameType = "일반";
+						break;
+					case 440:
+						gameType = "자유 5:5 랭크";
+						break;
+					case 450:
+						gameType = "무작위 총력전";
+						break;
+					case 1400:
+						gameType = "궁극기 주문서";
+						break;
+					case 840:
+						gameType = "AI대전(초급)";
+						break;
+					case 850:
+						gameType = "AI대전(중급)";
+						break;
+					case 700:
+						gameType = "격전";
+					}
 
 					// json object로 가져온것들을 bean에 주입시키는 과정
 					gds.setSs_gameId(matchDataList.get(k).replaceAll("\"", ""));
@@ -382,52 +421,69 @@ public class SummonerSearchMM {
 				
 					gds.setSs_gameDuration(playTime);
 					gds.setSs_gameEndTimestamp(endGameTime);
-
+					gds.setSs_gameType(gameType);
 					// 검색한 소환사의 정보를 따로 저장
 					if (puuid.equals(participant.get("puuid").getAsString())) {
-						// 게임타입을 작성
-						String gameType = null;
-						switch (info.get("queueId").getAsInt()) {
-						case 420:
-							gameType = "솔랭";
-							break;
-						case 430:
-							gameType = "일반";
-							break;
-						case 440:
-							gameType = "자유 5:5 랭크";
-							break;
-						case 450:
-							gameType = "무작위 총력전";
-							break;
-						case 1400:
-							gameType = "궁극기 주문서";
-							break;
-						case 840:
-							gameType = "AI대전(초급)";
-							break;
-						case 850:
-							gameType = "AI대전(중급)";
-							break;
-						case 700:
-							gameType = "격전";
-						}
 						// puuid가 일치한 본인의 게임 데이터를 가져와 따로 저장한다
 						// 메인에 기본적으로 띄워지는 본인 경기를 출력하기 위함
+						
 						gameData.add(gds);
-						gds.setSs_gameType(gameType);
+						soloGameData.add(gds);
+						freeGameData.add(gds);
+						otherGameData.add(gds);
+											
 						myGame.add(gds);
+						mySoloGame.add(gds);
+						myFreeGame.add(gds);
+						myOtherGame.add(gds);
+						
 					} else {
 						gameData.add(gds);
+						soloGameData.add(gds);
+						freeGameData.add(gds);
+						otherGameData.add(gds);
 					}
 
 				}
+							
 				// 리스트로 묶인 각각의 게임을 다시 리스트로 넣는다.
 				// make_html로 출력하기 위함
+				soloGameData.removeIf(gds -> !gds.getSs_gameType().equals("솔랭"));
+				freeGameData.removeIf(gds -> !gds.getSs_gameType().equals("자유 5:5 랭크"));
+				otherGameData.removeIf(gds -> gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크"));
+//				System.out.println("1="+soloGameData);
+//				System.out.println(soloGameData.size());
+				
+				if(soloGameData.size()==10) {
+					totalSoloGameData.add(soloGameData);
+				}
+				
+				if(freeGameData.size()==10) {
+					totalFreeGameData.add(freeGameData);
+				}
+				
+				if(otherGameData.size()==10) {
+					totalOtherGameData.add(otherGameData);
+				}
+
 				totalGameData.add(gameData);
 
 			}
+			mySoloGame.removeIf(gds -> !gds.getSs_gameType().equals("솔랭"));
+			myFreeGame.removeIf(gds -> !gds.getSs_gameType().equals("자유 5:5 랭크"));
+			myOtherGame.removeIf(gds -> gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크"));
+			
+			
+			System.out.println(myFreeGame);
+			System.out.println(myFreeGame.size());
+			System.out.println("1="+totalFreeGameData);
+			System.out.println(totalFreeGameData.size());
+			
+			
 			mav.addObject("myGames", makeHtml_myGameData(myGame, totalGameData));
+			mav.addObject("mySoloGames", makeHtml_myGameData(mySoloGame, totalSoloGameData));
+			mav.addObject("myFreeGame", makeHtml_myGameData(myFreeGame, totalFreeGameData));
+			mav.addObject("myOtherGame", makeHtml_myGameData(myOtherGame, totalOtherGameData));
 
 		} catch (Exception e) {
 			System.out.println("오류=" + e.getMessage());
@@ -445,7 +501,7 @@ public class SummonerSearchMM {
 		if (myGame.size() == 0) {
 			sb.append("<div class=\"card\">");
 			sb.append("<div class=\"card-body\">");
-			sb.append("<p class=\"card-text\" style=\"font-family: 'Hi Melody', cursive\">기록된 전적이 없습니다. 계정을 다시 한번 확인해주세요.</p>");
+			sb.append("<p class=\"card-text\" style=\"font-family: 'Poor Story', cursive\">기록된 전적이 없습니다.</p>");
 			sb.append("</div>");
 			sb.append("</div>");
 
@@ -662,7 +718,7 @@ public class SummonerSearchMM {
 				sb.append("</div>");
 				sb.append("<div class=\"arrowBox\">");
 				sb.append("<div class=\"arrow-wrap\">");
-				sb.append("<span class=\"arrow-top\">↑</span> <span class=\"arrow-bottom\">↓</span>");
+				sb.append("<span class=\"arrow-top\">⋁</span> <span class=\"arrow-bottom\">⋀</span>");
 				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("</div>");
@@ -886,10 +942,6 @@ public class SummonerSearchMM {
 		long currentTime = System.currentTimeMillis() / 1000; // 현재 시간 구하기
 		long calculateTime = asLong / 1000; // 게임이 끝난 시간
 		long agoTime = currentTime - calculateTime; // 몇시간 전에 했는지 구하기
-
-		System.out.println("currentTime="+currentTime);
-		System.out.println("calculateTime="+calculateTime);
-		System.out.println("agoTime="+agoTime);
 
 		String timeDate = null;
 //		// 맞춰진 형식으로 띄우기 위해 계산

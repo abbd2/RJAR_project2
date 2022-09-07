@@ -525,7 +525,7 @@ a.miniName:hover {
 										<img src="./resources/tierImg/${freeTier}.png" width="50px">
 									</div>
 									<div id="tierInfo" style="float: left; width: 45%">
-										<h6 class="card-title">${freeTier}${freeRank}</h6>
+										<h6 class="card-title">${freeTier} ${freeRank}</h6>
 										<p class="card-text">${freeLeaguePoint}점</p>
 									</div>
 									<div id="winLose" style="float: left; width: 35%">
@@ -544,7 +544,7 @@ a.miniName:hover {
 										<img src="./resources/tierImg/${soloTier}.png" width="50px">
 									</div>
 									<div id="tierInfo" style="float: left; width: 45%">
-										<h6 class="card-title">${soloTier}${soloRank}</h6>
+										<h6 class="card-title">${soloTier} ${soloRank}</h6>
 										<p class="card-text" style="top: 10px">${soloLeaguePoint}점</p>
 									</div>
 									<div id="winLose" style="float: left; width: 35%">
@@ -560,44 +560,56 @@ a.miniName:hover {
 			<div class="middleDetail">
 				<div class="sumSearch">
 					<ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item" role="presentation"><a
+						<li class="nav-item" role="presentation"><a data-tab="total"
 							class="nav-link active" data-bs-toggle="tab" href="#home"
 							aria-selected="true" role="tab"
 							style="font-family: 'Poor Story', cursive">전체</a></li>
 
-						<li class="nav-item" role="presentation"><a class="nav-link"
-							data-bs-toggle="tab" href="#profile" aria-selected="false"
-							role="tab" tabindex="-1"
+						<li class="nav-item" role="presentation"><a data-tab="solo"
+							class="nav-link" data-bs-toggle="tab" href="#profile"
+							aria-selected="false" role="tab" tabindex="-1"
 							style="font-family: 'Poor Story', cursive">솔로랭크</a></li>
 
-						<li class="nav-item" role="presentation"><a class="nav-link"
-							data-bs-toggle="tab" href="#profile" aria-selected="false"
-							role="tab" tabindex="-1"
+						<li class="nav-item" role="presentation"><a data-tab="free"
+							class="nav-link" data-bs-toggle="tab" href="#profile"
+							aria-selected="false" role="tab" tabindex="-1"
 							style="font-family: 'Poor Story', cursive">자유랭크</a></li>
 
-						<li class="nav-item" role="presentation"><a class="nav-link"
-							data-bs-toggle="tab" href="#profile" aria-selected="false"
-							role="tab" tabindex="-1"
-							style="font-family: 'Poor Story', cursive">일반</a></li>
+						<li class="nav-item" role="presentation"><a data-tab="other"
+							class="nav-link" data-bs-toggle="tab" href="#profile"
+							aria-selected="false" role="tab" tabindex="-1"
+							style="font-family: 'Poor Story', cursive">기타</a></li>
 
 
 					</ul>
 					<div id="myTabContent" class="tab-content">
-						<div class="tab-pane fade active show" id="home" role="tabpanel">
+						<div class="tab-pane fade active show" id="total" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
 									<div class="mainMatch">${myGames}</div>
 								</div>
 							</div>
 						</div>
-						<div class="tab-pane fade" id="profile" role="tabpanel">
-							<p>Food truck fixie locavore, accusamus mcsweeney's marfa
-								nulla single-origin coffee squid. Exercitation +1 labore velit,
-								blog sartorial PBR leggings next level wes anderson artisan four
-								loko farm-to-table craft beer twee. Qui photo booth letterpress,
-								commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-								vinyl cillum PBR. Homo nostrud organic, assumenda labore
-								aesthetic magna delectus mollit.</p>
+						<div class="tab-pane fade" id="solo" role="tabpanel">
+							<div id="detail">
+								<div class="matchBox">
+									<div class="mainMatch">${mySoloGames}</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="free" role="tabpanel">
+							<div id="detail">
+								<div class="matchBox">
+									<div class="mainMatch">${myFreeGame}</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="other" role="tabpanel">
+							<div id="detail">
+								<div class="matchBox">
+									<div class="mainMatch">${myOtherGame}</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -627,6 +639,19 @@ a.miniName:hover {
 			// business logic...
 			$btn.button('reset');
 		})
+
+		$(document).ready(function() {
+			$('ul.nav-tabs li a').click(function() {
+				var tab_id = $(this).attr('data-tab');
+				console.log(tab_id);
+
+				$('ul.nav-tabs li a').removeClass('active');
+				$('.tab-pane').removeClass('active show');
+
+				$(this).addClass('active');
+				$("#" + tab_id).addClass('active show');
+			});
+		});
 	</script>
 
 
