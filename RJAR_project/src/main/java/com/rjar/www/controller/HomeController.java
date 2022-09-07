@@ -1,5 +1,8 @@
 package com.rjar.www.controller;
 
+import java.net.http.HttpRequest;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -108,7 +111,6 @@ public class HomeController {
 
 	@GetMapping(value = "/join3")
 	public String join3() {
-		System.out.println("회원가입 페이지3으로 이동");
 		return "join3";
 	}
 

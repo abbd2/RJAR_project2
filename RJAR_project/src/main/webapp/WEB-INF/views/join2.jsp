@@ -160,11 +160,15 @@
 </head>
  <script type="text/javascript">
 	 window.history.forward();
-	 function noBack(){window.history.forward();}
-</script>
+	 function noBack(){
+		 window.history.forward();
+		 console.log('noBakc')
+		 }
 
-<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
-	
+</script>
+<!-- onload : 문서의 모든 콘텐츠가 로드된 후 발생하는 이벤트, onpageshow : 뒤로가기했을 때도 이벤트 발생, onunload : 페이지를 떠났을 때 발생 -->
+<body onload="noBack();" onpageshow="if(event.persisted) noBack(); console.log('event');">
+<!-- <body onpagehide="Init()"></body> -->
 
 	<div id="joinPage2">
 		<div id="titleDiv">RJAR.GG</div>

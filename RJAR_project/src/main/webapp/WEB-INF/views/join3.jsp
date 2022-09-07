@@ -85,7 +85,7 @@
 	
 		<div>
 			<a href="./join3">
-				<input id="joinBtn" type="button" value="가입하기">
+				<input id="joinBtn" class="btn btn-primary btn-lg" type="button" value="홈으로">
 			</a>
 		</div>
 
