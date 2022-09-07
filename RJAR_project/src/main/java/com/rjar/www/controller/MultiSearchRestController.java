@@ -180,9 +180,7 @@ public class MultiSearchRestController {
 			System.out.println("리그 정보 없음");
 
 			// 리그 정보가 없다면 레벨 출력
-			String summonerLevel = json.get("summonerLevel").toString();
-			System.out.println("summonerLevel: " + summonerLevel);
-			msb.setRank(summonerLevel);
+			msb.setRank("");
 			msb.setLp("");
 			getGameId(puuid.toString());
 

@@ -29,6 +29,10 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
+<<<<<<< HEAD
+=======
+
+>>>>>>> c82a08902b0d732a408aea9ed16f2d1b0bd1198c
 	<div id='box'>
 		<div id='main'>
 			<aside>
@@ -107,7 +111,6 @@ $('.lane_').click(function (){
 		url : 'tierList',
 		data : {tier: tier, lane: lane},
 		
-		contentType : 'application/json;charset=UTF-8'
 	}).done( function(data){
 		console.log('성공');		
 		$('.tierList').html(data);
@@ -126,7 +129,6 @@ $('#free').click(function () {
 		type : 'get',
 		url : 'rotation',
 		
-		contentType : 'application/json;charset=UTF-8'
 	}).done( function(data){
 		console.log('성공');		
 		$('.champList').html(data);
@@ -149,21 +151,29 @@ function changeBackColor_out(div){
 }
 
 //해당 클릭 시 --> 챔피언이름을 파라미터로 분석 상세 페이지로 이동(url : selectDetail)
-function setSearch_onclick(){
-	console.log($(this).innerText);
+function setSearch_onclick(div){
 	$(".searchResult").css("display","none");
-	$("#searchInput").attr("value", $(this).innerText);
+	$("#searchInput").val($(div).attr("data-championName"));
 	$("#selectForm").submit();
 }
 
+//엔터 입력 시 포워딩
+$("#searchInput").keydown(function(key) {                
+	if (key.keyCode == 13) {                    
+		$('#selectForm').submit();
+	}
+});
+
 //검색
 $('#searchInput').keyup(function () {
-	let text = $(this).val();
-	
-	if (text == "") {
+	let text = $(this).val().trim();
+
+	if (text === '') {
+		console.log(text);
 		$(".searchResult").css("display","none");
+		console.log('읍다');
 	}else{
-	
+		console.log('text', text);
 		$.ajax({
 			type : 'get',
 			url : 'selectChamp',
@@ -173,31 +183,26 @@ $('#searchInput').keyup(function () {
 			contentType : 'application/json;charset=UTF-8'
 		}).done( function(data){
 			console.log('성공');
-			console.log('데이터', data);
 			let search = "";
 			$.each(data, function (i, champion){
 				search+= "<div class='championDetail' onclick='setSearch_onclick(this)' style = 'font-weight: bold;'" 
-					  + "onmouseout='changeBackColor_out(this)'onmouseover='changeBackColor_over(this)'>"
+					  + "onmouseout='changeBackColor_out(this)'onmouseover='changeBackColor_over(this)' data-championName='"+champion.champion_kr_name+"'>"
 					  +	"<img class = 'selectImg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					  + champion.championName + ".png>"+champion.champion_kr_name+"</div>";
 			})
 			$('.searchResult').html(search);
 			$(".searchResult").css("display","block");
+			text = "";
 		}).fail(function(err) {
 			console.log("에러");
 			console.log(err);
 			
 		})
-	
+
 	}
+
 })
 
-//엔터 입력 시 포워딩
-$("#searchInput").keydown(function(key) {                
-	if (key.keyCode == 13) {                    
-		$('#selectForm').submit();
-	}
-});
 
 //챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
 $('.champion').click(function (){

@@ -165,5 +165,11 @@
 			</div>
 		</div>
 	</form>
+	
+	<form action="championDetail" method = "get">
+		<input type="text" value = "Aatrox" name="championName">
+		<input type="text"  value = "TOP" name="lane">
+		<button>제발돼라</button>
+	</form>
 </body>
 </html>
