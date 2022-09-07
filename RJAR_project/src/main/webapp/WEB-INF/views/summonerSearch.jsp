@@ -20,8 +20,49 @@
 
 <title>summonerSearch</title>
 <style type="text/css">
-body {
-	background-color: #DAD4D4;
+body, html {
+	height: 100%;
+}
+
+.main {
+	width: 1500px;
+	height: 100%;
+	background-color: white;
+	position: relative;
+}
+
+.middle {
+	width: 1100px;
+	height: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.middleHead {
+	width: 1100px;
+	height: 19%;
+	/* position: absolute; */
+	margin: auto;
+}
+
+.middleDetail {
+	width: 1100px;
+	height: 81%;
+}
+
+.sumSearch {
+	width: 80%;
+	height: 100%;
+	float: left;
+}
+
+.middleRightSide {
+	width: 20%;
+	height: 100%;
+	float: left;
+	background-color: black;
 }
 
 .summoner-search-outter-box {
@@ -32,7 +73,7 @@ body {
 }
 
 .header {
-	height: 20%;
+	height: 60px;
 }
 
 #leftSide {
@@ -52,12 +93,31 @@ body {
 	margin-bottom: 15px;
 }
 
-#profileImageBox {
+.profileImageBox {
 	width: 100px;
 	height: 100px;
 	float: left;
 	margin-right: 15px;
 	justify-content: center;
+}
+
+.otherBox {
+	float: left;
+	height: 100px;
+}
+
+.card-body {
+	float: left;
+}
+
+.solo, .free {
+	float: right;
+	width: 300px;
+	height: 100px;
+	justify-content: center;
+	margin-left: 10px;
+	text-align: center;
+	font-family: 'Poor Story', cursive;
 }
 
 #profileImage, #champImage {
@@ -96,8 +156,7 @@ body {
 #detail {
 	/* border: 1px solid blue; */
 	float: left;
-	height: 500px;
-	width: 70%;
+	width: 100%;
 	position: relative;
 	padding: 5px;
 }
@@ -108,20 +167,21 @@ body {
 }
 
 .gameDate {
-	width: 15%;
+	width: 12%;
 	float: left;
 	/* border: 1px solid blue; */
 }
 
 .championData {
 	width: 25%;
-	height: 100px;
+	height: 60px;
 	float: left;
 	/* border: 1px solid blue; */
 }
 
 .imageLevelBox {
 	height: 60px;
+	width: 200px;
 	/* border: 1px solid blue; */
 }
 
@@ -168,7 +228,7 @@ body {
 }
 
 .lane {
-	width: 100px;
+	width: 80px;
 	float: left;
 	/* border: 1px solid blue; */
 	margin-left: 10 px;
@@ -184,9 +244,9 @@ body {
 
 #item {
 	float: left;
-	height: 30px;
-	width: 30px;
-	margin-left: 2px;
+	height: 28px;
+	width: 28px;
+	margin-left: 0.5px;
 	/* border: 1px solid blue; */
 }
 
@@ -204,7 +264,7 @@ body {
 
 #bigKda {
 	font-weight: bold;
-	font-size: 1.5em;
+	font-size: 1.3em;
 	align-items: center;
 	/* text-align: center; */
 }
@@ -237,12 +297,13 @@ body {
 
 .miniSumName {
 	float: left;
-	width: 110px;
+	width: 103px;
 	/* border: 1px solid blue; */
 	height: 18px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	margin-top: -3px;
 }
 
 .miniName {
@@ -253,7 +314,7 @@ body {
 }
 
 .teamList {
-	width: 27%;
+	width: 30%;
 	float: left;
 	/* border: 1px solid blue; */
 }
@@ -378,7 +439,7 @@ a.miniName:hover {
 
 .otherSummonerName {
 	height: 38px;
-	width: 130px;
+	width: 103px;
 	float: left;
 	margin-left: 5px;
 }
@@ -428,12 +489,12 @@ a.miniName:hover {
 	<div class=header>
 		<jsp:include page="header.jsp"></jsp:include>
 	</div>
-	<div class=main style="width:1500px; height:1500px; background-color : #E1E1E1">
-		<div id="leftSide">
-			<div id="leftSideBox">
-				<div class="card" id="summonerInfo">
-					<div class="card-body">
-						<div id="profileImageBox">
+	<div class=main>
+		<div class="middle">
+			<div class="middleHead">
+				<div class="card" id="summonerInfo" style="margin-top: 10px">
+					<div class="card-body" style="width: 1100px; float: left;">
+						<div class="profileImageBox">
 							<div id="profileImage">
 								<img
 									src="http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${profileIconId}.png"
@@ -443,57 +504,104 @@ a.miniName:hover {
 								<span class="badge rounded-pill bg-primary" style="color: white">${LV}</span>
 							</div>
 						</div>
-						<div id="profileDetail">
-							<h4 class="card-title" id="summonerName"
-								style="font-family: 'Poor Story', cursive;">${name}</h4>
+						<div class="otherBox">
+							<div id="profileDetail" style="width: 200px; height: 30px">
+								<h4 class="card-title" id="summonerName"
+									style="font-family: 'Poor Story', cursive;">${name}</h4>
+							</div>
+							<div class="reloadButton" style="width: 100px; height: 30px">
+								<button type="button" class="btn btn-info"
+									style="font-family: 'Poor Story', cursive; font-size: 20px; margin-top: 10px;"
+									onclick="location.href='http://localhost:8080/www/summonerSearch?summonerName=${name}'">전적
+									갱신</button>
+							</div>
 						</div>
-						<div class="reloadButton">
-							<button type="button" class="btn btn-info"
-								style="font-family: 'Poor Story', cursive; font-size: 20px"
-								onclick="location.href='http://localhost:8080/www/summonerSearch?summonerName=${name}'">전적
-								갱신</button>
+						<div class="free">
+							<div class="card border-light mb-3" style="margin-top: -5px">
+								<div class="card-header" style="height: 30px; padding: 3px">자유랭크</div>
+								<div class="card-body" style="height: 70px; padding: 10px">
+									<div id="tierImage"
+										style="float: left; width: 20%; margin-top: 8px">
+										<img src="./resources/tierImg/${freeTier}.png" width="50px">
+									</div>
+									<div id="tierInfo" style="float: left; width: 45%">
+										<h6 class="card-title">${freeTier}${freeRank}</h6>
+										<p class="card-text">${freeLeaguePoint}점</p>
+									</div>
+									<div id="winLose" style="float: left; width: 35%">
+										<p class="card-text" style="margin-top: -3px">${freeWins}승${freeLosses}패</p>
+										<p class="card-text" style="margin-top: -5px">${freeWinRate}%</p>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="card border-secondary mb-3" id="soloRankBox">
-					<div class="card-header"
-						style="font-family: 'Poor Story', cursive; font-size: 20px; font-size: bold;">솔로랭크</div>
-					<div class="card-body">
-						<div id="tierImage">
-							<img src="./resources/tierImg/${soloTier}.png" width="100px">
-						</div>
-						<div id="tierInfo">
-							<h4 class="card-title">${soloTier}${soloRank}</h4>
-							<p class="card-text">${soloLeaguePoint}점</p>
-						</div>
-						<div id="winLose">
-							<p class="card-text">${soloWins}승${soloLosses}패</p>
-							<p class="card-text">${soloWinRate}%</p>
-						</div>
-					</div>
-				</div>
-				<div class="card border-secondary mb-3" id="soloRankBox">
-					<div class="card-header"
-						style="font-family: 'Poor Story', cursive; font-size: 20px; font-size: bold">자유랭크</div>
-					<div class="card-body">
-						<div id="tierImage">
-							<img src="./resources/tierImg/${freeTier}.png" width="100px">
-						</div>
-						<div id="tierInfo">
-							<h4 class="card-title">${freeTier}${freeRank}</h4>
-							<p class="card-text">${freeLeaguePoint}점</p>
-						</div>
-						<div id="winLose">
-							<p class="card-text">${freeWins}승${freeLosses}패</p>
-							<p class="card-text">${freeWinRate}%</p>
+						<div class="solo">
+							<div class="card border-light mb-3" style="margin-top: -5px">
+								<div class="card-header" style="height: 30px; padding: 3px">솔로랭크</div>
+								<div class="card-body" style="height: 70px; padding: 10px">
+									<div id="tierImage"
+										style="float: left; width: 20%; margin-top: 8px">
+										<img src="./resources/tierImg/${soloTier}.png" width="50px">
+									</div>
+									<div id="tierInfo" style="float: left; width: 45%">
+										<h6 class="card-title">${soloTier}${soloRank}</h6>
+										<p class="card-text" style="top: 10px">${soloLeaguePoint}점</p>
+									</div>
+									<div id="winLose" style="float: left; width: 35%">
+										<p class="card-text" style="margin-top: -3px">${soloWins}승${soloLosses}패</p>
+										<p class="card-text" style="margin-top: -5px">${soloWinRate}%</p>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div id="detail">
-			<div class="matchBox">
-				<div class="mainMatch">${myGames}</div>
+			<div class="middleDetail">
+				<div class="sumSearch">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item" role="presentation"><a
+							class="nav-link active" data-bs-toggle="tab" href="#home"
+							aria-selected="true" role="tab"
+							style="font-family: 'Poor Story', cursive">전체</a></li>
+
+						<li class="nav-item" role="presentation"><a class="nav-link"
+							data-bs-toggle="tab" href="#profile" aria-selected="false"
+							role="tab" tabindex="-1"
+							style="font-family: 'Poor Story', cursive">솔로랭크</a></li>
+
+						<li class="nav-item" role="presentation"><a class="nav-link"
+							data-bs-toggle="tab" href="#profile" aria-selected="false"
+							role="tab" tabindex="-1"
+							style="font-family: 'Poor Story', cursive">자유랭크</a></li>
+
+						<li class="nav-item" role="presentation"><a class="nav-link"
+							data-bs-toggle="tab" href="#profile" aria-selected="false"
+							role="tab" tabindex="-1"
+							style="font-family: 'Poor Story', cursive">일반</a></li>
+
+
+					</ul>
+					<div id="myTabContent" class="tab-content">
+						<div class="tab-pane fade active show" id="home" role="tabpanel">
+							<div id="detail">
+								<div class="matchBox">
+									<div class="mainMatch">${myGames}</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="profile" role="tabpanel">
+							<p>Food truck fixie locavore, accusamus mcsweeney's marfa
+								nulla single-origin coffee squid. Exercitation +1 labore velit,
+								blog sartorial PBR leggings next level wes anderson artisan four
+								loko farm-to-table craft beer twee. Qui photo booth letterpress,
+								commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
+								vinyl cillum PBR. Homo nostrud organic, assumenda labore
+								aesthetic magna delectus mollit.</p>
+						</div>
+					</div>
+				</div>
+				<div class="middleRightSide"></div>
 			</div>
 		</div>
 	</div>

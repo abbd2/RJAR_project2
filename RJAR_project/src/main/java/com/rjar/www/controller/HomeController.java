@@ -2,6 +2,8 @@ package com.rjar.www.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,10 +69,11 @@ public class HomeController {
 		return "multiSearch";
 	}
 
-	@GetMapping(value = "/community")
-	public String community() {
+	@GetMapping(value = "/myPage")
+	public String myPage() {
+		System.out.println("myPage");
 
-		return "community/communityHome";
+		return "myPage";
 	}
 
 	@GetMapping(value = "/lck")
