@@ -37,6 +37,9 @@ public class ChampionDetailController {
 		return mav;
 	}
 	
-	
+	public ModelAndView runeLine(Champion champ) {
+		mav = champmm.runeInfo(champ.getChampionName(), champ.getLane());
+		return mav;
+	}
 
 }

@@ -34,4 +34,6 @@ public interface IchampionDao {
 			@Param("main_under3")int main_under3, @Param("main_under4")int main_under4, @Param("sub_rune")int sub_rune, @Param("sub_under1")int sub_under1, 
 			@Param("sub_under2")int sub_under2, @Param("statperks3")String statperks3, @Param("championName")String championName, @Param("lane")String lane);
 
+	List<ChampionDetail> getRunePng(String query);
+
 }

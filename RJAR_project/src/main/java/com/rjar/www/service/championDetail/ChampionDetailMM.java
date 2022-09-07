@@ -1,6 +1,7 @@
 package com.rjar.www.service.championDetail;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -15,7 +16,6 @@ import com.google.gson.JsonParser;
 import com.rjar.www.bean.Champion;
 import com.rjar.www.bean.ChampionDetail;
 import com.rjar.www.dao.IchampionDao;
-
 
 @Service
 public class ChampionDetailMM {
@@ -174,67 +174,85 @@ public class ChampionDetailMM {
 
 		return selectResult;
 	}
-	
-	 public ModelAndView getChampionDetailInfo(String championName, String lane) {
-	      mav = new ModelAndView();	      
-	      
-	      mav.addObject("championName",championName);
-	      mav.addObject("lane",lane);
-	      
-	      Champion spell = champDao.getSpellList(championName, lane);
+
+	public ModelAndView getChampionDetailInfo(String championName, String lane) {
+		mav = new ModelAndView();
+
+		mav.addObject("championName", championName);
+		mav.addObject("lane", lane);
+
+		Champion spell = champDao.getSpellList(championName, lane);
 //		  mav.addObject("spell1", spell.getSpell1());
 
 //		  mav.addObject("spell2", spell.getSpell2());
 
-	      mav.setViewName("Detail/championDetail");
-	      return mav;
-	   }
+		mav.setViewName("Detail/championDetail");
+		return mav;
+	}
 
 	public ModelAndView clickDetail(int championId, String tier) {
 		mav = new ModelAndView();
-		
-		//챔피언이름/주로 가는 2가지 라인 		
+
+		// 챔피언이름/주로 가는 2가지 라인 가져오기
 		List<ChampionDetail> championNameLane = champDao.getChampionName1(championId, tier);
-		
+
 		String champion_eg_name = championNameLane.get(0).getChampionName();
 		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
 		String lane1 = championNameLane.get(0).getLane();
 		String lane2 = championNameLane.get(1).getLane();
-		
+
 		mav.addObject("championName", champion_eg_name);
 		mav.addObject("champion_kr_name", champion_kr_name);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		
-		
-		
-		//해당 챔피언 룬 (2개 띄어야 함)
+
+		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
 		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1);
-		
-		ChampionDetail runes = championRunes.get(0);
-	
+
+		// 승률 1번째로 높은 룬
+		ChampionDetail runes1 = championRunes.get(0);
+
+		// 보조 능력치 쪼개기
 		String statperks = championRunes.get(0).getStatperks();
 		StringTokenizer st1 = new StringTokenizer(statperks, "|");
-		
-		mav.addObject("runes", runes);
+
+		// 룬 이미지 태그 만들어서 가져오기
+		List<ChampionDetail> mainRunePng = selectRunes(runes1.getMain_rune());
+		List<ChampionDetail> subRunePng = selectRunes(runes1.getSub_rune());
+
+		mav.addObject("runes1", runes1);
+		mav.addObject("mainRunePng", makeIngTag(mainRunePng, runes1));
+		mav.addObject("subRunePng", makeIngTag(subRunePng, runes1));
 		mav.addObject("statperks1", st1.nextToken());
 		mav.addObject("statperks2", st1.nextToken());
 		mav.addObject("statperks3", st1.nextToken());
-		
-		
-		ChampionDetail runes2 = championRunes.get(1);
-		
+
+		// 승률 2번째로 높은 룬
+		ChampionDetail runes2 = null;
+		for (int i = 1; i < championRunes.size(); i++) {
+			if (championRunes.get(0).getSub_rune() != championRunes.get(i).getSub_rune()) {
+				runes2 = championRunes.get(i);
+				break;
+			}
+		}
+		System.out.println("runes2" + runes2);
+
+		// 보조 능력치 쪼개기
 		String statperks2 = championRunes.get(1).getStatperks();
 		StringTokenizer st2 = new StringTokenizer(statperks2, "|");
-		
+
+		// 룬 이미지 가져오기
+		List<ChampionDetail> mainRunePng2 = selectRunes(runes2.getMain_rune());
+		List<ChampionDetail> subRunePng2 = selectRunes(runes2.getSub_rune());
+
 		mav.addObject("runes2", runes2);
+		mav.addObject("mainRunePng2", makeIngTag(mainRunePng2, runes2));
+		mav.addObject("subRunePng2", makeIngTag(subRunePng2, runes2));
 		mav.addObject("statperks2_1", st2.nextToken());
 		mav.addObject("statperks2_2", st2.nextToken());
 		mav.addObject("statperks2_3", st2.nextToken());
-		
-		
-		
-		//룬에 따른 판수/승률
+
+		// 승률 가장 높은 2가지 룬에 따른 게임 수/승률 검색
 		List<ChampionDetail> rune_pickWin = new ArrayList<>();
 		for (int i = 0; i < 2; i++) {
 			int main_rune = championRunes.get(i).getMain_rune();
@@ -246,63 +264,222 @@ public class ChampionDetailMM {
 			int sub_under1 = championRunes.get(i).getSub_under1();
 			int sub_under2 = championRunes.get(i).getSub_under2();
 			String statperks3 = championRunes.get(i).getStatperks();
-			
+
 			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
 					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1));
-			
-		}		
-		
-		mav.addObject("rune_pickWin1", rune_pickWin.get(0));
-		mav.addObject("rune_pickWin2", rune_pickWin.get(1));
-		
+
+		}
+
+		mav.addObject("rune_win1", rune_pickWin.get(0).getRune_winRate());
+		mav.addObject("rune_win2", rune_pickWin.get(1).getRune_winRate());
+		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
+		mav.addObject("rune_pick2", rune_pickWin.get(1).getRune_pick());
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
 
 	public ModelAndView selectDetail(String championName, String tier) {
 		mav = new ModelAndView();
-		//챔피언이름/주로 가는 2가지 라인 		
+
+		// 챔피언이름/주로 가는 2가지 라인 가져오기
 		List<ChampionDetail> championNameLane = champDao.getChampionName2(championName, tier);
-		
+
 		String champion_eg_name = championNameLane.get(0).getChampionName();
 		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
 		String lane1 = championNameLane.get(0).getLane();
 		String lane2 = championNameLane.get(1).getLane();
-		
+
 		mav.addObject("championName", champion_eg_name);
 		mav.addObject("champion_kr_name", champion_kr_name);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		
-		
-		
-		//해당 챔피언 룬 (2개 띄어야 함)
+
+		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
 		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1);
+
+		// 승률 1번째로 높은 룬
+		ChampionDetail runes1 = championRunes.get(0);
+
+		// 보조 능력치 쪼개기
+		String statperks = championRunes.get(0).getStatperks();
+		StringTokenizer st1 = new StringTokenizer(statperks, "|");
+
+		// 룬 이미지 태그 만들어서 가져오기
+		List<ChampionDetail> mainRunePng = selectRunes(runes1.getMain_rune());
+		List<ChampionDetail> subRunePng = selectRunes(runes1.getSub_rune());
+
+		mav.addObject("runes1", runes1);
+		mav.addObject("mainRunePng", makeIngTag(mainRunePng, runes1));
+		mav.addObject("subRunePng", makeIngTag(subRunePng, runes1));
+		mav.addObject("statperks1", st1.nextToken().toString());
+		mav.addObject("statperks2", st1.nextToken().toString());
+		mav.addObject("statperks3", st1.nextToken().toString());
+
+		// 승률 2번째로 높은 룬
+		ChampionDetail runes2 = null;
+		for (int i = 1; i < championRunes.size(); i++) {
+			if (championRunes.get(0).getSub_rune() != championRunes.get(i).getSub_rune()) {
+				runes2 = championRunes.get(i);
+				break;
+			}
+		}
+		System.out.println("runes2" + runes2);
+
+		// 보조 능력치 쪼개기
+		String statperks2 = championRunes.get(1).getStatperks();
+		StringTokenizer st2 = new StringTokenizer(statperks2, "|");
+
+		// 룬 이미지 가져오기
+		List<ChampionDetail> mainRunePng2 = selectRunes(runes2.getMain_rune());
+		List<ChampionDetail> subRunePng2 = selectRunes(runes2.getSub_rune());
+
+		mav.addObject("runes2", runes2);
+		mav.addObject("mainRunePng2", makeIngTag(mainRunePng2, runes2));
+		mav.addObject("subRunePng2", makeIngTag(subRunePng2, runes2));
+		mav.addObject("statperks2_1", st2.nextToken());
+		mav.addObject("statperks2_2", st2.nextToken());
+		mav.addObject("statperks2_3", st2.nextToken());
+
+		// 승률 가장 높은 2가지 룬에 따른 게임 수/승률 검색
+		List<ChampionDetail> rune_pickWin = new ArrayList<>();
+		for (int i = 0; i < 2; i++) {
+			int main_rune = championRunes.get(i).getMain_rune();
+			int main_under1 = championRunes.get(i).getMain_under1();
+			int main_under2 = championRunes.get(i).getMain_under2();
+			int main_under3 = championRunes.get(i).getMain_under3();
+			int main_under4 = championRunes.get(i).getMain_under4();
+			int sub_rune = championRunes.get(i).getSub_rune();
+			int sub_under1 = championRunes.get(i).getSub_under1();
+			int sub_under2 = championRunes.get(i).getSub_under2();
+			String statperks3 = championRunes.get(i).getStatperks();
+
+			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
+					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1));
+
+		}
+
+		mav.addObject("rune_win1", rune_pickWin.get(0).getRune_winRate());
+		mav.addObject("rune_win2", rune_pickWin.get(1).getRune_winRate());
+		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
+		mav.addObject("rune_pick2", rune_pickWin.get(1).getRune_pick());
+
+		mav.setViewName("Detail/championDetail");
+		return mav;
+	}
+
+	private List<ChampionDetail> selectRunes(int rune) {
+
+		List<ChampionDetail> runePngList = null;
+
+		switch (rune) {
+
+		case 8000: // 정밀
+			String query1 = "SELECT RUNES_ID, RUNES_ICON FROM RUNES WHERE RUNES_ICON LIKE '%Precision%' "
+					+ "OR RUNES_ID = 8299";
+			runePngList = champDao.getRunePng(query1);
+			break;
+		case 8100: // 지배
+			String query2 = "SELECT RUNES_ID, RUNES_ICON FROM RUNES WHERE RUNES_ICON LIKE '%Domination%'";
+			runePngList = champDao.getRunePng(query2);
+			break;
+		case 8200: // 마법
+			String query3 = "SELECT RUNES_ID, RUNES_ICON FROM RUNES WHERE RUNES_ICON LIKE '%Sorcery%' "
+					+ "AND RUNES_ID != 8299 AND RUNES_ID != 8242";
+			runePngList = champDao.getRunePng(query3);
+			break;
+		case 8300: // 영감
+			String query4 = "SELECT RUNES_ID, RUNES_ICON FROM RUNES WHERE RUNES_ICON LIKE '%Inspiration%' "
+					+ "OR RUNES_ID IN (8300, 8410)";
+			runePngList = champDao.getRunePng(query4);
+			break;
+		case 8400: // 결의
+			String query5 = "SELECT RUNES_ID, RUNES_ICON FROM RUNES WHERE RUNES_ICON LIKE '%Resolve%' "
+					+ "AND RUNES_ID != 8410 OR RUNES_ID = 8242";
+			runePngList = champDao.getRunePng(query5);
+			break;
+		}
+
+		return runePngList;
+	}
+
+	private List<String> makeIngTag(List<ChampionDetail> runePng, ChampionDetail runes) {
 		
-		ChampionDetail runes = championRunes.get(0);
+		int main_rune = runes.getMain_rune();
+		int main_under1 = runes.getMain_under1();
+		int main_under2 = runes.getMain_under2();
+		int main_under3 = runes.getMain_under3();
+		int main_under4 = runes.getMain_under4();
+		int sub_rune = runes.getSub_rune();
+		int sub_under1 = runes.getSub_under1();
+		int sub_under2 = runes.getSub_under2();
+		//보조 능력치도 해야 함
+		List<String> runeTagList = new ArrayList<>();
+		for (int i = 0; i < runePng.size(); i++) {
+			if (runePng.get(i).getRunes_id()!= main_rune &&runePng.get(i).getRunes_id()!= main_under1 &&runePng.get(i).getRunes_id()!= main_under2 &&
+					runePng.get(i).getRunes_id()!= main_under3 &&runePng.get(i).getRunes_id()!= main_under4 &&runePng.get(i).getRunes_id()!= sub_rune &&
+					runePng.get(i).getRunes_id()!= sub_under1 &&runePng.get(i).getRunes_id()!= sub_under2) {
+				
+				String tag = "<img src='https://ddragon.leagueoflegends.com/cdn/img/"+runePng.get(i).getRunes_icon()+"' "
+						+ "style='filter:grayscale(100%);' data-value = '"+runePng.get(i).getRunes_id()+"' class ='runeImg'>"; 
+				runeTagList.add(tag);
+			}else {
+				String tag = "<img src='https://ddragon.leagueoflegends.com/cdn/img/"+runePng.get(i).getRunes_icon()+"' "
+						+ "data-value = '"+runePng.get(i).getRunes_id()+"' class ='runeImg'>"; 
+				runeTagList.add(tag);				
+			}
+			
+		}
+		return runeTagList;
+	}
 	
+	public ModelAndView runeInfo(String championName, String lane) {
+		//해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
+		List<ChampionDetail> championRunes = champDao.getChampionRunes(championName, lane);
+		
+		//승률 1번째로 높은 룬
+		ChampionDetail runes1 = championRunes.get(0);
+		
+		//보조 능력치 쪼개기
 		String statperks = championRunes.get(0).getStatperks();
 		StringTokenizer st1 = new StringTokenizer(statperks, "|");
 		
-		mav.addObject("runes", runes);
+		//룬 이미지 태그 만들어서 가져오기
+		List<ChampionDetail> mainRunePng = selectRunes(runes1.getMain_rune());
+		List<ChampionDetail> subRunePng = selectRunes(runes1.getSub_rune());
+		
+		mav.addObject("runes1", runes1);
+		mav.addObject("mainRunePng", makeIngTag(mainRunePng, runes1));
+		mav.addObject("subRunePng", makeIngTag(subRunePng, runes1));
 		mav.addObject("statperks1", st1.nextToken());
 		mav.addObject("statperks2", st1.nextToken());
 		mav.addObject("statperks3", st1.nextToken());
 		
+		//승률 2번째로 높은 룬
+		ChampionDetail runes2 =null;
+		for (int i = 1; i < championRunes.size(); i++) {
+			if (championRunes.get(0).getSub_rune()!=championRunes.get(i).getSub_rune()) {
+				runes2 = championRunes.get(i);
+				break;
+			}			
+		}
+		System.out.println("runes2"+runes2);
 		
-		ChampionDetail runes2 = championRunes.get(1);
-		
+		//보조 능력치 쪼개기
 		String statperks2 = championRunes.get(1).getStatperks();
 		StringTokenizer st2 = new StringTokenizer(statperks2, "|");
 		
+		//룬 이미지 가져오기
+		List<ChampionDetail> mainRunePng2 = selectRunes(runes2.getMain_rune());
+		List<ChampionDetail> subRunePng2 = selectRunes(runes2.getSub_rune());
+		
 		mav.addObject("runes2", runes2);
+		mav.addObject("mainRunePng2", makeIngTag(mainRunePng2, runes2));
+		mav.addObject("subRunePng2", makeIngTag(subRunePng2, runes2));
 		mav.addObject("statperks2_1", st2.nextToken());
 		mav.addObject("statperks2_2", st2.nextToken());
 		mav.addObject("statperks2_3", st2.nextToken());
 		
-		
-		
-		//룬에 따른 판수/승률
+		//승률 가장 높은 2가지 룬에 따른 게임 수/승률 검색
 		List<ChampionDetail> rune_pickWin = new ArrayList<>();
 		for (int i = 0; i < 2; i++) {
 			int main_rune = championRunes.get(i).getMain_rune();
@@ -316,13 +493,14 @@ public class ChampionDetailMM {
 			String statperks3 = championRunes.get(i).getStatperks();
 			
 			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
-					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1));
+					sub_rune, sub_under1, sub_under2, statperks3, championName, lane));
 			
 		}
 		
-		mav.addObject("rune_pickWin1", rune_pickWin.get(0));
-		mav.addObject("rune_pickWin2", rune_pickWin.get(1));
-		
+		mav.addObject("rune_win1", rune_pickWin.get(0).getRune_winRate());
+		mav.addObject("rune_win2", rune_pickWin.get(1).getRune_winRate());
+		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
+		mav.addObject("rune_pick2", rune_pickWin.get(1).getRune_pick());		
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
