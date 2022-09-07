@@ -172,8 +172,6 @@ public class MultiSearchRestController {
 		try {
 			// 리그 정보 저장
 			leagueInfo(id);
-			// 게임 정보 저장
-			getGameId(puuid.toString());
 		} catch (Exception e) {
 			// 게임 정보 저장
 			System.out.println();
@@ -183,8 +181,10 @@ public class MultiSearchRestController {
 			msb.setRank("");
 			msb.setLp("");
 			getGameId(puuid.toString());
-
+			return msb;
 		}
+		// 게임 정보 저장
+		getGameId(puuid.toString());
 
 		return msb;
 	}
@@ -331,8 +331,7 @@ public class MultiSearchRestController {
 	public void getGameId(String puuid) throws IOException {
 
 		System.out.println("gmaeID 가져오는 중...");
-		String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid
-				+ "/ids?start=0&count=10&api_key=" + api_key;
+		String matchUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=10&api_key=" + api_key;
 		String result = connectURL(matchUrl); // url connect
 		String gameId = replaceSquareBrackets(result); // 대괄호 제거한 값 저장
 		gameId = replaceQuotationMarks(gameId); // 큰따옴표 제거한 값 저장
@@ -547,11 +546,27 @@ public class MultiSearchRestController {
 
 	// 게임아이디로 데이터 가져오기
 	private Object[] getGameData(String gameId) throws IOException {
+		
+		boolean key = false;
+		String gameUrl = "";
+		
+		// api_key 번갈아가면서 사용
+		if(key) {
+			String api_key2 = "RGAPI-5abbd2a5-6403-43ab-a67b-bdc1c426bcaf";
+			System.out.println("게임아이디를 이용해 데이터 가져오는중...");
 
-		System.out.println("게임아이디를 이용해 데이터 가져오는중...");
+			System.out.println("gameId : " + gameId);
+			gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key2;
+			key = false;
+		}else {
+			System.out.println("게임아이디를 이용해 데이터 가져오는중...");
 
-		System.out.println("gameId : " + gameId);
-		String gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
+			System.out.println("gameId : " + gameId);
+			gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
+			key = true;
+		}
+		
+
 
 		String result = connectURL(gameUrl); // url connect
 		JsonNode json = parseStringToJson(result); // Stinrg -> JsonNode
