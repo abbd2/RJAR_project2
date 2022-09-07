@@ -428,7 +428,7 @@ a.miniName:hover {
 	<div class=header>
 		<jsp:include page="header.jsp"></jsp:include>
 	</div>
-	<div class=main style="width:1500px">
+	<div class=main style="width:1500px; height:1500px; background-color : #E1E1E1">
 		<div id="leftSide">
 			<div id="leftSideBox">
 				<div class="card" id="summonerInfo">
