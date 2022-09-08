@@ -83,4 +83,16 @@
 	<select id="getRunePng" resultType="ChampionDetail">
 	${query}
 	</select>
+	
+	<select id="getSpell" resultType="ChampionDetail">
+		SELECT * FROM BRONZE_PLUS
+		WHERE CHAMPIONNAME=#{championName} AND LANE=#{lane}
+		ORDER BY SPELL_CNT DESC
+	</select>
+	
+	<select id="getSpellPlus" resultType="ChampionDetail">
+		SELECT * FROM BRONZE_PLUS
+		WHERE CHAMPIONNAME=#{championName} AND LANE=#{lane}
+		ORDER BY SPELL_CNT DESC
+	</select>
 </mapper>

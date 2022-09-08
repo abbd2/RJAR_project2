@@ -22,8 +22,6 @@ public interface IchampionDao {
 	         @Param("championId13") int championId13, @Param("championId14") int championId14, @Param("championId15") int championId15, @Param("championId16") int championId16);
 
 	List<Champion> getSelectChamp(String text);
-	
-	Champion getSpellList(@Param("championName") String championName,@Param("lane")String lane);
 
 	List<ChampionDetail> getChampionName1(@Param("championId") int championId, @Param("tier") String tier);
 
@@ -36,5 +34,9 @@ public interface IchampionDao {
 			@Param("sub_under2")int sub_under2, @Param("statperks3")String statperks3, @Param("championName")String championName, @Param("lane")String lane);
 
 	List<ChampionDetail> getRunePng(String query);
+	
+	List<ChampionDetail> getSpell(@Param("championName") String champion_eg_name, @Param("lane") String lane1); // 플레 기본
+	
+	List<ChampionDetail> getSpellPlus(@Param("championName") String champion_eg_name, @Param("lane") String lane1, @Param("tier") String tier);
 
 }
