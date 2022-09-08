@@ -47,7 +47,7 @@
     float: left;
 }
 
-#lane_btn{
+.lane_btn{
     width: 150px;
     height: 40px;
     margin-top: 40px;
@@ -237,8 +237,8 @@
    <div id="champion_profile">
     <div id="champ_img_box">
         <div id="lane_btn_box">
-            <button id="lane_btn" value ="${lane1}">${lane1}</button>
-            <button id="lane_btn" value ="${lane2}">${lane2}</button>
+            <button class="lane_btn" value ="${lane1}">${lane1}</button>
+            <button class="lane_btn" value ="${lane2}">${lane2}</button>
         </div>
         <div id="champ_img_box2">
             <img id="champ_img" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${championName}.png" alt="">
@@ -826,9 +826,7 @@ $(function () {
 	statperks_ids1 = [$("#statperks1"),$("#statperks2"),$("#statperks3")]	
 	statperks_ids2 = [$("#statperks4"),$("#statperks5"),$("#statperks6")]
 	statperks_ids3 = [$("#statperks7"),$("#statperks8"),$("#statperks9")]
-	console.log(${statperks3});
-	console.log(${statperks2});
-	console.log(${statperks1});
+
 	for (var i = 0; i < statperks_ids1.length; i++) {
 		if (${statperks3} === Number(statperks_ids1[i].attr("data-value"))){
 			console.log('같음');
@@ -852,8 +850,6 @@ $(function () {
 	}
 	
 });
-
-
 
 $("#top1").click(function(){
 	
@@ -891,5 +887,17 @@ $("#top2").click(function(){
 	$("#rune_box2").css("display", "block");
 	$("#rune_box1").css("display", "none");
 });
+
+$(".lane_btn").click(function(){
+	console.log($(this).val());
+	let championName = "${championName}";
+	let button_value = $(this).val();
+	let $form = $("<form action='runeLine' method ='get'></form>");
+	$("<input>").attr("name", "lane").val(button_value).appendTo($form);
+	$("<input>").attr("name", "championName").val(championName).appendTo($form);
+	$form.appendTo("body");
+	$form.submit();
+});
+
 </script>
 </html>

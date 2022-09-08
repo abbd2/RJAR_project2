@@ -37,6 +37,7 @@ public class ChampionDetailController {
 		return mav;
 	}
 	
+	@GetMapping(value = "/runeLine")
 	public ModelAndView runeLine(Champion champ) {
 		mav = champmm.runeInfo(champ.getChampionName(), champ.getLane());
 		return mav;
