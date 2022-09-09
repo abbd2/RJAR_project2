@@ -10,4 +10,6 @@ public interface IMemberDao {
 	Member checkNick(String m_nick);
 	
 	boolean insertMember(Member mm);
+	
+	String getSecurityPw(String m_id);
 }

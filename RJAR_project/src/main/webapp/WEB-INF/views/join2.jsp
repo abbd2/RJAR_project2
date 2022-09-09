@@ -183,34 +183,34 @@
 		<div id="topDiv">
 			아이디
 			<div class="topInfoDiv">
-				<input id="id" name="m_id" type="text" placeholder="아이디를 입력해주세요." required="required">
+				<input id="id" name="m_id" type="text" placeholder="아이디를 입력해주세요." required="required" oninvalid="this.setCustomValidity('아이디를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<input id="checkIdBtn" type="button" value="중복확인">
 				<div id="idCheckResult" style="font-size: 13px; padding-left: 100px;"></div>
 			</div>
 			
 			비밀번호
 			<div class="topInfoDiv">
-				<input id="pw" class="topInfo" name="m_pw" type="password" placeholder="비밀번호를 입력하세요." required="required">
+				<input id="pw" class="topInfo" name="m_pw" type="password" placeholder="비밀번호를 입력하세요." required="required" oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<div id="pwInput" style="padding-left: 100px;"></div>
 			</div>
 			비밀번호 확인
 			<div class="topInfoDiv">
-				<input id="pwCheck" class="topInfo" type="password" placeholder="비밀번호를 다시 입력하세요." required="required">
+				<input id="pwCheck" class="topInfo" type="password" placeholder="비밀번호를 다시 입력하세요." required="required" oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<div id="pwCheckInput" style="padding-left: 100px;"></div>
 			</div>
 			이름
 			<div class="topInfoDiv">
-				<input class="topInfo" name="m_name" type="text" placeholder="이름을 입력하세요." required="required">
+				<input class="topInfo" name="m_name" type="text" placeholder="이름을 입력하세요." required="required" oninvalid="this.setCustomValidity('이름을 입력해 주세요.')" oninput="this.setCustomValidity('')">
 			</div>
 			닉네임
 			<div class="topInfoDiv">
-				<input id="nick" name="m_nick" type="text" placeholder="닉네임을 입력하세요." required="required">
+				<input id="nick" name="m_nick" type="text" placeholder="닉네임을 입력하세요." required="required" oninvalid="this.setCustomValidity('닉네임을 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<input id="checkNickBtn" type="button" value="중복확인">
 				<div id="nickCheckResult" style="font-size: 13px; padding-left: 100px;"></div>
 			</div>
 			핸드폰 번호
 			<div>
-				<select id="selectPhone" name="m_tel" required="required">
+				<select id="selectPhone" name="m_tel" required="required" oninvalid="this.setCustomValidity('통신사를 선택해 주세요.')" oninput="this.setCustomValidity('')">
 					<option value="" selected="selected">통신사</option>
 					<option>SKT</option>
 					<option>KT</option>
@@ -219,20 +219,20 @@
 					<option>알뜰폰 KT</option>
 					<option>알뜰폰 LG U+</option>
 				</select>
-				<input id="phone" name="m_phone" type="text" placeholder="핸드폰 번호" required="required">
+				<input id="phone" name="m_phone" type="text" placeholder="핸드폰 번호" required="required" oninvalid="this.setCustomValidity('핸드폰 번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<input id="certified" type="button" value="인증" onclick="checkCertified($('#selectPhone').val(), $('#phone').val())">
-				<input id="certifiedNum" type="text" placeholder="인증번호 입력" required="required">
+				<input id="certifiedNum" type="text" placeholder="인증번호 입력" required="required" oninvalid="this.setCustomValidity('인증번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<div id="selectTel" style="float: right; padding-right: 80px;"></div>
 			</div>
 			비밀번호 찾기 질문
 			<div>
-				<select id="pwQuestion" name="m_que" required="required">
+				<select id="pwQuestion" name="m_que" required="required" oninvalid="this.setCustomValidity('질문을 선택해 주세요.')" oninput="this.setCustomValidity('')">
 					<option value="" selected="selected">질문</option>
 					<option value="0">당신의 초등학교 이름</option>
 					<option value="1">당신이 가장 좋아하는 게임</option>
 					<option value="2">당신의 보물 제1호</option>
 				</select>
-				<input id="answer" name="m_ans" type="text" placeholder="답변" required="required">
+				<input id="answer" name="m_ans" type="text" placeholder="답변" required="required" oninvalid="this.setCustomValidity('답변을 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<div id="answerCheckResult"></div>
 			</div>
 			

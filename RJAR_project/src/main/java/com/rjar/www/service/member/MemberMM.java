@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,36 @@ public class MemberMM {
 	private IMemberDao mDao;
 
 	ModelAndView mav;
+
+	// 로그인
+	public ModelAndView memberAccess(HttpSession session, Member mm) {
+
+		mav = new ModelAndView();
+		String view = null;
+		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+		// 회원가입할 때 암호화해서 저장해뒀던 비밀번호를 받아옴
+		String pwEncode = mDao.getSecurityPw(mm.getM_id());
+		System.out.println("가져온 암호화된 비밀번호 : " + pwEncode);
+
+		if (pwEncode != null) {
+			if (pwEncoder.matches(mm.getM_pw(), pwEncode)) {
+				System.out.println("로그인 중...");
+				// 세션에 로그인 마킹
+				session.setAttribute("m_id", mm.getM_id());
+				view = "redirect:/home";
+			}else { // 비밀번호 오류
+				System.out.println("잘못된 비밀번호 :" + mm.getM_pw());
+				view = "login";
+				mav.addObject("check", 2);
+			}
+		} else {
+			System.out.println("잘못된 아이디 :" + mm.getM_id());
+			view = "login";
+			mav.addObject("check", 2);
+		}
+		mav.setViewName(view);
+		return mav;
+	}
 
 	public ModelAndView memberJoin(Member mm) {
 		// 비밀번호 암호화
