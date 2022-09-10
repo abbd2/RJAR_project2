@@ -116,7 +116,7 @@
 					</form>
 				</c:if>
 				<c:if test="${sessionScope.m_id == null}">
-					<a href="./logout">
+					<a href="./login">
 						<button id="login-btn" type="button" class="btn btn-success"
 							style="font-family: 'Poor Story', cursive">로그인</button>
 					</a>

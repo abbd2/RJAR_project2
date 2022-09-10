@@ -164,7 +164,7 @@
 				</div>
 				
 				<c:if test="${sessionScope.m_id != null}">
-					<form action="./logout" method="post">
+					<form action="./logout" method="post" style="margin: 0px;">
 					<button id="login-btn" type="submit" class="btn btn-success"
 						style="font-family: 'Poor Story', cursive">로그아웃</button>
 					</form>

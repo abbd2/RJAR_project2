@@ -7,13 +7,14 @@
 <meta charset="UTF-8">
 
 <!-- Bootstrap CSS -->
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" -->
-<!-- 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" -->
-<!-- 	crossorigin="anonymous"> -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
+	crossorigin="anonymous">
 	
 <title>로그인</title>
 <style type="text/css">
+
 #topDiv {
 	margin-top: 50px;
 	float: center;
@@ -58,7 +59,9 @@
 }
 
 #loginState {
-	margin: 15px 0px 0px 30px;
+	margin: 0px 0px 0px 30px;
+	width: 300px;
+	height: 30px;
 }
 
 #bottomDiv {
