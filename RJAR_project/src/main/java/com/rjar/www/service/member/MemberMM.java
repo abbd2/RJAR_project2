@@ -1,9 +1,8 @@
 package com.rjar.www.service.member;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,9 @@ public class MemberMM {
 
 	@Autowired
 	private IMemberDao mDao;
+	
+	@Autowired
+	private Member member;
 
 	ModelAndView mav;
 
@@ -102,15 +104,37 @@ public class MemberMM {
 		if (m_nick.length() < 2 || m_nick.length() > 10) {
 			System.out.println("유효성 검사");
 			// 오류를 발생시킴
-			throw new CheckException("2~10자만 사용 가능합니다.");
-		} else {
-			Member checkNick = mDao.checkNick(m_nick);
-			log.info(checkNick);
-			if (checkNick != null) {
-				throw new CheckException("이미 사용중인 닉네임입니다.");
-			}
+			throw new CheckException("등록되지 않은 이름입니다.");
 		}
 		return "사용할 수 있는 닉네임입니다.";
 	}
-
+	
+	public String nameAvailable(Member mm) {
+		
+		// 프론트에서 넘어온 값 저장
+		String name = mm.getM_name();
+		String tel = mm.getM_tel();
+		String phone = mm.getM_phone();
+		
+		System.out.println("nameAvailable 진입");
+		mm = mDao.checkName(name); // 서버에서 넘어온 값 저장
+		log.info(mm);
+		
+		if(mm != null) {
+			System.out.println("아이디 존재");
+			if(!mm.getM_tel().equals(tel)) { // 통신사 같은지 검사
+				System.out.println("통신사 틀림");
+				throw new CheckException("올바른 통신사를 선택해주세요.");
+			}else if(!mm.getM_phone().equals(phone)) {
+				System.out.println("전화번호 틀림");
+				throw new CheckException("올바른 전화번호를 입력해주세요.");
+			}
+			member.setM_id(mm.getM_id());
+			return "";
+		}else {
+			System.out.println("아이디 존재하지 않음");
+			throw new CheckException("가입되지 않은 이름입니다.");
+		}
+	}
+	
 }

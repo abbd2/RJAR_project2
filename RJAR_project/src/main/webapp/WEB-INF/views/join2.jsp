@@ -79,40 +79,40 @@
 	width: 300px;
 	height: 30px;
 	font-size: 17px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #nick{
 	width: 300px;
 	height: 30px;
 	font-size: 17px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #idCheckBtn{
 	height: 35px;
 	font-size: 17px;
 	float: right;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #nickCheckBtn{
 	height: 35px;
 	font-size: 17px;
 	float: right;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 .topInfo{
 	height: 30px;
 	width: 392px;
 	font-size: 17px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #selectPhone{
 	height: 35px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	width: 90px;
 	font-size: 17px;
 	margin-bottom: 7px; 
@@ -121,28 +121,28 @@
 #phone{
 	height: 30px;
 	width: 222px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	font-size: 17px;
 }
 
 #certified{
 	height: 35px;
 	width: 70px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	font-size: 17px;
 }
 
 #certifiedNum{
 	height: 30px;
 	width: 150px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	font-size: 17px;
 	margin-bottom: 7px;
 }
 
 #pwQuestion{
 	height: 35px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	width: 400px;
 	font-size: 17px;
 	margin-bottom: 7px; 
@@ -150,7 +150,7 @@
 
 #answer{
 	height: 30px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	width: 392px;
 	font-size: 17px;
 	margin-bottom: 7px;
@@ -284,7 +284,6 @@
 		}
 	});
 
-
 		// id 중복확인
 		$('#checkIdBtn').on('click', function (){
 					console.log('id 중복확인');
@@ -383,7 +382,7 @@
 			$('#selectTel').html('');
 
 			// 통신사 선택 여부 확인
-			if (tel === '통신사') {
+			if (tel === '') {
 				$('#selectTel').html('통신사를 선택해 주세요.').css('color', 'red');
 				phoneCheck = false;
 			} 
@@ -435,7 +434,6 @@
 			}else if(!ansCheck){
 				return false;
 			}else if(idCheck && pwCheck && pwCheck2 && nickCheck && ansCheck){
-				window.history.forward();
 				return true;
 			}
 		}; // end on

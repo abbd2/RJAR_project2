@@ -125,7 +125,7 @@ a {
 			<div id="topDiv">
 				<div id="id" class="inputDiv">
 					<img class="img" alt="id" src="./resources/loginImg/id.PNG">
-					<input class="loginInput" name="m_id" required="required" oninvalid="this.setCustomValidity('아이디를 입력해 주세요.')" oninput="this.setCustomValidity('')">
+					<input class="loginInput" name="m_id" required="required" oninvalid="this.setCustomValidity('를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				</div>
 				
 				<div id="pw" class="inputDiv">
@@ -144,7 +144,7 @@ a {
 			
 			<div id="bottomDiv">
 				<input id="loginBtn" class="btn btn-primary btn-lg" type="submit" value="로그인">
-				<a id="findIdPw" href="">아이디 · 비밀번호 찾기</a>
+				<a id="findIdPw" href="./findId">아이디 · 비밀번호 찾기</a>
 					<div id="text">RJAR.GG가 처음이신가요?</div>
 				<a id="join" href="./join">회원가입</a>
 			</div>

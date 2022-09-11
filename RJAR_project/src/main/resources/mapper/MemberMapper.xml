@@ -38,5 +38,9 @@
 		SELECT M_PW FROM M WHERE M_ID=#{m_id}
 	</select>
 	
+	<select id="checkName" resultType="Member">
+		select m_id, m_tel, m_phone from member where m_name = #{m_name}
+	</select>
+	
 </mapper>
 
