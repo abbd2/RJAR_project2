@@ -25,8 +25,10 @@ public class ChampionDetail {
 	//아이템
 	private String start1;
 	private String start2;
+	private int start_cnt;
+	private int start_win;
 	private double start_winrate;
-	private int start_pick;
+	private double start_pick;
 	
 	private int main_rune;
 	private int main_under1;

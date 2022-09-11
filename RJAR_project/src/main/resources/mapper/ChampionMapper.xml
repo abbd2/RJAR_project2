@@ -95,4 +95,12 @@
 		WHERE CHAMPIONNAME=#{championName} AND LANE=#{lane}
 		ORDER BY SPELL_CNT DESC
 	</select>
+	
+	<select id="getStart_items" resultType="ChampionDetail">
+		SELECT *
+		FROM(SELECT * FROM START_ITEM
+		     WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+		     ORDER BY START_CNT DESC)
+		WHERE <![CDATA[ROWNUM<=2]]>
+	</select>
 </mapper>

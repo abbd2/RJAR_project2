@@ -318,6 +318,18 @@ public class ChampionDetailMM {
 		}
 		
 		//아이템 판수, 승률, 픽률
+		List<ChampionDetail> start_items = champDao.getStart_items(champion_eg_name, lane1);
+		ChampionDetail start1=start_items.get(0);
+		
+		mav.addObject("start1",start1);
+		System.out.println("start1="+start1);
+		
+		if (start_items.get(1).getStart1()!=null){
+			ChampionDetail start2=start_items.get(1);
+			mav.addObject("start2",start2);
+			System.out.println("start2="+start2);
+		}
+		
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}

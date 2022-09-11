@@ -39,4 +39,6 @@ public interface IchampionDao {
 	
 	List<ChampionDetail> getSpellPlus(@Param("championName") String champion_eg_name, @Param("lane") String lane1, @Param("tier") String tier);
 
+	List<ChampionDetail> getStart_items(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
+
 }
