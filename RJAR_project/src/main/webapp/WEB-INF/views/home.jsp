@@ -33,8 +33,6 @@
 	
 }
 
-
-
 .summoner-search-outter-box {
 	display: flex;
 	justify-content: center;
@@ -170,19 +168,13 @@
 					<h1 class="main-text">RJAR.GG</h1>
 					<div class="input-group mb-3" id="summoner-search-box">
 						<input type="text" class="form-control" placeholder="소환사명을 입력하세요"
-							aria-label="Recipient's username"
+							aria-label="Recipient's username" style="font-family: 'Poor Story', cursive"
 							aria-describedby="button-addon2" name="summonerName">
 						<button type="submit" class="btn btn-success">search</button>
 					</div>
 				</div>
 			</div>
 		</div>
-	</form>
-	
-	<form action="championDetail" method = "get">
-		<input type="text" value = "Aatrox" name="championName">
-		<input type="text"  value = "TOP" name="lane">
-		<button>제발돼라</button>
 	</form>
 </body>
 </html>

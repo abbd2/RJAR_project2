@@ -37,8 +37,6 @@ public class SummonerSearchController {
 
 		mav.setViewName("summonerSearch"); // mav 객체에 이동할 뷰 이름 set
 		
-		
-
 		return mav;
 	}
 

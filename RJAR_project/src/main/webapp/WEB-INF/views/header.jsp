@@ -98,7 +98,7 @@
 						<div class="summoner-search-box"
 							style="display: block; margin-right: 3px;">
 							<input class="form-control me-sm-2" type="text"
-								placeholder="소환사명을 입력하세요" name="summonerName">
+								placeholder="소환사명을 입력하세요" name="summonerName" style="font-family: 'Poor Story', cursive">
 						</div>
 						<div class="summoner-search-button">
 							<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
