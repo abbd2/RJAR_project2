@@ -42,5 +42,18 @@
 		select m_id, m_tel, m_phone from member where m_name = #{m_name}
 	</select>
 	
+	<select id="checkPw" resultType="Member">
+		select m_id, m_pw, m_que, m_ans from member where m_id = #{m_id}
+	</select>
+	
+	<update id="changePw">
+		update member set
+		m_pw = #{m_pw} where m_id = #{m_id}
+	</update>
+	
+	<select id="checkUser" resultType="String">
+		select m_id from member where m_name = #{m_name}
+	</select>
+	
 </mapper>
 

@@ -33,5 +33,5 @@ public class MemberRestController {
 	public ResponseEntity<String> phoneAvailable(Member mm){
 		return ResponseEntity.ok(membermm.nameAvailable(mm));
 	}
-
+	
 }

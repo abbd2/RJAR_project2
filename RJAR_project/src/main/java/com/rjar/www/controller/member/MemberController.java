@@ -2,6 +2,7 @@ package com.rjar.www.controller.member;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ public class MemberController {
 
 	@Autowired
 	private MemberMM membermm;
-	
+
 	@Autowired
 	private Member member;
 
@@ -67,6 +68,8 @@ public class MemberController {
 
 	@PostMapping(value = "memberJoin")
 	public ModelAndView memberJoin(Member mm) {
+		log.info(mm);
+		membermm.checkUser(mm.getM_name());
 		mav = membermm.memberJoin(mm);
 		return mav;
 	}
@@ -89,15 +92,49 @@ public class MemberController {
 
 	@GetMapping(value = "/findId2")
 	public ModelAndView findId2() {
-		
-		System.out.println("아이디 찾기 페이지로 이동");
-		
+
+		System.out.println("아이디 찾기2 페이지로 이동");
+
 		mav = new ModelAndView();
 		System.out.println(member.getM_id());
 		mav.addObject("m_id", member.getM_id());
 		mav.setViewName("findId2");
 		log.info(mav);
-		
+
 		return mav;
 	}
+
+	@GetMapping(value = "/findPw")
+	public String findPw() {
+		System.out.println("비밀번호 찾기 페이지로 이동");
+		return "findPw";
+	}
+
+	@GetMapping(value = "/checkPw")
+	public String checkPw(Member mm) {
+
+		return membermm.checkId(mm);
+	}
+
+	@GetMapping(value = "/findPw2")
+	public ModelAndView findPw2(@RequestParam(value = "m_id", required = false) String m_id) {
+
+		System.out.println("비밀번호 찾기2 페이지로 이동");
+		mav = new ModelAndView();
+		mav.addObject("m_id", m_id); // 변경전 비밀번호를 알기위해 m_id 전송
+		mav.setViewName("findPw2");
+
+		return mav;
+	}
+
+	@PostMapping(value = "/changePw")
+	public ModelAndView changePw(String m_pw, String currentPw) {
+
+		log.info("changePw : " + m_pw);
+		log.info("currentPw : " + currentPw);
+		membermm.changePw(m_pw, currentPw);
+
+		return mav;
+	}
+
 }

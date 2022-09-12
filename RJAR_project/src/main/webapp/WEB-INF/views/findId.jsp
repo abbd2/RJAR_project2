@@ -14,18 +14,11 @@
 	
 <title>아이디 찾기</title>
 <style type="text/css">
-#topDiv {
-	margin-top: 0px;
-	float: center;
-	height: 90px;
-	font-size: 17px;
-}
 
 #findIdDiv {
 	width: 400px;
 	height: 530px;
 	border: 1px solid #758592;
-	margin: 110px 0px 0px 559px;
 }
 
 #titleDiv {
@@ -47,6 +40,12 @@
 	height: 15px;
 	float: left;
 	margin: 5px 0px 0px 39px;
+}
+
+#topDiv {
+	float: center;
+	height: 90px;
+	font-size: 17px;
 }
 
 .inputDiv {
@@ -105,49 +104,69 @@
 	/* 	border-radius: 5px; */
 	/* 	font-size: 17px; */
 }
+
+#main{
+	width: 400px;
+	height: 578px;
+ 	margin: 100px 0px 0px 559px;
+}
+
+.findBtn{
+	width: 200px;
+	height: 48px;
+	border: 1px solid #ffffff;
+	border-radius: 3px; 
+}
+
 </style>
 </head>
 <body>
 
-	<div id="findIdDiv">
-		<form action="./findId2" onsubmit="return checkFindId()">
-			<div id="titleDiv">
-				<a href="./home" style=" text-decoration: none;">RJAR.GG</a>
-			</div>
-			<div>
-			<label style="margin: 0px 0px 0px 145px; font-size: 20px;">아이디 찾기</label>
-			</div>
-			<div id="pageSeparator">
-				<div class="circle" style="background-color: #333333;"></div>
-				<div class="circle"></div>
-			</div>
-			
-			<div id="topDiv">
-				<div id="id" class="inputDiv">
-					<label style="float: left; width: 300px;">가입한 이름</label>
-					<input id="name" name="m_name" class="findInput" name="m_name" placeholder="내용을 입력해 주세요." required="required" required="required" oninvalid="this.setCustomValidity('이름을 입력해 주세요.')" oninput="this.setCustomValidity('')">
-					<label id="nameCheckResult" style="font-size: 13px; color: red;">${msg}</label>
+	<div id="main">
+		<input class="findBtn" type="button" value="아아디 찾기" style="background-color: #333333; color: #ffffff; float: left;">
+		<a href="findPw">
+			<input class="findBtn" type="button" value="비밀번호 찾기">
+		</a>
+		<div id="findIdDiv">
+			<form action="./findId2" onsubmit="return checkFindId()">
+				<div id="titleDiv">
+					<a href="./home" style=" text-decoration: none;">RJAR.GG</a>
 				</div>
-			</div>
-			
-			<div id="bottomDiv">
-				<label style="margin: 5px 300px 8px 0px;">핸드폰</label>
-				<select id="selectPhone" name="m_tel" required="required" oninvalid="this.setCustomValidity('통신사를 선택해 주세요.')" oninput="this.setCustomValidity('')">
-					<option value="" selected="selected">통신사</option>
-					<option>SKT</option>
-					<option>KT</option>
-					<option>LG U+</option>
-					<option>알뜰폰 SKT</option>
-					<option>알뜰폰 KT</option>
-					<option>알뜰폰 LG U+</option>
-				</select>
-				<input id="phone" name="m_phone" type="text" placeholder="-를 생략하고 입력하세요." required="required" oninvalid="this.setCustomValidity('핸드폰 번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
-				<input id="certified" class="" type="button" value="인증" onclick="checkCertified($('#selectPhone').val(), $('#phone').val())">
-				<input id="certifiedNum" type="text" placeholder="인증번호 입력" required="required" oninvalid="this.setCustomValidity('인증번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
-				<label id="resultPhone" style="font-size: 13px; margin-left: 5px;"></label>
-			</div>
-			<input id="findIdBtn" class="btn btn-primary btn-lg" type="submit" value="아이디 찾기">
-		</form>
+				<div>
+				<label style="margin: 0px 0px 0px 145px; font-size: 20px;">아이디 찾기</label>
+				</div>
+				<div id="pageSeparator">
+					<div class="circle" style="background-color: #333333;"></div>
+					<div class="circle"></div>
+				</div>
+				
+				<div id="topDiv">
+					<div id="id" class="inputDiv">
+						<label style="float: left; width: 300px;">가입한 이름</label>
+						<input id="name" name="m_name" class="findInput" placeholder="내용을 입력해 주세요." required="required" oninvalid="this.setCustomValidity('이름을 입력해 주세요.')" oninput="this.setCustomValidity('')">
+						<label id="nameCheckResult" style="font-size: 13px; color: red;">${msg}</label>
+					</div>
+				</div>
+				
+				<div id="bottomDiv">
+					<label style="margin: 5px 300px 8px 0px;">핸드폰</label>
+					<select id="selectPhone" name="m_tel" required="required" oninvalid="this.setCustomValidity('통신사를 선택해 주세요.')" oninput="this.setCustomValidity('')">
+						<option value="" selected="selected">통신사</option>
+						<option>SKT</option>
+						<option>KT</option>
+						<option>LG U+</option>
+						<option>알뜰폰 SKT</option>
+						<option>알뜰폰 KT</option>
+						<option>알뜰폰 LG U+</option>
+					</select>
+					<input id="phone" name="m_phone" type="text" placeholder="-를 생략하고 입력하세요." required="required" oninvalid="this.setCustomValidity('핸드폰 번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
+					<input id="certified" class="" type="button" value="인증" onclick="checkCertified($('#selectPhone').val(), $('#phone').val())">
+					<input id="certifiedNum" type="text" placeholder="인증번호 입력" required="required" oninvalid="this.setCustomValidity('인증번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
+					<label id="resultPhone" style="font-size: 13px; margin-left: 5px;"></label>
+				</div>
+				<input id="findIdBtn" class="btn btn-primary btn-lg" type="submit" value="아이디 찾기">
+			</form>
+		</div>
 	</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
