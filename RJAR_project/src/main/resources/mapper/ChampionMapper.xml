@@ -55,7 +55,7 @@
 	<select id="getChampionRunes" resultType="ChampionDetail">
 		SELECT /*+INDEX_DESC(PLATINUM PLATINUM_PK)*/ MAIN_RUNE, MAIN_UNDER1, MAIN_UNDER2, MAIN_UNDER3, 
 		MAIN_UNDER4, SUB_RUNE, SUB_UNDER1, SUB_UNDER2, STATPERKS
-		FROM PLATINUM
+		FROM BRONZE
 		WHERE CHAMPIONNAME = #{championName} AND TEAMPOSITION = #{lane} AND WIN = 'True'
 		GROUP BY MAIN_RUNE, MAIN_UNDER1, MAIN_UNDER2, MAIN_UNDER3, 
 		MAIN_UNDER4, SUB_RUNE, SUB_UNDER1, SUB_UNDER2, STATPERKS
@@ -78,5 +78,29 @@
 		AND STATPERKS= #{statperks3} AND CHAMPIONNAME = #{championName} AND TEAMPOSITION = #{lane}
 		GROUP BY CHAMPIONNAME) B
 		ON A.CHAMPIONNAME = B.CHAMPIONNAME
+	</select>
+	
+	<select id="getRunePng" resultType="ChampionDetail">
+	${query}
+	</select>
+	
+	<select id="getSpell" resultType="ChampionDetail">
+		SELECT * FROM BRONZE_PLUS
+		WHERE CHAMPIONNAME=#{championName} AND LANE=#{lane}
+		ORDER BY SPELL_CNT DESC
+	</select>
+	
+	<select id="getSpellPlus" resultType="ChampionDetail">
+		SELECT * FROM BRONZE_PLUS
+		WHERE CHAMPIONNAME=#{championName} AND LANE=#{lane}
+		ORDER BY SPELL_CNT DESC
+	</select>
+	
+	<select id="getStart_items" resultType="ChampionDetail">
+		SELECT *
+		FROM(SELECT * FROM START_ITEM
+		     WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+		     ORDER BY START_CNT DESC)
+		WHERE <![CDATA[ROWNUM<=2]]>
 	</select>
 </mapper>
