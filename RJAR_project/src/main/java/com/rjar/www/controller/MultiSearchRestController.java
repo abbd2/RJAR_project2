@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rjar.www.bean.summonersearch.MultiSearchBean;
+import com.rjar.www.exception.SummonerNotFoundException;
 
 import lombok.extern.log4j.Log4j;
 
@@ -28,14 +30,14 @@ public class MultiSearchRestController {
 	@Autowired
 	private MultiSearchBean msb;
 //	@Autowired
-//	private IMultiSearchDao msDao;
+//	private IMultiSearchDao msDao; // db
 
 	ArrayList<MultiSearchBean> msbList;
 
 	private final static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
 
 	@GetMapping(value = "/executeMultiSearch")
-	public ArrayList<MultiSearchBean> multiSearch(String summoners) throws IOException {
+	public ArrayList<MultiSearchBean> multiSearch(String summoners) throws IOException, SummonerNotFoundException {
 
 		long beforeTime = System.currentTimeMillis(); // 코드 실행 전의 시간
 
@@ -43,6 +45,13 @@ public class MultiSearchRestController {
 
 //		-------------------------- 시작 --------------------------
 		msbList = getSummonersInfo(summoners); // 멀티서치에 뿌릴 정보 받아오기
+		log.info("msbList : " + msbList);
+		System.out.println("msbList : " + msbList);
+
+		if (msbList.isEmpty()) { // 객체가 비어있다면
+			System.out.println("isEmpty");
+			throw new SummonerNotFoundException("검색 결과와 일치하는 소환사가 없습니다. 정확하게 붙여넣으신건지, 소환사명에 오타나 특수문자가 들어간건 아닌지 확인 해주세요.");
+		}
 //		-------------------------- 시작 --------------------------
 
 		long afterTime = System.currentTimeMillis(); // 코드 실행 후의 시간
@@ -103,7 +112,15 @@ public class MultiSearchRestController {
 
 		msbList = new ArrayList<>();
 
+		int searchCnt = 0;
 		for (int i = 0; i < summonerName.length; i++) {
+
+			if (searchCnt > 4) { // 유효한 소환사 닉네임 5개까지만 검색
+				System.out.println("break");
+				System.out.println();
+				break;
+			} // end if
+
 //			int result = msDao.checkSummonerName(summonerName[i]); // 소환사 이름으로 DB 검색
 //			if (result > 0) {
 //				System.out.println("result: " + result);
@@ -119,23 +136,29 @@ public class MultiSearchRestController {
 //				System.out.println("소환사 이름 DB검색 실패");
 //				System.out.println();
 
-				try {
+			try {
 				System.out.println(summonerName[i] + "의 puuid 받아오는중...");
 
 				msb = new MultiSearchBean();
 				msb.setSummonerName(summonerName[i]); // 소환사의 이름 저장
 				msbList.add(getPuuid(summonerName[i])); // 데이터 받아오기
 				System.out.println(i + "명 완료...");
+				searchCnt++;
+				System.out.println("searchCnt : " + searchCnt);
 				System.out.println();
-				} catch (Exception e) {
-					System.out.println("--------------------------");
-					System.out.println("오류 !!!");
-					System.out.println("--------------------------");
-				}
-//			} db관련
-		}
+			} catch (Exception e) {
+				System.out.println("--------------------------");
+				System.out.println("존재하지 않는 소환사 이름 !!!");
+				System.out.println("--------------------------");
+				continue;
+			}
+
+//		} db관련
+
+		} // end for
+
 		return msbList;
-	}
+	} // end getSummonersInfo
 
 	// 소환사 이름으로 puuid 받아오기
 	public MultiSearchBean getPuuid(String orlSummonerName) throws IOException {
@@ -147,7 +170,6 @@ public class MultiSearchRestController {
 
 		String result = connectURL(proFileUrl); // url connect
 		JsonNode json = parseStringToJson(result); // String(json모양) -> JsonNode
-
 		JsonNode jsonId = json.get("id"); // JsonNode에서 id 저장
 		JsonNode jsonPuuid = json.get("puuid"); // JsonNode에서 puuid 저장
 
@@ -172,8 +194,6 @@ public class MultiSearchRestController {
 		try {
 			// 리그 정보 저장
 			leagueInfo(id);
-			// 게임 정보 저장
-			getGameId(puuid.toString());
 		} catch (Exception e) {
 			// 게임 정보 저장
 			System.out.println();
@@ -183,8 +203,10 @@ public class MultiSearchRestController {
 			msb.setRank("");
 			msb.setLp("");
 			getGameId(puuid.toString());
-
+			return msb;
 		}
+		// 게임 정보 저장
+		getGameId(puuid.toString());
 
 		return msb;
 	}
@@ -198,7 +220,6 @@ public class MultiSearchRestController {
 		JsonNode json = parseStringToJson(result); // String to jsonNode
 
 		System.out.println("프로필 데이터 저장중...");
-		System.out.println();
 		System.out.println("json의 사이즈 : " + json.size());
 		System.out.println();
 
@@ -548,10 +569,24 @@ public class MultiSearchRestController {
 	// 게임아이디로 데이터 가져오기
 	private Object[] getGameData(String gameId) throws IOException {
 
-		System.out.println("게임아이디를 이용해 데이터 가져오는중...");
+		boolean keyflag = false;
+		String gameUrl = "";
 
-		System.out.println("gameId : " + gameId);
-		String gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
+		// api_key 번갈아가면서 사용
+		if (keyflag) {
+			String api_key2 = "RGAPI-5abbd2a5-6403-43ab-a67b-bdc1c426bcaf";
+			System.out.println("게임아이디를 이용해 데이터 가져오는중...");
+
+			System.out.println("gameId : " + gameId);
+			gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key2;
+			keyflag = false;
+		} else {
+			System.out.println("게임아이디를 이용해 데이터 가져오는중...");
+
+			System.out.println("gameId : " + gameId);
+			gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
+			keyflag = true;
+		}
 
 		String result = connectURL(gameUrl); // url connect
 		JsonNode json = parseStringToJson(result); // Stinrg -> JsonNode

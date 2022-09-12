@@ -67,15 +67,16 @@
 }
 
 .termsCheckBox {
-	margin: 0px 0px 0px 45px;
+ 	margin: 0px 0px 0px 45px;
 	width: 430px;
-	height: 28px;
+	height: 30px;
 }
 
-.termsCheckBoxDiv {
-	float: left;
-	padding: 4px 0px 0px 3px;
+.termsCheckBoxLabel {
+/*  	float: ; */
+	padding: 4px 0px 0px 0px;
 	font-size: 14px;
+	height: 30px;
 }
 
 #nextBtn {
@@ -92,7 +93,7 @@
 .checkBox {
 	width: 20px;
 	height: 20px;
-	float: left;
+ 	float: left;
 }
 
 </style>
@@ -108,7 +109,7 @@
 			<div class="circle"></div>
 		</div>
 		
-	<form action="" onsubmit="return chekcBoxTrue()">
+	<form action="join2" onsubmit="return isChekcBox()">
 		<div id="topDiv">
 			<div class="termsDiv">
 				<strong>이용약관</strong>
@@ -130,9 +131,9 @@
 			
 			<div class="termsCheckBox">
 				<input id="checkBox1" name="checkbox" class="checkBox" type="checkbox" value="" onclick="checkBox()">
-				<div class="termsCheckBoxDiv">
+				<label class="termsCheckBoxLabel">
 					RJAR.GG 서비스 이용약관 동의(필수)
-				</div>
+				</label>
 			</div>			
 		</div> <!-- end topDiv -->
 		
@@ -188,21 +189,21 @@
 		<div style="height: 171px;">
 			<div class="termsCheckBox">
 				<input id="checkBox2" name="checkbox" class="checkBox" type="checkbox" value="" onclick="checkBox()">
-				<div class="termsCheckBoxDiv">
+				<label class="termsCheckBoxLabel">
 					RJAR.GG 개인정보 수집 동의(필수)
-				</div>
+				</label>
 			</div>	
 			<div class="termsCheckBox">
 				<input id="checkBox3" name="checkbox" class="checkBox" type="checkbox" value="" onclick="checkBox()">
-				<div class="termsCheckBoxDiv">
+				<label class="termsCheckBoxLabel">
 					이벤트 등 프로모션 알림 메일 및 푸시(선택)
-				</div>
+				</label>
 			</div>	
 			<div class="termsCheckBox">
 				<input name="checkbox" id="checkAll" class="checkBox" value="CheckAll" type="checkbox" onClick="this.value=check(this.form.checkbox)">
-				<div class="termsCheckBoxDiv">
+				<label class="termsCheckBoxLabel">
 					모두 동의
-				</div>
+				</label>
 			</div>
 <!-- 			<input id="nextBtn" class="btn btn-primary btn-lg" type="submit" value="다음"> -->
 			<input id="nextBtn" type="submit" class="btn btn-primary btn-lg" value="다음">
@@ -212,17 +213,19 @@
 	
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
-	
-	
-	
+
 		let checkflag = false;
 		
 		function checkBox() {
 			if(checkflag){
 				$('#checkAll').prop('checked', false);
 				checkflag = false;
-			}
-			
+			}else if ($('#checkBox1').is(':checked') && $('#checkBox2').is(':checked') && $('#checkBox3').is(':checked')) {
+				$('#checkAll').prop('checked', true);
+				console.log('체크박스 세개 on')
+				checkflag = true;
+				return true
+			} 
 		}
 	
 		function check(field) {
@@ -232,7 +235,6 @@
 				}
 				checkflag = true;
 				return "check All";
-				
 			}else {
 				for (i = 0; i < field.length; i++) {
 					field[i].checked = false;
@@ -242,16 +244,11 @@
 			}
 		} // end check()
 
-		function chekcBoxTrue() {
+		function isChekcBox() {
 			if (checkflag) {
 				console.log('체크');
-				checkflag = false;
 				return true
-			} else if ($('#checkBox1').is('checked') && $('#checkBox2').is('checked') && $('#checkBox3').is('checked')) {
-				$('#checkAll').prop('checked', true);
-				checkflag = true;
-				return true
-			} else {
+			}else {
 				alert('약관에 동의해 주세요.')
 				return false
 			}

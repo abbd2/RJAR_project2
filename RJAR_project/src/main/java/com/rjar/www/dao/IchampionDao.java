@@ -2,6 +2,7 @@ package com.rjar.www.dao;
 
 import java.util.List;
 
+
 import org.apache.ibatis.annotations.Param;
 
 import com.rjar.www.bean.Champion;
@@ -21,8 +22,6 @@ public interface IchampionDao {
 	         @Param("championId13") int championId13, @Param("championId14") int championId14, @Param("championId15") int championId15, @Param("championId16") int championId16);
 
 	List<Champion> getSelectChamp(String text);
-	
-	Champion getSpellList(@Param("championName") String championName,@Param("lane")String lane);
 
 	List<ChampionDetail> getChampionName1(@Param("championId") int championId, @Param("tier") String tier);
 
@@ -33,5 +32,13 @@ public interface IchampionDao {
 	ChampionDetail rune_pickWin(@Param("main_rune")int main_rune, @Param("main_under1")int main_under1, @Param("main_under2")int main_under2, 
 			@Param("main_under3")int main_under3, @Param("main_under4")int main_under4, @Param("sub_rune")int sub_rune, @Param("sub_under1")int sub_under1, 
 			@Param("sub_under2")int sub_under2, @Param("statperks3")String statperks3, @Param("championName")String championName, @Param("lane")String lane);
+
+	List<ChampionDetail> getRunePng(String query);
+	
+	List<ChampionDetail> getSpell(@Param("championName") String champion_eg_name, @Param("lane") String lane1); // 플레 기본
+	
+	List<ChampionDetail> getSpellPlus(@Param("championName") String champion_eg_name, @Param("lane") String lane1, @Param("tier") String tier);
+
+	List<ChampionDetail> getStart_items(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
 
 }

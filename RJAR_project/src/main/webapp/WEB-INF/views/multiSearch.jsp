@@ -7,39 +7,111 @@
 <meta charset="UTF-8">
 <title>멀티서치</title>
 <style type="text/css">
-/* 배경화면 */
-body{
-/* 	background-image: url("./resources/multiSearchSample/backg"); */
-}
+
 .summoner-search-outter-box {
 	display: flex;
-	justify-content: center;
-	align-items: center;
+/* 	justify-content: center; */
+/* 	align-items: center; */
 	margin-right: 100px;
 }
 .matchesList{
 	width: 216px;
-	height: 600px;
-	float: left;
-	margin-right: 10px;
+	height: 530px;
+ 	float: left;
+	margin: 0px 10px 0px 5px;
+/* 	position: static; */
 }
 #multiList{
 	list-style: none;
 	border: 1px solid #9aa4af;
-	width: 1460px;
-	height: 570px;
-	margin: 30px 30px 0px 30px;
+	width: 1100px;
+	height: 530px;
+	margin-top: 30px;
+	padding: 0px; 
+	display: flex;
+ 	justify-content: center;
+ 	align-items: center;
+	margin-right: 100px;
 }
+
+body {
+	width: 1150px;
+	height:1120px; 
+	position: relative;
+}
+
+#multiSearch {
+	width: 1100px;
+	height : 1000px;
+/* 	background-color: red; */
+/* 	border: 0px 3px 0px 3px; */
+/* 	border-color: solid #9aa4af; */
+	position: absolute;
+/* 	top: 50%; */
+ 	left: 19%;
+/* 	transform: translate(-50%, -50%); */
+	font-family: 'Poor Story'
+}
+
+#errorDiv{
+	text-align: center;
+	font-size: 17px;
+	width: 830px;
+	position: absolute;
+}
+
 </style>
 </head>
 <body>
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<jsp:include page="header.jsp"></jsp:include>
+	<div id="main"></div>
+	<div id="multiSearch">
+		<div id="multiSearchInput" style="height: 250px; widht: 1070px;">
+			<div id="search" style="float: left; hiehgt: 250px; width: 510px; margin: 30px 10px 10px 20px;">
+				<textarea id="textarea" style="font-family: 'Poor Story'; height: 200px; width: 500px; margin-bottom:4px;"></textarea>
+				<input id="searchBtn" style="font-family: 'Poor Story'" type="button" value="여러명의 소환사 이름으로 요약 검색" onclick="multiSearch()">
+			</div>
+			<div id="sample" style="float: left; width: 550px; height: 240px; margin-top: 40px; text-align: center;">
+				<img alt="멀티서치 샘플" src="./resources/multiSearchSample/multiSearchSample.PNG" style="width: 330px; height: 187px; float: left;">
+				<strong style="width: 210px; height: 240px; float: right; padding: 60px 0px 0px 0px;">채팅창의 내용을 붙여 넣으면, 게임에 참여중인 모든 유저를 요약하여 볼 수 있습니다!</strong>
+			</div>
+		</div>
+		<div id="content">
+			<ul id="multiList">
+				<li class="matchesList">
+					<div class="summonerSummary0" style="width: 200px;"></div>
+					<div class="recentMatches0" style="width: 200px;"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary1" style="width: 200px;"></div>
+					<div class="recentMatches1" style="width:200px;"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary2" style="width: 200px;"></div>
+					<div class="recentMatches2" style="width:200px;"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary3" style="width: 200px;"></div>
+					<div class="recentMatches3" style="width:200px;"></div>
+				</li>
+				<li class="matchesList">
+					<div class="summonerSummary4" style="width: 200px;"></div>
+					<div class="recentMatches4" style="width:200px;"></div>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+	<div id="footer"></div>
+	
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 	
 		function multiSearch() {
 			
 			$('.summonerInfo').remove();
 			$('.titleAndPositions').remove();
+			$('#errorDiv').remove();
 // 			$('#multiList').empty(); // 자식 태그 삭제
 
 			let summoners = $("#textarea").val();
@@ -55,9 +127,6 @@ body{
 						success : function(data) {
 							console.log(data)
 							
-// -------------------------------------------------------------------------------
-								
-							
 							for(let i=0; i<data.length; i++){
 								
 								console.log("길이: "+data.length)
@@ -65,9 +134,20 @@ body{
 								let win = '승';
 								let loss = '패';
 								let showSubImg = '';
+								let showBar = '<div class="base" style="background-color: #e84057; float: left; width:170px; height:16; font-size: 13px; text-align:right; color:#ffffff; border-radius: 3px;">' // red
+								+ '<div class="win" style="width: '+ data[i].totalWinRate + '%; background-color: #5383e8; float: left; text-align:left; border-radius: 3px;">' // blue
+								+'&nbsp'
+								+ data[i].totalWins + win
+							+ '</div>'
+							+ data[i].totalLosses + loss
+							+'&nbsp'
+						+ '</div>'
+						// 승률 그래프
+					+ '<strong class="winRatio" style="float:right; color:#e84057; font-size: 13px;">' + data[i].totalWinRate + '%' + '</strong>' // red ';
 								
 								if(!data[i].tier){ // null 값이라면
 									data[i].tier = "Unranked";
+									showBar = "";
 								}
 								
 								if(data[i].totalWins < 1){ // totalWins 값이 0이면
@@ -99,7 +179,7 @@ body{
 								}
 								
 								
-								let summaryList = '<div class="summonerInfo" style="border-right: 1px solid #9aa4af; width:220px;">' 
+								let summaryList = '<div class="summonerInfo" style="width:220px;">' 
 										+'<div class="tierPosition" style="width:186px; height:50px; padding-left: 50px;">'
 											+ '<div class="tier" style="float:left; padding: 3px;">'
 												+ '<img src="./resources/tierImg/'+data[i].tier+'.png" width="50px">'
@@ -118,22 +198,23 @@ body{
 										+ '</div>'
 										+ '<div class="graph">'
 											+ '<div class="barGraph" style="padding:5px; width:216px; height:20px;">'
-												+ '<div class="base" style="background-color: #e84057; float: left; width:170px; height:16; font-size: 13px; text-align:right; color:#ffffff; border-radius: 3px;">' // red
-													+ '<div class="win" style="width: '+ data[i].totalWinRate + '%; background-color: #5383e8; float: left; text-align:left; border-radius: 3px;">' // blue
-														+'&nbsp'
-														+ data[i].totalWins + win
-													+ '</div>'
-													+ data[i].totalLosses + loss
-													+'&nbsp'
-												+ '</div>'
-												// 승률 그래프
-											+ '<strong class="winRatio" style="float:right; color:#e84057; font-size: 13px;">' + data[i].totalWinRate + '%' + '</strong>' // red 
+											+showBar
+// 												+ '<div class="base" style="background-color: #e84057; float: left; width:170px; height:16; font-size: 13px; text-align:right; color:#ffffff; border-radius: 3px;">' // red
+// 													+ '<div class="win" style="width: '+ data[i].totalWinRate + '%; background-color: #5383e8; float: left; text-align:left; border-radius: 3px;">' // blue
+// 														+'&nbsp'
+// 														+ data[i].totalWins + win
+// 													+ '</div>'
+// 													+ data[i].totalLosses + loss
+// 													+'&nbsp'
+// 												+ '</div>'
+// 												// 승률 그래프
+// 											+ '<strong class="winRatio" style="float:right; color:#e84057; font-size: 13px;">' + data[i].totalWinRate + '%' + '</strong>' // red 
 										+ '</div>';
 									+'</div>'; // end summonerInfo
 	
 								$('.summonerSummary'+i).html(summaryList); /* div추가 */
 	
-								let matchesList = '<div class="titleAndPositions" style="border-right: 1px solid #9aa4af; width:220px;">' 
+								let matchesList = '<div class="titleAndPositions" style="width:220px;">' 
 								+'<div class="title" style="padding: 30px 0px 20px 0px; width:186px; height:16px; text-align:center; font-size: 10px;">'+'최근 플레이'+'</div>'
 									+'<div class="positions" style="width=200px; height:40px;">'
 										+'<div class="position"  style="width:100px; height:40px; float:left;">'
@@ -169,15 +250,18 @@ body{
 // 									+'</div>' // end position
 									+'</div>' // end positions
 									
-								+'<ul class="recentGames" style="list-style:none; width:186px; height:336px; padding:15px 0px 0px 0px; font-size:13px;">'
+								+'<ul class="recentGames" style="list-style:none; width:186px; height:326px; padding:15px 0px 0px 0px; font-size:13px;">'
 									+ showList(data, i)
 								+'</ul>' // end recentGames
 							+'</div>'; // end titleAndPositions
 								$('.recentMatches'+i).html(matchesList);
 							} // end for
 						},
-						error : function() {
-							alert("err");
+						error : function(xhr, status) {
+							console.log('xhr : ', xhr);
+							console.log('status : ', status);
+							// 에러 문구 출력
+							$('#multiList').prepend("<div id='errorDiv'>"+xhr.responseText+"</div>");
 						}
 					});
 		} // end func
@@ -185,7 +269,6 @@ body{
 		function showList(data, idx){
 			
 			let liList = '';
-			
 			
 			for(let i=0; i<data[idx].wins.length; i++){
 				
@@ -220,47 +303,5 @@ body{
 		} // end func
 		
 	</script>
-
-	<jsp:include page="header.jsp"></jsp:include>
-	<div id="main"></div>
-	<div id="multiSearch">
-		<div id="multiSearchInput" style="height: 250px; widht: 1070px;">
-			<div id="search" style=" float: left; hiehgt: 250px; width: 610px; margin: 30px 30px 10px 30px; z-index: 1;">
-				<textarea id="textarea" style="height: 200px; width: 600px; margin-bottom:4px;"></textarea>
-				<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색" onclick="multiSearch()">
-			</div>
-			<div id="sample" style="float: left; width: 820px; height: 240px; margin: 30px 0px 30px 0px; text-align: center;">
-				<img alt="멀티서치 샘플" src="./resources/multiSearchSample/multiSearchSample.PNG" style="width: 425px; height: 240px; float: left;">
-				<strong style="width: 375px; height: 240px; float: right; padding: 80px 0px 0px 0px;">채팅창의 내용을 붙여 넣으면, 게임에 참여중인 모든 유저를 요약하여 볼 수 있습니다!</strong>
-			</div>
-		</div>
-
-		<div id="content">
-			<ul id="multiList">
-				<li class="matchesList">
-					<div class="summonerSummary0" style="width: 200px;"></div>
-					<div class="recentMatches0" style="width: 200px;"></div>
-				</li>
-				<li class="matchesList">
-					<div class="summonerSummary1" style="width: 200px;"></div>
-					<div class="recentMatches1" style="width:200px;"></div>
-				</li>
-				<li class="matchesList">
-					<div class="summonerSummary2" style="width: 200px;"></div>
-					<div class="recentMatches2" style="width:200px;"></div>
-				</li>
-				<li class="matchesList">
-					<div class="summonerSummary3" style="width: 200px;"></div>
-					<div class="recentMatches3" style="width:200px;"></div>
-				</li>
-				<li class="matchesList">
-					<div class="summonerSummary4" style="width: 200px;"></div>
-					<div class="recentMatches4" style="width:200px;"></div>
-				</li>
-			</ul>
-		</div>
-
-	</div>
-	<div id="footer"></div>
 </body>
 </html>

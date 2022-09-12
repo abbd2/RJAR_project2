@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.rjar.www.exception.CheckException;
+import com.rjar.www.exception.SummonerNotFoundException;
 
 @RestControllerAdvice
 public class ControllerAdviceRest {
@@ -22,7 +23,13 @@ public class ControllerAdviceRest {
 	@ExceptionHandler(CheckException.class) // 처리할 예외처리 타입 선언
 	public ResponseEntity<String> dupExceptionHandler(CheckException ex) {
 		System.out.println("@RestControllerAdvice 진입");
-		System.out.println("CheckException Advice");
 		return new ResponseEntity<String>(ex.getMessage(), getHeaders(), HttpStatus.EXPECTATION_FAILED); // 417 error
 	}
+	
+	@ExceptionHandler(SummonerNotFoundException.class) // 처리할 예외처리 타입 선언
+	public ResponseEntity<String> SummonerNotFoundExceptionHandler(SummonerNotFoundException ex) {
+		System.out.println("@SummonerNotFoundException 진입");
+		return new ResponseEntity<String>(ex.getMessage(), getHeaders(), HttpStatus.NOT_ACCEPTABLE); // 406 error
+	}
+
 }

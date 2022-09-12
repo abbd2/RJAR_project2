@@ -1,14 +1,10 @@
 package com.rjar.www.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.rjar.www.bean.Member;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
 import com.rjar.www.service.member.MemberMM;
 
@@ -45,16 +41,6 @@ public class HomeController {
 		return mav;
 	}
 
-	@GetMapping(value = "/championDetail")
-	public ModelAndView championDetailInfo(HttpServletRequest request, String championName, String lane) {
-		log.info("championDetail");
-		championName = request.getParameter("championName");
-		lane = request.getParameter("lane");
-		mav = champmm.getChampionDetailInfo(championName, lane);
-
-		return mav;
-	}
-
 	@GetMapping(value = "/laboratory")
 	public String laboratory() {
 
@@ -67,46 +53,17 @@ public class HomeController {
 		return "multiSearch";
 	}
 
-	@GetMapping(value = "/community")
-	public String community() {
+	@GetMapping(value = "/myPage")
+	public String myPage() {
+		System.out.println("myPage");
 
-		return "community/communityHome";
+		return "myPage";
 	}
 
 	@GetMapping(value = "/lck")
 	public String lck() {
 
 		return "lck";
-	}
-
-	@GetMapping(value = "/login")
-	public String login() {
-
-		return "login";
-	}
-
-	@GetMapping(value = "/join")
-	public String join() {
-		System.out.println("회원가입 페이지로 이동");
-		return "join";
-	}	
-
-	@GetMapping(value = "/join2")
-	public String join2() {
-		System.out.println("회원가입 페이지2로 이동");
-		return "join2";
-	}
-	
-	@PostMapping(value = "memberJoin")
-	public ModelAndView memberJoin(Member mm) {
-		mav = membermm.memberJoin(mm);
-		return mav;
-	}
-
-	@GetMapping(value = "/join3")
-	public String join3() {
-		System.out.println("회원가입 페이지3으로 이동");
-		return "join3";
 	}
 
 }
