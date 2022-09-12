@@ -40,7 +40,6 @@ public class GameDetailShowInfo {
 	private int ss_cs; // cs
 	private String ss_perCs;
 	
-
 //	private int ss_item0; // 0번 아이템 슬롯
 //	private int ss_item1; // 1번 아이템 슬롯
 //	private int ss_item2; // 2번 아이템 슬롯

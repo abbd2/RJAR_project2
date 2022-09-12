@@ -52,7 +52,7 @@ body, html {
 }
 
 .middleleft {
-	width: 200px;
+	width: 220px;
 	height: 100%;
 	background-color: green;
 	margin: auto;
@@ -60,7 +60,7 @@ body, html {
 }
 
 .middleDetail {
-	width: 900px;
+	width: 880px;
 	height: 100%;
 	background-color: yellow;
 	margin: auto;
@@ -102,15 +102,42 @@ body, html {
 	</div>
 	<div class="main">
 		<div class="middle">
-			<div class="middleleft"></div>
+			<div class="middleleft">
+				<div class="card border-primary mb-3" style="margin: 5px">
+					<div class="card-header"></div>
+					<div class="card-body" style="margin:-15px">
+						<div style=" margin-bottom: -15px;font-size: 3px; font-weight: bold;">
+							<p>최근 7 경기</p>
+						</div>
+						<div>
+							<div id="profileImage" style="float:left">
+								<img src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/Aatrox.png" width="35px">
+							</div>
+							<div style="float:left">
+							    <p>5 경기</p>
+							    <p>승</p>
+							    <p>5 경기</p>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+
 			<div id="middleDetail">
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="nav-item" role="presentation">
-					    <a id="aTag" class="nav-link active" data-tab="home" data-bs-toggle="tab" aria-selected="true" role="tab">Home</a>
-					</li>
-					<li class="nav-item" role="presentation">
-					    <a id="aTag" class="nav-link" data-tab="other" data-bs-toggle="tab" aria-selected="false"	role="tab" tabindex="-1">Profile</a>
-					</li>
+					<li class="nav-item" role="presentation"><a id="aTag"
+						class="nav-link active" data-tab="home" data-bs-toggle="tab"
+						aria-selected="true" role="tab">Home</a></li>
+					<li class="nav-item" role="presentation"><a id="aTag"
+						class="nav-link" data-tab="other" data-bs-toggle="tab"
+						aria-selected="false" role="tab" tabindex="-1">Profile</a></li>
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade active show" id="home" role="tabpanel">
@@ -140,19 +167,19 @@ body, html {
 
 
 	<script type="text/javascript">
-	$(document).ready(function(){		
-		$('ul.nav-tabs li a').click(function(){
-			var tab_id = $(this).attr('data-tab');
-			console.log(tab_id);
+		$(document).ready(function() {
+			$('ul.nav-tabs li a').click(function() {
+				var tab_id = $(this).attr('data-tab');
+				console.log(tab_id);
 
-			$('ul.nav-tabs li a').removeClass('active');
-			$('.tab-pane').removeClass('active show');
+				$('ul.nav-tabs li a').removeClass('active');
+				$('.tab-pane').removeClass('active show');
 
-			$(this).addClass('active');
-			$("#"+tab_id).addClass('active show');
+				$(this).addClass('active');
+				$("#" + tab_id).addClass('active show');
+			})
+
 		})
-
-	})
 	</script>
 
 
