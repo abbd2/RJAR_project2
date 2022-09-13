@@ -75,7 +75,6 @@ public class MemberMM {
 		} else {
 			System.out.println("insert 실패");
 		}
-
 		return mav;
 	}
 
@@ -164,18 +163,20 @@ public class MemberMM {
 		}
 	}
 
-	public String changePw(String m_pw, String currentPw) {
-
-		int result = mDao.changePw(member);
+	public ModelAndView changePw(String m_pw, String currentPw) {
 
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		m_pw = pwEncoder.encode(m_pw); // 변경할 비밀번호 암호화
 		member.setM_pw(m_pw);
 		System.out.println(m_pw);
+		int result = mDao.changePw(member);
 
 		if (result > 0) {
 			System.out.println(result + " 비밀번호 변경 성공");
-			return "redirect:/login";
+			mav = new ModelAndView();
+			mav.addObject("msg", "비밀번호 변경 성공");
+			mav.setViewName("redirect:/login");
+			return mav;
 		} else {
 			throw new NoMatchingPwException("오류");
 		}
@@ -188,7 +189,7 @@ public class MemberMM {
 
 		if (result != null) {
 			System.out.println("!null");
-			throw new CheckUserException("alert(\'이미 생성된 계정이 존재합니다.\')");
+			throw new CheckUserException("이미 생성된 계정이 존재합니다.");
 		} else {
 			System.out.println("null");
 		}

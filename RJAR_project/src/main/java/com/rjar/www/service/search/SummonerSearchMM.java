@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -81,6 +85,7 @@ public class SummonerSearchMM {
 			int soloWins = 0;
 			int soloLosses = 0;
 			double soloWinRate = 0;
+			
 			// solo, free 둘다 출력되는 경우
 			if (jsonArray.size() == 2) {
 				JsonObject p = (JsonObject) jsonArray.get(0);
@@ -237,6 +242,7 @@ public class SummonerSearchMM {
 			List<GameDetailShowInfo> mySoloGame = new ArrayList<>();
 			List<GameDetailShowInfo> myFreeGame = new ArrayList<>();
 			List<GameDetailShowInfo> myOtherGame = new ArrayList<>();
+			List<GameDetailShowInfo> mySoloFreeGame = new ArrayList<>();
 			// 10판 게임데이터 id만 불러와서 list에 넣기
 			for (int j = 0; j < matchDataList.size(); j++) {
 				String urlBr1 = getUrl(matchUrl + matchDataList.get(j).replaceAll("\"", "") + "?api_key=" + api_key);
@@ -252,6 +258,7 @@ public class SummonerSearchMM {
 				List<GameDetailShowInfo> soloGameData = new ArrayList<>();
 				List<GameDetailShowInfo> freeGameData = new ArrayList<>();
 				List<GameDetailShowInfo> otherGameData = new ArrayList<>();
+				
 				
 				for (int k = 0; k < 10; k++) {
 //					Map<GameDetailShowInfo, Object> sgi = new HashMap<GameDetailShowInfo, Object>();
@@ -422,22 +429,28 @@ public class SummonerSearchMM {
 					gds.setSs_gameDuration(playTime);
 					gds.setSs_gameEndTimestamp(endGameTime);
 					gds.setSs_gameType(gameType);
+					
 					// 검색한 소환사의 정보를 따로 저장
 					if (puuid.equals(participant.get("puuid").getAsString())) {
 						// puuid가 일치한 본인의 게임 데이터를 가져와 따로 저장한다
 						// 메인에 기본적으로 띄워지는 본인 경기를 출력하기 위함
 						
+						// 본인포함 전체 게임 정보 저장
 						gameData.add(gds);
 						soloGameData.add(gds);
 						freeGameData.add(gds);
 						otherGameData.add(gds);
-											
+						
+						// 본인 게임 정보만 저장
 						myGame.add(gds);
 						mySoloGame.add(gds);
 						myFreeGame.add(gds);
 						myOtherGame.add(gds);
+						mySoloFreeGame.add(gds);
 						
 					} else {
+						// puuid가 일치하지 않는 다른 게임 저장
+						// 본인포함 전체 게임 정보 저장
 						gameData.add(gds);
 						soloGameData.add(gds);
 						freeGameData.add(gds);
@@ -445,15 +458,14 @@ public class SummonerSearchMM {
 					}
 
 				}
-							
-				// 리스트로 묶인 각각의 게임을 다시 리스트로 넣는다.
-				// make_html로 출력하기 위함
+				// 각각 필요한 게임 타입에 따라 필요없는 게임 타입을 제거하는 과정			
 				soloGameData.removeIf(gds -> !gds.getSs_gameType().equals("솔랭"));
 				freeGameData.removeIf(gds -> !gds.getSs_gameType().equals("자유 5:5 랭크"));
 				otherGameData.removeIf(gds -> gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크"));
-//				System.out.println("1="+soloGameData);
-//				System.out.println(soloGameData.size());
 				
+				// 리스트로 묶인 각각의 게임을 다시 리스트로 넣는다.
+				// make_html로 출력하기 위함
+				// removeIf로 제거할 경우 해당 리스트는 0으로 표시, 제거되지 않을 경우에는 10으로 표시됨
 				if(soloGameData.size()==10) {
 					totalSoloGameData.add(soloGameData);
 				}
@@ -465,25 +477,31 @@ public class SummonerSearchMM {
 				if(otherGameData.size()==10) {
 					totalOtherGameData.add(otherGameData);
 				}
-
+                // 게임타입에 상관없는 전체 게임 데이터
 				totalGameData.add(gameData);
 
 			}
+			// 각각 필요한 게임 타입에 따라 필요없는 게임 타입을 제거하는 과정
 			mySoloGame.removeIf(gds -> !gds.getSs_gameType().equals("솔랭"));
 			myFreeGame.removeIf(gds -> !gds.getSs_gameType().equals("자유 5:5 랭크"));
 			myOtherGame.removeIf(gds -> gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크"));
+			mySoloFreeGame.removeIf(gds ->!(gds.getSs_gameType().equals("솔랭") || gds.getSs_gameType().equals("자유 5:5 랭크") ||gds.getSs_gameType().equals("일반")));
 			
-			
-			System.out.println(myFreeGame);
-			System.out.println(myFreeGame.size());
-			System.out.println("1="+totalFreeGameData);
-			System.out.println(totalFreeGameData.size());
-			
+			if(mySoloFreeGame.size()!=0) {
+				ModelAndView MostLineGame = MostLine(mySoloFreeGame);				
+			}else {
+				mav.addObject("MLane","대전 데이터가 없습니다");
+				System.out.println("데이터가 없습니다");
+			}
 			
 			mav.addObject("myGames", makeHtml_myGameData(myGame, totalGameData));
 			mav.addObject("mySoloGames", makeHtml_myGameData(mySoloGame, totalSoloGameData));
 			mav.addObject("myFreeGame", makeHtml_myGameData(myFreeGame, totalFreeGameData));
 			mav.addObject("myOtherGame", makeHtml_myGameData(myOtherGame, totalOtherGameData));
+			
+			// 솔로랭크에서 모스트 라인 확률 구하기
+//			
+//			mav.addObject("test",new Gson().toJson(mySoloGame));
 
 		} catch (Exception e) {
 			System.out.println("오류=" + e.getMessage());
@@ -491,6 +509,118 @@ public class SummonerSearchMM {
 
 		}
 
+		return mav;
+	}
+
+
+	private ModelAndView MostLine(List<GameDetailShowInfo> mySoloGame) {
+		mav = new ModelAndView();
+		
+		int[] MostLaneCnt = new int[5];
+		int[] MostLaneWin = new int[5];
+		double[] MostLaneCs = new double[5];
+		double[] MostLaneGold = new double[5];
+		double[] MostLaneVW = new double[5];
+		double[] MostLaneWP = new double[5];
+		double[] MostLaneWK = new double[5];
+		
+		int maxIdx = -1; // 최대 값의 인덱스 저장
+		int max = 0; // 최대 값 저장
+		String MLane = null;
+		for(int i =0; i<mySoloGame.size(); i++) {			
+			int gameTime=Integer.valueOf(mySoloGame.get(i).getSs_gameDuration().substring(0,2));
+			
+			if(mySoloGame.get(i).getSs_lane().equals("TOP")) {
+				MostLaneCnt[0]++;
+				MostLaneCs[0] += Double.valueOf(mySoloGame.get(i).getSs_perCs());
+				MostLaneGold[0] += (double)mySoloGame.get(i).getSs_earnGold()/gameTime;
+				MostLaneVW[0] += (double)mySoloGame.get(i).getSs_visionWardBuy()/gameTime;
+				MostLaneWP[0] += (double)mySoloGame.get(i).getSs_wardPlaced()/gameTime;
+				MostLaneWK[0] += (double)mySoloGame.get(i).getSs_wardKilled()/gameTime;
+				if(mySoloGame.get(i).getSs_win().equals("승리")) {
+					MostLaneWin[0]++;		
+				}			
+			}else if(mySoloGame.get(i).getSs_lane().equals("JUNGLE")) {
+				MostLaneCnt[1]++;
+				MostLaneCs[1] += Double.valueOf(mySoloGame.get(i).getSs_perCs());
+				MostLaneGold[1] += (double)mySoloGame.get(i).getSs_earnGold()/gameTime;
+				MostLaneVW[1] += (double)mySoloGame.get(i).getSs_visionWardBuy()/gameTime;
+				MostLaneWP[1] += (double)mySoloGame.get(i).getSs_wardPlaced()/gameTime;
+				MostLaneWK[1] += (double)mySoloGame.get(i).getSs_wardKilled()/gameTime;
+				if(mySoloGame.get(i).getSs_win().equals("승리")) {
+					MostLaneWin[1]++;		
+				}
+			}else if(mySoloGame.get(i).getSs_lane().equals("MIDDLE")) {
+				MostLaneCnt[2]++;
+				MostLaneCs[2] += Double.valueOf(mySoloGame.get(i).getSs_perCs());
+				MostLaneGold[2] += (double)mySoloGame.get(i).getSs_earnGold()/gameTime;
+				MostLaneVW[2] += (double)mySoloGame.get(i).getSs_visionWardBuy()/gameTime;
+				MostLaneWP[2] += (double)mySoloGame.get(i).getSs_wardPlaced()/gameTime;
+				MostLaneWK[2] += (double)mySoloGame.get(i).getSs_wardKilled()/gameTime;
+				if(mySoloGame.get(i).getSs_win().equals("승리")) {
+					MostLaneWin[2]++;		
+				}
+			}else if(mySoloGame.get(i).getSs_lane().equals("BOTTOM")) {
+				MostLaneCnt[3]++;
+				MostLaneCs[3] += Double.valueOf(mySoloGame.get(i).getSs_perCs());
+				MostLaneGold[3] += (double)mySoloGame.get(i).getSs_earnGold()/gameTime;
+				MostLaneVW[3] += (double)mySoloGame.get(i).getSs_visionWardBuy()/gameTime;
+				MostLaneWP[3] += (double)mySoloGame.get(i).getSs_wardPlaced()/gameTime;
+				MostLaneWK[3] += (double)mySoloGame.get(i).getSs_wardKilled()/gameTime;
+				if(mySoloGame.get(i).getSs_win().equals("승리")) {
+					MostLaneWin[3]++;		
+				}
+				
+			}else if(mySoloGame.get(i).getSs_lane().equals("UTILITY")) {
+				MostLaneCnt[4]++;
+				MostLaneCs[4] += Double.valueOf(mySoloGame.get(i).getSs_perCs());
+				MostLaneGold[4] += (double)mySoloGame.get(i).getSs_earnGold()/gameTime;
+				MostLaneVW[4] += (double)mySoloGame.get(i).getSs_visionWardBuy()/gameTime;
+				MostLaneWP[4] += (double)mySoloGame.get(i).getSs_wardPlaced()/gameTime;
+				MostLaneWK[4] += (double)mySoloGame.get(i).getSs_wardKilled()/gameTime;
+				if(mySoloGame.get(i).getSs_win().equals("승리")) {
+					MostLaneWin[4]++;		
+				}
+				
+			}
+			
+			for (int j = 0; j < 5; j++) {
+				if (max < MostLaneCnt[j]) { // 최대 값을 구하고 그 값의 인덱스를 저장
+					max = MostLaneCnt[j]; // 최대 값 저장
+					maxIdx = j; // 최대 값의 인덱스 저장
+				}
+			}
+			
+			if (maxIdx == 0) {
+				MLane = "TOP";
+			} else if (maxIdx == 1) {
+				MLane = "JUNGLE";
+			} else if (maxIdx == 2) {
+				MLane = "MIDDLE";
+			} else if (maxIdx == 3) {
+				MLane = "BOTTOM";
+			} else if (maxIdx == 4) {
+				MLane = "UTILITY";
+			} else {
+				MLane = "none";
+				System.out.println("none");
+			}
+			
+		}
+		if(MostLaneCnt[maxIdx]==0) {
+			mav.addObject("MLane","대전 데이터가 없습니다");
+		}else {
+			mav.addObject("MLane",MLane);
+			mav.addObject("MostLane",MostLaneCnt[maxIdx]);
+			mav.addObject("MostLaneWin",MostLaneWin[maxIdx]);
+			mav.addObject("MostLaneCs",Math.round((MostLaneCs[maxIdx]/MostLaneCnt[maxIdx])*100)/100.0);
+			mav.addObject("MostLaneGold",Math.round((MostLaneGold[maxIdx]/MostLaneCnt[maxIdx])*100)/100.0);
+			mav.addObject("MostLaneVW",Math.round((MostLaneVW[maxIdx]/MostLaneCnt[maxIdx])*100)/100.0);
+			mav.addObject("MostLaneWP",Math.round((MostLaneWP[maxIdx]/MostLaneCnt[maxIdx])*100)/100.0);
+			mav.addObject("MostLaneWK",Math.round((MostLaneWK[maxIdx]/MostLaneCnt[maxIdx])*100)/100.0);			
+		}
+		
+		
 		return mav;
 	}
 
@@ -576,7 +706,7 @@ public class SummonerSearchMM {
 				}
 				
 				
-				sb.append("<div class=\"card\" style=\"background-color:" + backgroundColor + "; margin-bottom:5px\">");
+				sb.append("<div class=\"card\" id=\"cardflex\" style=\"background-color:" + backgroundColor + "; margin-bottom:5px; display:none\">");
 				sb.append("<div class=\"card-body\" id=\"dataFlexBox\" style=\"padding:5px\">");
 				sb.append("<div class=\"gameDate\">");
 				sb.append(
@@ -589,8 +719,10 @@ public class SummonerSearchMM {
 				sb.append("<div class=\"imageLevelBox\">");
 				sb.append("<div class=\"imageLevel\">");
 				sb.append("<div id=\"champImage\" style=\"height: 60px\">");
+				sb.append("<a href='http://localhost:8080/www/clickDetail?championId="+gds.getSs_championId()+"'onclick=\"event.stopPropagation()\">");
 				sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 						+ gds.getSs_championName() + ".png\" width=\"50px\">");
+				sb.append("</a>");
 				sb.append("</div>");
 				sb.append("<div id=\"champLevel\">");
 				sb.append("<span class=\"badge rounded-pill bg-primary\" style=\"color: white; height:20px; font-size :10px;\">"
@@ -619,7 +751,8 @@ public class SummonerSearchMM {
 				sb.append("</div>");
 				sb.append("<div class=\"itemsBox\">");
 				sb.append("<div class=\"items\">");
-
+				
+                // 아이템 정보 출력(이미지, 색상)
 				for (int j = 0; j < 7; j++) {
 					if (gds.getSs_items().get(j) == 0) {
 						sb.append("<div id=\"item\" style=\"background-color:" + itemBoxColor + "\" >");
@@ -643,7 +776,8 @@ public class SummonerSearchMM {
 				sb.append("<p style=\"height: 5px; float: none\">KDA " + gds.getSs_kda() + "</p>");
 				sb.append("<p style=\"height: 5px; float: none\"><span style=\"font-family: 'Poor Story', cursive\">킬관여</span> " + gds.getSs_killParticipation() + "%</p>");
 				sb.append("</div>");
-
+                
+				// 킬타입이 없을시 span이 주어지지 않도록 설정, 있을경우 span 부여
 				if (gds.getSs_killType().equals("없음")) {
 					sb.append("<div class =\"killType\">");
 					sb.append("</div>");
@@ -668,13 +802,15 @@ public class SummonerSearchMM {
 					
 					sb.append("<div class=\"summoner\">");
 					sb.append("<div class=\"miniSumImage\" style=\"margin-right:1.5px\">");
+					sb.append("<a href='http://localhost:8080/www/clickDetail?championId="+ml.get(k).getSs_championId()+"'onclick=\"event.stopPropagation()\">");
 					sb.append(
 							"<img class=\"minichampImg\" src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 									+ ml.get(k).getSs_championName() + ".png\" width=\"18px\">");
+					sb.append("</a>");
 					sb.append("</div>");
 					sb.append("<div class=\"miniSumName\" style=\"font-family: 'Poor Story', cursive;\">");
 					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="
-							+ ml.get(k).getSs_summonerName() + "' class=\"miniName\">" + ml.get(k).getSs_summonerName()
+							+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" onclick=\"event.stopPropagation()\">" + ml.get(k).getSs_summonerName()
 							+ "</a>");
 					sb.append("</div>");
 					sb.append("</div>");
@@ -685,13 +821,15 @@ public class SummonerSearchMM {
 
 				for (int k = 5; k < 10; k++) {
 					purpleTotalGoldEarn += ml.get(k).getSs_earnGold();
-					
+					// ai 대전일 경우 퍼플팀에 챔피언 이름으로 출력됨. 다만 해당 챔피언 이름으로한 소환사 계정이 있으므로 구별짓기 위해 (봇)을 따로 부여
 					if (gds.getSs_gameType().equals("AI대전(초급)") || gds.getSs_gameType().equals("AI대전(중급)")) {
 						sb.append("<div class=\"summoner\">");
 						sb.append("<div class=\"miniSumImage\" style=\"margin-right:1.5px;\">");
+						sb.append("<a href='http://localhost:8080/www/clickDetail?championId="+ml.get(k).getSs_championId()+"'onclick=\"event.stopPropagation()\">");
 						sb.append(
 								"<img class=\"minichampImg\" src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
-										+ ml.get(k).getSs_championName() + ".png\" width=\"18px\">");
+										+ ml.get(k).getSs_championName() + ".png\" width=\"18px\" >");
+						sb.append("</a>");
 						sb.append("</div>");
 						sb.append("<div class=\"miniSumName\" style=\"font-family: 'Poor Story', cursive;\">");
 						sb.append("<p>(봇)</p>");
@@ -701,19 +839,20 @@ public class SummonerSearchMM {
 					} else {
 						sb.append("<div class=\"summoner\">");
 						sb.append("<div class=\"miniSumImage\" style=\"margin-right:1.5px\">");
+						sb.append("<a href='http://localhost:8080/www/clickDetail?championId="+ml.get(k).getSs_championId()+"' onclick=\"event.stopPropagation()\">");
 						sb.append(
 								"<img class=\"minichampImg\" src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 										+ ml.get(k).getSs_championName() + ".png\" width=\"18px\">");
+						sb.append("</a>");
 						sb.append("</div>");
 						sb.append("<div class=\"miniSumName\" style=\"font-family: 'Poor Story', cursive;\">");
 						sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="
-								+ ml.get(k).getSs_summonerName() + "' class=\"miniName\">"
+								+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" onclick=\"event.stopPropagation()\">"
 								+ ml.get(k).getSs_summonerName() + "</a>");
 						sb.append("</div>");
 						sb.append("</div>");
 					}
 				}
-
 				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("<div class=\"arrowBox\">");
@@ -744,7 +883,9 @@ public class SummonerSearchMM {
 					sb.append("<th scope=\"row\" style=\"width: 24%; padding-right : 5px\">");
 					sb.append("<div class=\"otherChampImageLevel\">");
 					sb.append("<div id=\"champImage\">");
+					sb.append("<a href='http://localhost:8080/www/clickDetail?championId="+ml.get(k).getSs_championId()+"' onclick=\"event.stopPropagation()\">");
 					sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"+ml.get(k).getSs_championName()+".png\" width=\"35px\">");
+					sb.append("</a>");
 					sb.append("</div>");
 					sb.append("<div id=\"otherChampLevel\">");
 					sb.append("<span class=\"badge rounded-pill bg-primary\" id=\"otherImage\" style=\"color: white; height: 11px; font-size: 5px\">"+ml.get(k).getSs_champLevel()+"</span>");
@@ -767,7 +908,7 @@ public class SummonerSearchMM {
 					sb.append("</div>");
 					sb.append("</div>");
 					sb.append("<div class=\"otherSummonerName\">");
-					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" style=\"font-family: 'Poor Story', cursive;\">" + ml.get(k).getSs_summonerName()+ "</a>");
+					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" onclick=\"event.stopPropagation()\" style=\"font-family: 'Poor Story', cursive;\">" + ml.get(k).getSs_summonerName()+ "</a>");
 					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">"+ml.get(k).getSs_lane()+"</p>");
 					sb.append("</div>");
 					sb.append("</th>");
@@ -819,8 +960,7 @@ public class SummonerSearchMM {
 					sb.append("</div>");
 					sb.append("</div>");
 					sb.append("</td>");
-					sb.append("</tr>");
-			
+					sb.append("</tr>");		
 				}
 				// blue, purple팀의 Object 및 기타 게임정보 출력	
 				sb.append("<tr class=\"table-light\">");
@@ -839,17 +979,16 @@ public class SummonerSearchMM {
 				sb.append("</td>");
 				sb.append("<td style=\"text-align: right; color:"+purpleFontColor+"\">Baron : <span style=\"color:black\">"+ml.get(5).getSs_baron()+"</span> Dragon : <span style=\"color:black\">"+ml.get(5).getSs_dragon()+"</span> Tower : <span style=\"color:black\">"+ml.get(5).getSs_tower()+"</span></td>");
 				sb.append("</tr>");
-				
-				
+							
 				// purple 팀 데이터 출력
-				for(int k=5; k<10; k++) {
-					
-					
+				for(int k=5; k<10; k++) {				
 					sb.append("<tr class="+purpleBackgroundColor+" style=\"height: 50px\">");
 					sb.append("<th scope=\"row\" style=\"width: 24%; padding-right : 5px\">");
 					sb.append("<div class=\"otherChampImageLevel\">");
 					sb.append("<div id=\"champImage\">");
+					sb.append("<a href='http://localhost:8080/www/clickDetail?championId="+ml.get(k).getSs_championId()+"' onclick=\"event.stopPropagation()\">");
 					sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"+ml.get(k).getSs_championName()+".png\" width=\"35px\">");
+					sb.append("</a>");
 					sb.append("</div>");
 					sb.append("<div id=\"otherChampLevel\">");
 					sb.append("<span class=\"badge rounded-pill bg-primary\" id=\"otherImage\" style=\"color: white; height: 11px; font-size: 5px\">"+ml.get(k).getSs_champLevel()+"</span>");
@@ -872,7 +1011,7 @@ public class SummonerSearchMM {
 					sb.append("</div>");
 					sb.append("</div>");
 					sb.append("<div class=\"otherSummonerName\">");
-					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" style=\"font-family: 'Poor Story', cursive;\">" + ml.get(k).getSs_summonerName()+ "</a>");
+					sb.append("<a href='http://localhost:8080/www/summonerSearch?summonerName="+ ml.get(k).getSs_summonerName() + "' class=\"miniName\" onclick=\"event.stopPropagation()\" style=\"font-family: 'Poor Story', cursive;\">" + ml.get(k).getSs_summonerName()+ "</a>");
 					sb.append("<p style=\"height: 5px; font-size: 13px; font-weight: bold;\">"+ml.get(k).getSs_lane()+"</p>");
 					sb.append("</div>");
 					sb.append("</th>");

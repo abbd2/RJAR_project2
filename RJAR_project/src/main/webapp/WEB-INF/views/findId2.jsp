@@ -95,6 +95,23 @@
 	border-radius: 3px;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 <body>
