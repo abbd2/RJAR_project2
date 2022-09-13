@@ -60,6 +60,23 @@ body {
 	position: absolute;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 <body>
@@ -189,8 +206,8 @@ body {
 										+ '</div>'
 										+'</div>'
 										+ '<div class="summonerName" style="text-align:center;">'
-											+ '<a href="">'
-											+ data[i].summonerName
+											+ '<a href="./summonerSearch?summonerName='+data[i].summonerName+'" style="text-decoration: none;">'
+												+ data[i].summonerName
 											+ '</a>'
 										+ '</div>'
 										+ '<div class="lp" style="text-align: center; font-size: 13px;">'

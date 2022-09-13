@@ -30,7 +30,7 @@ public class MultiSearchRestController {
 	@Autowired
 	private MultiSearchBean msb;
 //	@Autowired
-//	private IMultiSearchDao msDao; // db
+//	private IMultiSearchDao msDao; db
 
 	ArrayList<MultiSearchBean> msbList;
 
