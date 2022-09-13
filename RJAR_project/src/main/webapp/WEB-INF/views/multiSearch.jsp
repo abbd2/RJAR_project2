@@ -50,6 +50,14 @@ body {
 /* 	top: 50%; */
  	left: 19%;
 /* 	transform: translate(-50%, -50%); */
+	font-family: 'Poor Story'
+}
+
+#errorDiv{
+	text-align: center;
+	font-size: 17px;
+	width: 830px;
+	position: absolute;
 }
 
 </style>
@@ -60,15 +68,14 @@ body {
 	<div id="multiSearch">
 		<div id="multiSearchInput" style="height: 250px; widht: 1070px;">
 			<div id="search" style="float: left; hiehgt: 250px; width: 510px; margin: 30px 10px 10px 20px;">
-				<textarea id="textarea" style="height: 200px; width: 500px; margin-bottom:4px;"></textarea>
-				<input id="searchBtn" type="button" value="여러명의 소환사 이름으로 요약 검색" onclick="multiSearch()">
+				<textarea id="textarea" style="font-family: 'Poor Story'; height: 200px; width: 500px; margin-bottom:4px;"></textarea>
+				<input id="searchBtn" style="font-family: 'Poor Story'" type="button" value="여러명의 소환사 이름으로 요약 검색" onclick="multiSearch()">
 			</div>
 			<div id="sample" style="float: left; width: 550px; height: 240px; margin-top: 40px; text-align: center;">
 				<img alt="멀티서치 샘플" src="./resources/multiSearchSample/multiSearchSample.PNG" style="width: 330px; height: 187px; float: left;">
 				<strong style="width: 210px; height: 240px; float: right; padding: 60px 0px 0px 0px;">채팅창의 내용을 붙여 넣으면, 게임에 참여중인 모든 유저를 요약하여 볼 수 있습니다!</strong>
 			</div>
 		</div>
-
 		<div id="content">
 			<ul id="multiList">
 				<li class="matchesList">
@@ -104,6 +111,7 @@ body {
 			
 			$('.summonerInfo').remove();
 			$('.titleAndPositions').remove();
+			$('#errorDiv').remove();
 // 			$('#multiList').empty(); // 자식 태그 삭제
 
 			let summoners = $("#textarea").val();
@@ -118,9 +126,6 @@ body {
 						dataType : 'json',
 						success : function(data) {
 							console.log(data)
-							
-// -------------------------------------------------------------------------------
-								
 							
 							for(let i=0; i<data.length; i++){
 								
@@ -252,8 +257,11 @@ body {
 								$('.recentMatches'+i).html(matchesList);
 							} // end for
 						},
-						error : function() {
-							alert("err");
+						error : function(xhr, status) {
+							console.log('xhr : ', xhr);
+							console.log('status : ', status);
+							// 에러 문구 출력
+							$('#multiList').prepend("<div id='errorDiv'>"+xhr.responseText+"</div>");
 						}
 					});
 		} // end func
@@ -261,7 +269,6 @@ body {
 		function showList(data, idx){
 			
 			let liList = '';
-			
 			
 			for(let i=0; i<data[idx].wins.length; i++){
 				

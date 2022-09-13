@@ -772,28 +772,28 @@ TOP2
             <tbody>
                 <tr>
                     <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell1}.png" alt="">
-                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2}.png" alt="">
+                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell.spell1}.png" alt="">
+                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell.spell2}.png" alt="">
                     </th>
                     <th>
-                        픽률<br>
-                        게임수
+                        <font font-weight="bold" size="4">${spell.spell_pick}%</font><br>
+                        <font font-weight="lighter">${spell.spell_cnt}</font>
                     </th>
                     <th>
-                        승률
+                        ${spell.spell_winrate}%
                     </th>
                 </tr>
                 <tr>
                     <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/SummonerBoost.png" alt="">
-                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/SummonerBoost.png" alt="">
+                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2.spell1}.png" alt="">
+                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2.spell2}.png" alt="">
                     </th>
                     <th>
-                        픽률<br>
-                        게임수
+                        <font font-weight="bold" size="4">${spell2.spell_pick}%</font><br>
+                        <font font-weight="lighter">${spell2.spell_cnt}</font>
                     </th>
                     <th>
-                        승률
+                        ${spell2.spell_winrate}%
                     </th>
                 </tr>
             </tbody>
@@ -812,28 +812,28 @@ TOP2
             <tbody>
                 <tr>
                     <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/SummonerBoost.png" alt="">
-                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/SummonerBoost.png" alt="">
+                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start1.start1}.png" alt="">
+                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start1.start2}.png" alt="">
                     </th>
                     <th>
-                        픽률<br>
-                        게임수
+                        ${start1.start_pick}<br>
+                        ${start1.start_cnt}
                     </th>
                     <th>
-                        승률
+                        ${start1.start_winrate}
                     </th>
                 </tr>
                 <tr>
                     <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/SummonerBoost.png" alt="">
-                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/SummonerBoost.png" alt="">
+                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start2.start1}.png" alt="">
+                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start2.start2}.png" alt="">
                     </th>
                     <th>
-                        픽률<br>
-                        게임수
+                        ${start2.start_pick}<br>
+                        ${start2.start_cnt}
                     </th>
                     <th>
-                        승률
+                        ${start2.start_winrate}
                     </th>
                 </tr>
             </tbody>

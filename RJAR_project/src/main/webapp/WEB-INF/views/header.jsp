@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +10,13 @@
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
-	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
-	crossorigin="anonymous">
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css">
+<!-- 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" -->
+<!-- 	crossorigin="anonymous"> -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com"> <!-- 이거 지우고 밑에거 활성화 -->
+<!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
 <link
 	href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
 	rel="stylesheet">
@@ -60,13 +62,14 @@
 </head>
 <body>
 	<!-- Option 1: Bootstrap Bundle with Popper -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"
-		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.5.1.slim.js" -->
+<!-- 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" -->
+<!-- 		crossorigin="anonymous"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"></script>
+<!-- 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js" -->
+<!-- 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" -->
+<!-- 		crossorigin="anonymous"></script> -->
 
 	<div class="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -98,20 +101,28 @@
 						<div class="summoner-search-box"
 							style="display: block; margin-right: 3px;">
 							<input class="form-control me-sm-2" type="text"
-								placeholder="소환사명을 입력하세요" name="summonerName">
+								placeholder="소환사명을 입력하세요" name="summonerName" style="font-family: 'Poor Story', cursive">
 						</div>
 						<div class="summoner-search-button">
 							<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
 						</div>
 					</div>
 				</form>
-				<a href="./login">
-					<button id="login-btn" type="button" class="btn btn-success"
-						style="font-family: 'Poor Story', cursive">로그인</button>
-				</a>
+				
+				<c:if test="${sessionScope.m_id != null}">
+					<form action="./logout" method="post">
+					<button id="login-btn" type="submit" class="btn btn-success"
+						style="font-family: 'Poor Story', cursive">로그아웃</button>
+					</form>
+				</c:if>
+				<c:if test="${sessionScope.m_id == null}">
+					<a href="./login">
+						<button id="login-btn" type="button" class="btn btn-success"
+							style="font-family: 'Poor Story', cursive">로그인</button>
+					</a>
+				</c:if>
 			</div>
 		</nav>
 	</div>
-
 </body>
 </html>

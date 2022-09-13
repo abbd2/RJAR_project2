@@ -1,7 +1,6 @@
 package com.rjar.www.service.championDetail;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -177,21 +176,6 @@ public class ChampionDetailMM {
 		return selectResult;
 	}
 
-	public ModelAndView getChampionDetailInfo(String championName, String lane) {
-		mav = new ModelAndView();
-
-		mav.addObject("championName", championName);
-		mav.addObject("lane", lane);
-
-		Champion spell = champDao.getSpellList(championName, lane);
-//		  mav.addObject("spell1", spell.getSpell1());
-
-//		  mav.addObject("spell2", spell.getSpell2());
-
-		mav.setViewName("Detail/championDetail");
-		return mav;
-	}
-
 	public ModelAndView clickDetail(int championId, String tier) {
 		mav = new ModelAndView();
 		// 챔피언이름/주로 가는 2가지 라인 가져오기
@@ -280,9 +264,94 @@ public class ChampionDetailMM {
 		mav.addObject("rune_win2", rune_pickWin.get(1).getRune_winRate());
 		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
 		mav.addObject("rune_pick2", rune_pickWin.get(1).getRune_pick());
+<<<<<<< HEAD
 		mav.addObject("tier", tier);
+=======
+		
+		
+		// 스펠 판수, 승률, 픽률
+		List<ChampionDetail> spells = champDao.getSpell(champion_eg_name, lane1);
+		ChampionDetail spell;
+
+		int cnt=0;
+		for(int i=0;i<spells.size();i++) {
+			for(int j=i;j<spells.size();j++) {
+				if (spells.get(i).getSpell1().equals(spells.get(j).getSpell2()) && spells.get(i).getSpell2().equals(spells.get(j).getSpell1())) {
+					int spell_cnt = spells.get(i).getSpell_cnt()+spells.get(j).getSpell_cnt();
+					int	spell_win = spells.get(i).getSpell_win()+spells.get(j).getSpell_win();
+					double winrate=((double)spell_win/spell_cnt)*100;
+					double pickrate=((double)spell_cnt/spells.get(i).getSpell_total())*100;
+					
+					// 소숫점 두자리
+					winrate=Math.round(winrate*100)/100.0;
+					String spell_winrate=String.format("%.2f", winrate);
+					
+					pickrate=Math.round(pickrate*100)/100.0;
+					String spell_pickrate=String.format("%.2f", pickrate);
+					
+					System.out.println("i="+i);
+					System.out.println("j="+j);
+					System.out.println("spell_winrate="+spell_winrate);
+					
+					
+					cnt++;
+					System.out.println("cnt="+cnt);
+					
+					if (cnt==1) {
+						spell=spells.get(j);
+						spells.set(i, spell.setSpell1(spell.getSpell1()));
+						spells.set(i, spell.setSpell2(spell.getSpell2()));
+						spells.set(i, spell.setSpell_cnt(spell_cnt));
+						spells.set(i, spell.setSpell_win(spell_win));
+						spells.set(i, spell.setSpell_winrate(spell_winrate));
+						spells.set(i, spell.setSpell_pick(spell_pickrate));
+						spells.set(i, spell.setLane(ChampionLane(spell.getLane())));
+						mav.addObject("spell",spell);
+						System.out.println("spell="+spell);
+					}
+					else if(cnt==2) {
+						spell=spells.get(j);
+						spells.set(i, spell.setSpell1(spell.getSpell1()));
+						spells.set(i, spell.setSpell2(spell.getSpell2()));
+						spells.set(i, spell.setSpell_cnt(spell_cnt));
+						spells.set(i, spell.setSpell_win(spell_win));
+						spells.set(i, spell.setSpell_winrate(spell_winrate));
+						spells.set(i, spell.setSpell_pick(spell_pickrate));
+						mav.addObject("spell2",spell);
+						System.out.println("spell2="+spell);
+					}
+					if (cnt==3) break;
+				}
+			}
+		}
+		
+		//아이템 판수, 승률, 픽률
+		List<ChampionDetail> start_items = champDao.getStart_items(champion_eg_name, lane1);
+		ChampionDetail start1=start_items.get(0);
+		
+		mav.addObject("start1",start1);
+		System.out.println("start1="+start1);
+		
+		if (start_items.get(1).getStart1()!=null){
+			ChampionDetail start2=start_items.get(1);
+			mav.addObject("start2",start2);
+			System.out.println("start2="+start2);
+		}
+		
+>>>>>>> 6f55173880e5308624f3b75b41cf06e595a4cb7e
 		mav.setViewName("Detail/championDetail");
 		return mav;
+	}
+	
+	// 라인 영어 -> 한글
+	public  String ChampionLane(String lane) {
+		if(lane.equals("TOP")) return "탑";
+		else if(lane.equals("JUNGLE")) return "정글";
+		else if(lane.equals("MIDDLE")) return "미드";
+		else if(lane.equals("BOTTOM")) return "원딜";
+		else if(lane.equals("UTILITY")) return "서포터";
+		
+		return null;
 	}
 
 

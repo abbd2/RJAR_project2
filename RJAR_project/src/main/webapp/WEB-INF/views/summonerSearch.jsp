@@ -62,7 +62,7 @@ body, html {
 	width: 20%;
 	height: 100%;
 	float: left;
-	background-color: black;
+	background-color: yellow;
 }
 
 .summoner-search-outter-box {
@@ -525,7 +525,7 @@ a.miniName:hover {
 										<img src="./resources/tierImg/${freeTier}.png" width="50px">
 									</div>
 									<div id="tierInfo" style="float: left; width: 45%">
-										<h6 class="card-title">${freeTier} ${freeRank}</h6>
+										<h6 class="card-title">${freeTier}${freeRank}</h6>
 										<p class="card-text">${freeLeaguePoint}점</p>
 									</div>
 									<div id="winLose" style="float: left; width: 35%">
@@ -544,7 +544,7 @@ a.miniName:hover {
 										<img src="./resources/tierImg/${soloTier}.png" width="50px">
 									</div>
 									<div id="tierInfo" style="float: left; width: 45%">
-										<h6 class="card-title">${soloTier} ${soloRank}</h6>
+										<h6 class="card-title">${soloTier}${soloRank}</h6>
 										<p class="card-text" style="top: 10px">${soloLeaguePoint}점</p>
 									</div>
 									<div id="winLose" style="float: left; width: 35%">
@@ -579,53 +579,106 @@ a.miniName:hover {
 							class="nav-link" data-bs-toggle="tab" href="#profile"
 							aria-selected="false" role="tab" tabindex="-1"
 							style="font-family: 'Poor Story', cursive">기타</a></li>
-
-
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						<div class="tab-pane fade active show" id="total" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
 									<div class="mainMatch">${myGames}</div>
+									<div class="mainMoreButton">
+										<button id="MMbutton" type="button"
+											class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="solo" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
-									<div class="mainMatch">${mySoloGames}</div>
+									<div class="soloMatch">${mySoloGames}</div>
+									<div class="soloMoreButton">
+										<button type="button" class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="free" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
-									<div class="mainMatch">${myFreeGame}</div>
+									<div class="freeMatch">${myFreeGame}</div>
+									<div class="freeMoreButton">
+										<button type="button" class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="other" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
-									<div class="mainMatch">${myOtherGame}</div>
+									<div class="otherMatch">${myOtherGame}</div>
+									<div class="otherMoreButton">
+										<button type="button" class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="middleRightSide"></div>
+				<div class="middleRightSide" id="gogo">
+				${MLane}
+				${MostLane}
+				${MostLaneWin}
+				${MostLaneCs}
+				${MostLaneGold}
+				${MostLaneVW}
+				${MostLaneWP}
+				${MostLaneWK}
+				
+				
+				</div>
 			</div>
 		</div>
 	</div>
 
-
 	<div class="footer"></div>
-	<!-- 	<button type="button" id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
-  Loading state
-</button>
- -->
 
 	<script type="text/javascript">
+	    let myTier = null;
+	
+		let mostLine = {
+				"LANE" : '${MLane}',
+				"PERMINUTE_CS" : ${MostLaneCs},
+				"PER_GOLDEARN" : ${MostLaneGold},
+				"PER_VISIONWARD" : ${MostLaneVW},
+				"PER_WARDPLACED" : ${MostLaneWP},
+				"PER_WARDSKILLED" : ${MostLaneWK}
+				
+		}
+		
+		console.log(mostLine);
+
+		$.ajax({
+			type : 'POST',
+			url : 'http://127.0.0.1:5000/',
+			data : mostLine,
+			dataType : 'JSON',
+			success : function(res) {
+				console.log(res)
+				console.log(res.TIER)
+				$("#gogo").append(res.TIER + " ");
+			},
+			error : function() {
+				alert('요청 실패');
+			}
+		}) 
+		
+		
+
+		
 		$(".card").click(
 				function() {
 					$(this).next(".otherPlayerList").stop().slideToggle(300);
@@ -634,11 +687,16 @@ a.miniName:hover {
 							".otherPlayerList").slideUp(300); // 1개씩 펼치기
 				});
 
+		$(".miniName").click(function() {
+			click = 1
+			console.log(click)
+		})
+
 		$('#myButton').on('click', function() {
 			var $btn = $(this).button('loading');
 			// business logic...
 			$btn.button('reset');
-		})
+		});
 
 		$(document).ready(function() {
 			$('ul.nav-tabs li a').click(function() {
@@ -651,9 +709,64 @@ a.miniName:hover {
 				$(this).addClass('active');
 				$("#" + tab_id).addClass('active show');
 			});
+
+		});
+
+		$(function() {
+			$(".mainMatch .card").slice(0, 10).show();
+			$(".soloMatch .card").slice(0, 10).show();
+			$(".freeMatch .card").slice(0, 10).show();
+			$(".otherMatch .card").slice(0, 10).show();
+
+			if ($(".mainMatch .card").slice(0, 10).show().length < 10
+					|| ($(".mainMatch .card").slice(0, 10).show().length == 10 && $(".mainMatch .card:hidden").length == 0)) {
+				$('.mainMoreButton').hide();
+			}
+			if ($(".soloMatch .card").slice(0, 10).show().length < 10
+					|| ($(".soloMatch .card").slice(0, 10).show().length == 10 && $(".soloMatch .card:hidden").length == 0)) {
+				$('.soloMoreButton').hide();
+			}
+			if ($(".freeMatch .card").slice(0, 10).show().length < 10
+					|| ($(".freeMatch .card").slice(0, 10).show().length == 10 && $(".freeMatch .card:hidden").length == 0)) {
+				$('.freeMoreButton').hide();
+			}
+			if ($(".otherMatch .card").slice(0, 10).show().length < 10
+					|| ($(".otherMatch .card").slice(0, 10).show().length == 10 && $(".otherMatch .card:hidden").length == 0)) {
+				$('.otherMoreButton').hide();
+			}
+
+			$(".mainMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".mainMatch .card:hidden").slice(0, 10).show();
+				if ($(".mainMatch .card:hidden").length == 0) {
+					$('.mainMoreButton').hide();
+				}
+			});
+
+			$(".soloMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".soloMatch .card:hidden").slice(0, 10).show();
+				if ($(".soloMatch .card:hidden").length == 0) {
+					$('.soloMoreButton').hide();
+				}
+			});
+
+			$(".freeMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".freeMatch .card:hidden").slice(0, 10).show();
+				if ($(".freeMatch .card:hidden").length == 0) {
+					$('.freeMoreButton').hide();
+				}
+			});
+
+			$(".otherMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".otherMatch .card:hidden").slice(0, 10).show();
+				if ($(".otherMatch .card:hidden").length == 0) {
+					$('.otherMoreButton').hide();
+				}
+			});
 		});
 	</script>
-
-
 </body>
 </html>
