@@ -62,7 +62,6 @@ body, html {
 	width: 20%;
 	height: 100%;
 	float: left;
-	background-color: yellow;
 }
 
 .summoner-search-outter-box {
@@ -471,6 +470,10 @@ a.miniName:hover {
 	height: 20px;
 	/* margin-bottom : 30px; */
 }
+
+.card-title{
+    font-family: 'Poor Story', cursive;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -497,7 +500,7 @@ a.miniName:hover {
 						<div class="profileImageBox">
 							<div id="profileImage">
 								<img
-									src="http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${profileIconId}.png"
+									src="http://ddragon.leagueoflegends.com/cdn/12.17.1/img/profileicon/${profileIconId}.png"
 									width="100px">
 							</div>
 							<div id="Level">
@@ -628,17 +631,45 @@ a.miniName:hover {
 						</div>
 					</div>
 				</div>
+
 				<div class="middleRightSide" id="gogo">
-				${MLane}
-				${MostLane}
-				${MostLaneWin}
-				${MostLaneCs}
-				${MostLaneGold}
-				${MostLaneVW}
-				${MostLaneWP}
-				${MostLaneWK}
-				
-				
+					<div class="card border-primary mb-3"
+						style="margin: 5px; font-family: 'Poor Story', cursive; text-align: center;">
+						<div class="card-header">최근 경기 기록(랭크, 일반)</div>
+						<div class="card-body" style="margin: -15px; margin-top: -20px">
+							<table class="table table-hover" style="width: 195px; top: 10px">
+								<thead>
+									<tr class="table-light" style="font-size: 3px">
+										<th scope="col"
+											style="width: 50%; padding: 3px; text-align: left;">최근
+											${RGCnt} 게임</th>
+										<th scope="col" style="width: 20%; padding: 3px">게임</th>
+										<th scope="col" style="width: 15%; padding: 3px">KDA</th>
+										<th scope="col" style="width: 15%; padding: 3px">승률</th>
+								</thead>
+								<tbody>
+									<tr class="table-light" style="font-size: 12px">
+										<th scope="row" style="padding: 3px">
+											<div style="float: left; width: 30%;">
+												<img src="./resources/laneImg/${MLane}.png" width="18px">
+											</div>
+											<div style="float: left; width: 70%;">${MLane}</div>
+										</th>
+										<td style="padding: 3px">${MostLane}경기</td>
+										<td style="padding: 3px">${MostLaneKda}</td>
+										<td style="padding: 3px">${MostwinRate}%</td>
+									</tr>
+									${test}
+								</tbody>
+							</table>
+							<div id="myRealTier" style="font-family: 'Poor Story', cursive"></div>
+							<div style="margin-top: 10px">
+								<button type="button" class="btn btn-outline-success"
+									id="myTierBtn" style="font-family: 'Poor Story', cursive;">나의
+									티어 예측</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -647,8 +678,6 @@ a.miniName:hover {
 	<div class="footer"></div>
 
 	<script type="text/javascript">
-	    let myTier = null;
-	
 		let mostLine = {
 				"LANE" : '${MLane}',
 				"PERMINUTE_CS" : ${MostLaneCs},
@@ -660,24 +689,6 @@ a.miniName:hover {
 		}
 		
 		console.log(mostLine);
-
-		$.ajax({
-			type : 'POST',
-			url : 'http://127.0.0.1:5000/',
-			data : mostLine,
-			dataType : 'JSON',
-			success : function(res) {
-				console.log(res)
-				console.log(res.TIER)
-				$("#gogo").append(res.TIER + " ");
-			},
-			error : function() {
-				alert('요청 실패');
-			}
-		}) 
-		
-		
-
 		
 		$(".card").click(
 				function() {
@@ -687,15 +698,28 @@ a.miniName:hover {
 							".otherPlayerList").slideUp(300); // 1개씩 펼치기
 				});
 
-		$(".miniName").click(function() {
-			click = 1
-			console.log(click)
-		})
-
-		$('#myButton').on('click', function() {
-			var $btn = $(this).button('loading');
-			// business logic...
-			$btn.button('reset');
+		$('#myTierBtn').on('click', function() {
+			$.ajax({
+				type : 'POST',
+				url : 'http://127.0.0.1:5000/mytier',
+				data : mostLine,
+				dataType : 'JSON',
+				success : function(res) {
+					console.log(res)
+					console.log(res.TIER)
+					$("#myRealTier").append('<div class="card" style="padding : -10px">'
+							+'<div class="card-body" style="margin : -15px">'
+							+'<h6 class="card-title" style="text-align : left;">나의 예상 티어는..</h6>'
+							+'<img src="./resources/tierImg/'+res.TIER+'.png" width="70px" style="margin-bottom : 13px">'
+							+'<h6 class="card-title" style="text-align : right; margin-bottom:-4px">'+res.TIER+' 입니다.</h6>'
+							+'</div>'
+							+'</div>');
+					$("#myTierBtn").hide();
+				},
+				error : function() {
+					alert('요청 실패');
+				}
+			}) 
 		});
 
 		$(document).ready(function() {
@@ -708,8 +732,7 @@ a.miniName:hover {
 
 				$(this).addClass('active');
 				$("#" + tab_id).addClass('active show');
-			});
-
+			})
 		});
 
 		$(function() {

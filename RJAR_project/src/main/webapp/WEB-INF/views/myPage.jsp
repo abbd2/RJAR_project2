@@ -14,7 +14,7 @@
 	crossorigin="anonymous">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link
 	href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
 	rel="stylesheet">
@@ -103,33 +103,7 @@ body, html {
 	<div class="main">
 		<div class="middle">
 			<div class="middleleft">
-				<div class="card border-primary mb-3" style="margin: 5px">
-					<div class="card-header"></div>
-					<div class="card-body" style="margin:-15px">
-						<div style=" margin-bottom: -15px;font-size: 3px; font-weight: bold;">
-							<p>최근 7 경기</p>
-						</div>
-						<div>
-							<div id="profileImage" style="float:left">
-								<img src="https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/Aatrox.png" width="35px">
-							</div>
-							<div style="float:left">
-							    <p>5 경기</p>
-							    <p>승</p>
-							    <p>5 경기</p>
-							</div>
-						</div>
-
-
-					</div>
-				</div>
-
 			</div>
-
-
-
-
-
 			<div id="middleDetail">
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="nav-item" role="presentation"><a id="aTag"
