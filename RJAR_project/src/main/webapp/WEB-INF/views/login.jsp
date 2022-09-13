@@ -117,7 +117,6 @@ a {
 
 	<div id="loginDiv">
 		<form action="./access" method="post">
-		
 			<div id="titleDiv">
 				<a href="./home" style=" text-decoration: none;">RJAR.GG</a>
 			</div>
@@ -153,6 +152,13 @@ a {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
 <script type="text/javascript">
+
+	let msg = '${msg}';
+	
+	if(msg !== ''){
+		alert(msg);
+	}
+	
 	$(function() {
 		let chk = '${check}';
 		if (chk === '2') {
@@ -164,7 +170,6 @@ a {
 // 			});
 		} // end if
 	});
-console.log(chk);
 </script>
 
 </body>

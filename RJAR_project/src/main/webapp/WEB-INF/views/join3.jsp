@@ -66,12 +66,32 @@
 	/* 	font-size: 20px; */
 	/* 	color: #ffffff; */
 }
+
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 
 <body>
 	<div id="joinPage2">
-		<div id="titleDiv">RJAR.GG</div>
+		<div id="titleDiv">
+			<a href="./home" style=" text-decoration: none;">RJAR.GG</a>
+		</div>
 		<div id="joinTextDiv">회원가입</div>
 		<div id="pageSeparator">
 			<div class="circle"></div>

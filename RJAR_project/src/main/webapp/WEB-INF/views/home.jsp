@@ -192,11 +192,8 @@
 			</div>
 		</div>
 	</form>
-<<<<<<< HEAD
 <script type="text/javascript">
 	console.log(${sessionScope.m_id})
 </script>
-=======
->>>>>>> origin/peter
 </body>
 </html>

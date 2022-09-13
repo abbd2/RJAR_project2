@@ -45,7 +45,7 @@ public class ControllerAdvice {
 		System.out.println("CheckUserException Advice 진입");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("msg", ex.getMessage());
-		mav.setViewName("login");
+		mav.setViewName("redirect:/login");
 		
 		return mav;
 	}
