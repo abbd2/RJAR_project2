@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class GameDetailShowInfo {
 
+
 	// 사용하지 않는 것들은 지울 예정
 	private String ss_gameId;
 	private int ss_participantId;
