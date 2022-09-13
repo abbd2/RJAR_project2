@@ -9,12 +9,15 @@
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
-	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
-	crossorigin="anonymous">
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css">
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" -->
+<!-- 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" -->
+<!-- 	crossorigin="anonymous"> -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
 <link
 	href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
 	rel="stylesheet">
@@ -127,13 +130,15 @@
 </head>
 <body>
 	<!-- Option 1: Bootstrap Bundle with Popper -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"
-		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.5.1.slim.js" -->
+<!-- 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" -->
+<!-- 		crossorigin="anonymous"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"></script>
+<!-- 	<script -->
+<!-- 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js" -->
+<!-- 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" -->
+<!-- 		crossorigin="anonymous"></script> -->
 
 	<div id="header" style="width: 1500px">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -155,9 +160,20 @@
 						<li class="nav-item"><a class="nav-link" href="./lck" style="font-family: 'Poor Story', cursive">LCK분석</a></li>
 					</ul>
 				</div>
-				<a href="./login">
-					<button id="login-btn" type="button" class="btn btn-success" style="font-family: 'Poor Story', cursive">로그인</button>
-				</a>
+				
+				<c:if test="${sessionScope.m_id != null}">
+					<form action="./logout" method="post" style="margin: 0px;">
+					<button id="login-btn" type="submit" class="btn btn-success"
+						style="font-family: 'Poor Story', cursive">로그아웃</button>
+					</form>
+				</c:if>
+				<c:if test="${sessionScope.m_id == null}">
+					<a href="./login">
+						<button id="login-btn" type="button" class="btn btn-success"
+							style="font-family: 'Poor Story', cursive">로그인</button>
+					</a>
+				</c:if>
+			
 			</div>
 		</nav>
 	</div>
@@ -176,5 +192,11 @@
 			</div>
 		</div>
 	</form>
+<<<<<<< HEAD
+=======
+<script type="text/javascript">
+	console.log(${sessionScope.m_id})
+</script>
+>>>>>>> 4b6cae08fb9a4ea7b6ae6bb2b5449727eee30521
 </body>
 </html>

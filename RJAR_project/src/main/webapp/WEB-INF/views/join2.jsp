@@ -16,7 +16,7 @@
 <style type="text/css">
 #joinPage2 {
 	width: 500px;
-	height: 710px;
+	height: 750px;
 	border: 1px solid #758592;
 	margin: 20px 0px 0px 510px;
 }
@@ -62,12 +62,7 @@
 #joinBtn {
 	width: 120px;
 	height: 50px;
-	margin: 5px 0px 0px 190px;
-/* 	border-radius: 5px; */
-/* 	border: 0px; */
-/* 	background-color: #5383e8; */
-/* 	font-size: 20px;
-/* 	color: #ffffff; */
+	margin: 40px 0px 0px 190px;
 }
 
 .topInfoDiv{
@@ -79,40 +74,40 @@
 	width: 300px;
 	height: 30px;
 	font-size: 17px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #nick{
 	width: 300px;
 	height: 30px;
 	font-size: 17px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #idCheckBtn{
 	height: 35px;
 	font-size: 17px;
 	float: right;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #nickCheckBtn{
 	height: 35px;
 	font-size: 17px;
 	float: right;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 .topInfo{
 	height: 30px;
 	width: 392px;
 	font-size: 17px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 }
 
 #selectPhone{
 	height: 35px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	width: 90px;
 	font-size: 17px;
 	margin-bottom: 7px; 
@@ -121,28 +116,28 @@
 #phone{
 	height: 30px;
 	width: 222px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	font-size: 17px;
 }
 
 #certified{
 	height: 35px;
 	width: 70px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	font-size: 17px;
 }
 
 #certifiedNum{
 	height: 30px;
 	width: 150px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	font-size: 17px;
 	margin-bottom: 7px;
 }
 
 #pwQuestion{
 	height: 35px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	width: 400px;
 	font-size: 17px;
 	margin-bottom: 7px; 
@@ -150,7 +145,7 @@
 
 #answer{
 	height: 30px;
-	border-radius: 5px;
+/* 	border-radius: 5px; */
 	width: 392px;
 	font-size: 17px;
 	margin-bottom: 7px;
@@ -158,16 +153,16 @@
 
 </style>
 </head>
- <script type="text/javascript">
-	 window.history.forward();
-	 function noBack(){
-		 window.history.forward();
-		 console.log('noBakc')
-		 }
+<!--  <script type="text/javascript"> -->
+<!-- // 	 window.history.forward(); -->
+<!-- // 	 function noBack(){ -->
+<!-- // 		 window.history.forward(); -->
+<!-- // 		 console.log('noBakc') -->
+<!-- // 		 } -->
 
-</script>
+<!-- </script> -->
 <!-- onload : 문서의 모든 콘텐츠가 로드된 후 발생하는 이벤트, onpageshow : 뒤로가기했을 때도 이벤트 발생, onunload : 페이지를 떠났을 때 발생 -->
-<body onload="noBack();" onpageshow="if(event.persisted) noBack(); console.log('event');">
+<!-- <body onload="noBack();" onpageshow="if(event.persisted) noBack(); console.log('event');"> -->
 <!-- <body onpagehide="Init()"></body> -->
 
 	<div id="joinPage2">
@@ -183,34 +178,34 @@
 		<div id="topDiv">
 			아이디
 			<div class="topInfoDiv">
-				<input id="id" name="m_id" type="text" placeholder="아이디를 입력해주세요." required="required">
+				<input id="id" name="m_id" type="text" placeholder="아이디를 입력해주세요." required="required" oninvalid="this.setCustomValidity('아이디를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<input id="checkIdBtn" type="button" value="중복확인">
 				<div id="idCheckResult" style="font-size: 13px; padding-left: 100px;"></div>
 			</div>
 			
 			비밀번호
 			<div class="topInfoDiv">
-				<input id="pw" class="topInfo" name="m_pw" type="password" placeholder="비밀번호를 입력하세요." required="required">
+				<input id="pw" class="topInfo" name="m_pw" type="password" placeholder="비밀번호를 입력하세요." required="required" oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<div id="pwInput" style="padding-left: 100px;"></div>
 			</div>
 			비밀번호 확인
 			<div class="topInfoDiv">
-				<input id="pwCheck" class="topInfo" type="password" placeholder="비밀번호를 다시 입력하세요." required="required">
-				<div id="pwCheckInput" style="padding-left: 100px;"></div>
+				<input id="pwCheck" class="topInfo" type="password" placeholder="비밀번호를 다시 입력하세요." required="required" oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
+				<div id="pwCheckInput" style="padding-left: 100px; font-size: 13px;"></div>
 			</div>
 			이름
 			<div class="topInfoDiv">
-				<input class="topInfo" name="m_name" type="text" placeholder="이름을 입력하세요." required="required">
+				<input class="topInfo" name="m_name" type="text" placeholder="이름을 입력하세요." required="required" oninvalid="this.setCustomValidity('이름을 입력해 주세요.')" oninput="this.setCustomValidity('')">
 			</div>
 			닉네임
 			<div class="topInfoDiv">
-				<input id="nick" name="m_nick" type="text" placeholder="닉네임을 입력하세요." required="required">
+				<input id="nick" name="m_nick" type="text" placeholder="닉네임을 입력하세요." required="required" oninvalid="this.setCustomValidity('닉네임을 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<input id="checkNickBtn" type="button" value="중복확인">
 				<div id="nickCheckResult" style="font-size: 13px; padding-left: 100px;"></div>
 			</div>
 			핸드폰 번호
 			<div>
-				<select id="selectPhone" name="m_tel" required="required">
+				<select id="selectPhone" name="m_tel" required="required" oninvalid="this.setCustomValidity('통신사를 선택해 주세요.')" oninput="this.setCustomValidity('')">
 					<option value="" selected="selected">통신사</option>
 					<option>SKT</option>
 					<option>KT</option>
@@ -219,21 +214,21 @@
 					<option>알뜰폰 KT</option>
 					<option>알뜰폰 LG U+</option>
 				</select>
-				<input id="phone" name="m_phone" type="text" placeholder="핸드폰 번호" required="required">
+				<input id="phone" name="m_phone" type="text" placeholder="핸드폰 번호" required="required" oninvalid="this.setCustomValidity('핸드폰 번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
 				<input id="certified" type="button" value="인증" onclick="checkCertified($('#selectPhone').val(), $('#phone').val())">
-				<input id="certifiedNum" type="text" placeholder="인증번호 입력" required="required">
-				<div id="selectTel" style="float: right; padding-right: 80px;"></div>
+				<input id="certifiedNum" type="text" placeholder="인증번호 입력" required="required" oninvalid="this.setCustomValidity('인증번호를 입력해 주세요.')" oninput="this.setCustomValidity('')">
+				<div id="selectTel" style="float: right; font-size: 13px;"></div>
 			</div>
 			비밀번호 찾기 질문
 			<div>
-				<select id="pwQuestion" name="m_que" required="required">
+				<select id="pwQuestion" name="m_que" required="required" oninvalid="this.setCustomValidity('질문을 선택해 주세요.')" oninput="this.setCustomValidity('')">
 					<option value="" selected="selected">질문</option>
 					<option value="0">당신의 초등학교 이름</option>
 					<option value="1">당신이 가장 좋아하는 게임</option>
 					<option value="2">당신의 보물 제1호</option>
 				</select>
-				<input id="answer" name="m_ans" type="text" placeholder="답변" required="required">
-				<div id="answerCheckResult"></div>
+				<input id="answer" name="m_ans" type="text" placeholder="답변" required="required" oninvalid="this.setCustomValidity('답변을 입력해 주세요.')" oninput="this.setCustomValidity('')">
+				<div id="answerCheckResult" style="color: red; font-size: 13px;"></div>
 			</div>
 			
 		</div> <!-- end topDiv -->
@@ -276,14 +271,13 @@
 	// ans 값 변경할 때마다 체크
 	$('#answer').on("propertychange change keyup paste input", function (){
 		if($('#answer').val().length > 10){
-			$('#answerCheckResult').html('최대 10자까지만 가능합니다.').css('color', 'red');
+			$('#answerCheckResult').html('최대 10자까지만 가능합니다.');
 			ansCheck = false;
 		} else{
 			$('#answerCheckResult').html('')
 			ansCheck = true;
 		}
 	});
-
 
 		// id 중복확인
 		$('#checkIdBtn').on('click', function (){
@@ -306,7 +300,7 @@
 					}
 				}); // end on
 				
-				// nick 중복확인
+		// nick 중복확인
 		$('#checkNickBtn').on('click', function (){
 					console.log('nick 중복확인');
 						
@@ -340,7 +334,7 @@
 			}
 			else {
 				console.log("통과");
-				$('#pwInput').html('유효한 비밀번호 입니다.').css('color', 'blue').css('font-size', '14px');
+				$('#pwInput').html('유효한 비밀번호 입니다.').css('color', 'blue').css('font-size', '13px');
 				console.log("pwChekc : ", pwCheck);
 				pwCheck = true;
 				if($('#pw').val() === $('#pwCheck').val()){
@@ -383,12 +377,12 @@
 			$('#selectTel').html('');
 
 			// 통신사 선택 여부 확인
-			if (tel === '통신사') {
-				$('#selectTel').html('통신사를 선택해 주세요.').css('color', 'red');
+			if (tel === '') {
+				$('#selectTel').html('통신사를 선택해 주세요.').css('color', 'red').css('margin-right', '100px');
 				phoneCheck = false;
 			} 
 			else if(false === regPhone.test($('#phone').val())){
-				$('#selectTel').html('핸드폰 번호를 정확히 입력해 주세요.').css('color', 'red');
+				$('#selectTel').html('핸드폰 번호를 정확히 입력해 주세요.').css('color', 'red').css('margin-right', '30px');
 				console.log('핸드폰 번호 유효성 검사 false');
 				phoneCheck = false;
 			}else { // 램덤으로 뽑은 수의 소수자자리에서 내림 적용
@@ -408,6 +402,7 @@
 
 		// 가입하기
 		function checkJoin() {
+			
 			console.log('가입하기');
 			console.log('idCheck :', idCheck);
 			console.log('pwCheck :', pwCheck);
@@ -435,7 +430,6 @@
 			}else if(!ansCheck){
 				return false;
 			}else if(idCheck && pwCheck && pwCheck2 && nickCheck && ansCheck){
-				window.history.forward();
 				return true;
 			}
 		}; // end on

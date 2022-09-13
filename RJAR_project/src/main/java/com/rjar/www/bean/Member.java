@@ -1,10 +1,13 @@
 package com.rjar.www.bean;
 
+import org.springframework.stereotype.Repository;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
+@Repository
 public class Member {
 
 	private int m_num;
