@@ -26,6 +26,16 @@
    crossorigin="anonymous"></script>
 
 <style type="text/css">
+#selectOption {
+	width: 200px;
+	height: 55px;
+	margin: 5px;
+	border-radius: 7px;
+	border: 2px solid black;
+	font-size: 20px;
+	font-weight: bold;
+}
+
 #champion_profile{
     width: 100%;
     height: 300px;
@@ -233,18 +243,32 @@
 </head>
 <body>
    <jsp:include page="../header.jsp"></jsp:include>
-   
+	<form id="select" action="tierDetail" method="get">
+		<div class="tierVersion">
+			<select id="selectOption" name="tier">
+				<option id="bronze" value="bronze" style="color: #964b00;">+Bronze</option>
+				<option id="silver" value="silver" style="color: #c0c0c0;">+Silver</option>
+				<option id="gold" value="gold" style="color: #ffd700;">+Gold</option>
+				<option id="platinum" value="platinum" style="color: #006fff;">+Platinum</option>
+				<option id="diamond" value="diamond" style="color: #87cefa;">+Diamond</option>
+			</select>
+			<input value="${championName}" name="championName" type="hidden">
+		</div>
+	</form>
    <div id="champion_profile">
     <div id="champ_img_box">
         <div id="lane_btn_box">
             <button class="lane_btn" value ="${lane1}">${lane1}</button>
+            
+		<c:if test="${!empty lane2}">
             <button class="lane_btn" value ="${lane2}">${lane2}</button>
+		</c:if>           
         </div>
         <div id="champ_img_box2">
             <img id="champ_img" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${championName}.png" alt="">
         </div>
         <div id="champ_text">
-                <h2 style="margin-top: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;${championName}-${lane1}</h2><br>
+                <h2 style="margin-top: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;${championName}-${lane}</h2><br>
                 <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;챔피언 티어 : 3티어</h5>
          </div>
          <div id="champ_skill_box">
@@ -271,7 +295,7 @@
         <ul style="list-style: none; margin: 0px;">
             <span><li><a href="#">빌드</a></li></span>
             <span><li><a href="#">룬</a></li></span>
-            <span><li><a href="#">카운터</a></li></span>
+            <span><li><a href="counterInfo">카운터</a></li></span>
         </ul>
     </nav>
 </div>
@@ -819,10 +843,30 @@ TOP2
     </div> <!--end build_box-->
 </body>
 <script type="text/javascript">
-statperks_list =[${statperks1}, ${statperks2}, ${statperks3}];
-statperks_list2 = [${statperks2_1}, ${statperks2_2}, ${statperks2_3}];
-	
+let tier = '${tier}';
 $(function () {
+	
+	switch (tier) {
+	case 'bronze':
+		$('#bronze').prop('selected', true);
+		break;
+	case 'silver':
+		$('#silver').prop('selected', true);
+		break;
+	case 'gold':
+		$('#gold').prop('selected', true);
+		break;
+	case 'platinum':
+		$('#platinum').prop('selected', true);		
+		break;
+	case 'diamond':
+		$('#diamond').prop('selected', true);
+		break;
+
+	default:
+		break;
+	}
+	
 	statperks_ids1 = [$("#statperks1"),$("#statperks2"),$("#statperks3")]	
 	statperks_ids2 = [$("#statperks4"),$("#statperks5"),$("#statperks6")]
 	statperks_ids3 = [$("#statperks7"),$("#statperks8"),$("#statperks9")]
@@ -895,9 +939,13 @@ $(".lane_btn").click(function(){
 	let $form = $("<form action='runeLine' method ='get'></form>");
 	$("<input>").attr("name", "lane").val(button_value).appendTo($form);
 	$("<input>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input>").attr("name", "tier").val(tier).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 });
 
+$('#selectOption').on('change', function (){
+	$('#select').submit();
+});
 </script>
 </html>

@@ -201,7 +201,7 @@ $('#searchInput').keyup(function () {
 
 
 //챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
-$('.champion').click(function (){
+$('body').on('click', '.champion', function (){
 	let data_championId = $(this).attr("data-championId");
 	let $form = $("<form action='clickDetail' method ='get'></form>");
 	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
@@ -209,7 +209,7 @@ $('.champion').click(function (){
 	$form.submit();
 })
 
-$('.tierChamp').click(function (){
+$("body").on("click", ".tierChamp", function (){
 	let data_championId = $(this).attr('data-championId');
 	let $form = $("<form action='clickDetail' method ='get'></form>");
 	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
