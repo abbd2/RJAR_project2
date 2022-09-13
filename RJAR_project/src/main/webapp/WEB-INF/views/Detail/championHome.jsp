@@ -201,11 +201,7 @@ $('#searchInput').keyup(function () {
 
 
 //챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
-<<<<<<< HEAD
 $('body').on('click', '.champion', function (){
-=======
-$('.champion').click(function(){
->>>>>>> 6f55173880e5308624f3b75b41cf06e595a4cb7e
 	let data_championId = $(this).attr("data-championId");
 	let $form = $("<form action='clickDetail' method ='get'></form>");
 	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);

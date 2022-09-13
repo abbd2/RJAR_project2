@@ -264,9 +264,7 @@ public class ChampionDetailMM {
 		mav.addObject("rune_win2", rune_pickWin.get(1).getRune_winRate());
 		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
 		mav.addObject("rune_pick2", rune_pickWin.get(1).getRune_pick());
-<<<<<<< HEAD
 		mav.addObject("tier", tier);
-=======
 		
 		
 		// 스펠 판수, 승률, 픽률
@@ -338,7 +336,6 @@ public class ChampionDetailMM {
 			System.out.println("start2="+start2);
 		}
 		
->>>>>>> 6f55173880e5308624f3b75b41cf06e595a4cb7e
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
