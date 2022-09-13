@@ -192,7 +192,6 @@ public class MemberMM {
 			throw new CheckUserException("이미 생성된 계정이 존재합니다.");
 		} else {
 			System.out.println("null");
-			System.out.println("asd");
 		}
 	}
 

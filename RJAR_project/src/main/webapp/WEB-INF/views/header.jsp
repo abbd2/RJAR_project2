@@ -124,8 +124,5 @@
 			</div>
 		</nav>
 	</div>
-<script type="text/javascript">
-	console.log(${sessionScope.m_id})
-</script>
 </body>
 </html>
