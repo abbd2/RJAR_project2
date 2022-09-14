@@ -39,7 +39,23 @@ public class ChampionDetailController {
 	
 	@GetMapping(value = "/runeLine")
 	public ModelAndView runeLine(Champion champ) {
-		mav = champmm.runeInfo(champ.getChampionName(), champ.getLane());
+		mav = champmm.runeInfo(champ.getChampionName(), champ.getLane(), champ.getTier());
+		return mav;
+	}
+	
+	@GetMapping(value = "/counterInfo")
+	public ModelAndView counterInfo(Champion champ) {
+		String tier = "platinum";
+		String championName = "Garen";
+		String lane = "TOP";
+		mav = champmm.counterInfo(championName, lane, tier);
+		return mav;
+	}
+	
+	@GetMapping(value = "/tierDetail")
+	public ModelAndView tierDetail(Champion champ){
+		System.out.println("플레여라 ㅠㅠ"+ champ.getTier());
+		mav = champmm.selectDetail(champ.getChampionName(), champ.getTier());			
 		return mav;
 	}
 
