@@ -124,11 +124,5 @@
 			</div>
 		</nav>
 	</div>
-<<<<<<< HEAD
-=======
-	<script type="text/javascript">
-	console.log(${sessionScope.m_id})
-</script>
->>>>>>> 44b2de977c015d988b164764672395224dc581ee
 </body>
 </html>

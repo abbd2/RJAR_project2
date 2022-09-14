@@ -34,7 +34,8 @@ public class MultiSearchRestController {
 
 	ArrayList<MultiSearchBean> msbList;
 
-	private final static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
+	private static String api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
+	private static boolean keyflag = false;
 
 	@GetMapping(value = "/executeMultiSearch")
 	public ArrayList<MultiSearchBean> multiSearch(String summoners) throws IOException, SummonerNotFoundException {
@@ -50,7 +51,7 @@ public class MultiSearchRestController {
 
 		if (msbList.isEmpty()) { // 객체가 비어있다면
 			System.out.println("isEmpty");
-			throw new SummonerNotFoundException("검색 결과와 일치하는 소환사가 없습니다. 정확하게 붙여넣으신건지, 소환사명에 오타나 특수문자가 들어간건 아닌지 확인 해주세요.");
+			throw new SummonerNotFoundException("API_KEY가 잠겼거나, 검색 결과와 일치하는 소환사가 없습니다. 정확하게 붙여넣으신건지, 소환사명에 오타나 특수문자가 들어간건 아닌지 확인 해주세요.");
 		}
 //		-------------------------- 시작 --------------------------
 
@@ -148,7 +149,7 @@ public class MultiSearchRestController {
 				System.out.println();
 			} catch (Exception e) {
 				System.out.println("--------------------------");
-				System.out.println("존재하지 않는 소환사 이름 !!!");
+				System.out.println("존재하지 않는 소환사 이름이거나 api_key lock걸린 상황 !!!");
 				System.out.println("--------------------------");
 				continue;
 			}
@@ -569,24 +570,23 @@ public class MultiSearchRestController {
 	// 게임아이디로 데이터 가져오기
 	private Object[] getGameData(String gameId) throws IOException {
 
-		boolean keyflag = false;
 		String gameUrl = "";
 
 		// api_key 번갈아가면서 사용
-		if (keyflag) {
-			String api_key2 = "RGAPI-5abbd2a5-6403-43ab-a67b-bdc1c426bcaf";
-			System.out.println("게임아이디를 이용해 데이터 가져오는중...");
-
-			System.out.println("gameId : " + gameId);
-			gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key2;
-			keyflag = false;
-		} else {
-			System.out.println("게임아이디를 이용해 데이터 가져오는중...");
-
-			System.out.println("gameId : " + gameId);
-			gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
+		if (!keyflag) {
+			api_key = "RGAPI-e5a10a37-c4df-4398-b5eb-883710384d2a";
 			keyflag = true;
+			
+		} else {
+			api_key = "RGAPI-08c7da92-9810-4c40-8560-b6af5f2443ac";
+			keyflag = false;
 		}
+		
+		System.out.println("게임아이디를 이용해 데이터 가져오는중...");
+
+		System.out.println("gameId : " + gameId);
+		gameUrl = "https://asia.api.riotgames.com/lol/match/v5/matches/" + gameId + "?api_key=" + api_key;
+		keyflag = false;
 
 		String result = connectURL(gameUrl); // url connect
 		JsonNode json = parseStringToJson(result); // Stinrg -> JsonNode

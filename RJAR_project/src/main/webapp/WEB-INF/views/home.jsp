@@ -192,12 +192,5 @@
 			</div>
 		</div>
 	</form>
-<<<<<<< HEAD
-<script type="text/javascript">
-=======
-	<script type="text/javascript">
->>>>>>> 44b2de977c015d988b164764672395224dc581ee
-	console.log(${sessionScope.m_id})
-</script>
 </body>
 </html>
