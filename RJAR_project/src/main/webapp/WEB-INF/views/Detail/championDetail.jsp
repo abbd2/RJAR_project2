@@ -113,8 +113,8 @@
 }
 
 #rune_box1{
-    width: 1200px;
-    height: 1080px;
+    width: 950px;
+    height: 330px;
     background-color: #d7fff1;
     float: left;
     margin-top: 20px;
@@ -122,8 +122,8 @@
     border-radius: 8px;
 }
 #rune_box2{
-    width: 1200px;
-    height: 1080px;
+    width: 950px;
+    height: 330px;
     background-color: #d7fff1;
     float: left;
     margin-top: 20px;
@@ -132,13 +132,11 @@
     display: none;
 }
 
-/* .rune_table1{ */
-/*      margin-top: 150px; */
-/* } */
-
 .rune_table,.rune_table2{
 	float:left;
    	text-align: center;
+   	width: 237px;
+   	margin-top: 20px;
 }
 
 .rune_table>thead>tr>th,
@@ -178,6 +176,7 @@
     background-color: white;
     float: left;
     padding-top: 100px;
+    margin-top: 20px;
 }
 
 .runeWin{
@@ -202,20 +201,26 @@
     margin-right:8px;
 }
 
+#spell_start_box{
+	float: left;
+	width: 490px;
+	height: 300px;
+	background-color: black;
+}
+
 #spell_box{
-    float: left;
     background-color: aquamarine;
-    margin-left: 15px;
+    margin-left: 10px;
     margin-top: 20px;
     margin-right: 15px;
-    width: 530px;
+    width: 490px;
     height: 200px;
     border-radius: 8px;
 }
 
 #spell_table{
     text-align: left;
-    width: 500px;
+    width: 460px;
     border: solid 1px;
     margin-top: 25px;
     margin-left: 15px;
@@ -224,20 +229,72 @@
 #start_box{
     float: left;
     background-color: aquamarine;
-    margin-left: 15px;
+    margin-left: 10px;
     margin-top: 20px;
     margin-right: 15px;
-    width: 530px;
+    width: 490px;
     height: 200px;
     border-radius: 8px;
 }
 
 #start_table{
     text-align: left;
-    width: 500px;
+    width: 460px;
     border: solid 1px;
     margin-top: 25px;
     margin-left: 15px;
+}
+
+#skill_box{
+    margin-top: 370px;
+    margin-left: 20px;
+    border-radius: 8px;
+    width: 700px;
+    height: 200px;
+    background-color: #77af9c;
+}
+
+#skill_text{
+    margin-left: 20px;
+/*     float: left;
+    margin-top: -50px; */
+    font-size: 20px;
+}
+
+#lv>div:not(.LV15):not(.LV11):not(.LV6){
+    width: 40px;
+    height: 45px;
+    margin-top: 40px;
+    margin-right: 5px;
+    border-radius: 8px;
+    background-color: black;
+    float: left;
+    text-align: center;
+    line-height: 50px;
+}
+
+.LV6, .LV11{
+    width: 40px;
+    height: 45px;
+    margin-top: 40px;
+    margin-right: 5px;
+    border-radius: 8px;
+    background-color: cornflowerblue;
+    float: left;
+    text-align: center;
+    line-height: 50px;
+}
+
+.LV15{
+    width: 40px;
+    height: 45px;
+    margin-top: 40px;
+    margin-right: 3px;
+    border-radius: 8px;
+    background-color: black;
+    float: left;
+    text-align: center;
+    line-height: 50px;
 }
 </style>
 </head>
@@ -273,19 +330,19 @@
          </div>
          <div id="champ_skill_box">
             <div id="p">
-                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/passive/${championName}_Passive.png" alt="">
+                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/passive/${start1.passive}" alt="">
             </div>
             <div id="q">
-                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}Q.png" alt="">
+                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.q}" alt="">
             </div>
             <div id="w">
-                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}W.png" alt="">
+                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.w}" alt="">
             </div>
             <div id="e">
-                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}E.png" alt="">
+                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.e}" alt="">
             </div>
             <div id="r">
-                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}R.png" alt="">
+                <img class="champ_skill" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.r}" alt="">
             </div>
         </div>
     </div>
@@ -309,7 +366,7 @@ TOP2
 </div>
 <div id="build_box">
     <div id="rune_box1">
-        <table class="rune_table">
+        <table class="rune_table" style="margin-left:20px;">
         <thead>
         <tr>
         <th style="border-right: 1px solid gray;">
@@ -535,7 +592,7 @@ TOP2
     
     
     <div id = "rune_box2">
-        <table class="rune_table2">
+        <table class="rune_table2" style="margin-top:20px; margin-left:20px">
         <thead>
         <tr>
         <th style="border-right: 1px solid gray;">
@@ -757,88 +814,115 @@ TOP2
 
 
 
-
-
-
-    <div id="spell_box">
-        <table id="spell_table">
-            <thead style="font-size: 20px;">
-                <tr>
-                    <th>소환사 주문</th>
-                    <th>픽률</th>
-                    <th>승률</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell.spell1}.png" alt="">
-                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell.spell2}.png" alt="">
-                    </th>
-                    <th>
-                        <font font-weight="bold" size="4">${spell.spell_pick}%</font><br>
-                        <font font-weight="lighter">${spell.spell_cnt}</font>
-                    </th>
-                    <th>
-                        ${spell.spell_winrate}%
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2.spell1}.png" alt="">
-                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2.spell2}.png" alt="">
-                    </th>
-                    <th>
-                        <font font-weight="bold" size="4">${spell2.spell_pick}%</font><br>
-                        <font font-weight="lighter">${spell2.spell_cnt}</font>
-                    </th>
-                    <th>
-                        ${spell2.spell_winrate}%
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div> <!-- end spell_box -->
-    
-    <div id="start_box">
-        <table id="start_table">
-            <thead style="font-size: 20px;">
-                <tr>
-                    <th>시작 아이템</th>
-                    <th>픽률</th>
-                    <th>승률</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start1.start1}.png" alt="">
-                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start1.start2}.png" alt="">
-                    </th>
-                    <th>
-                        ${start1.start_pick}<br>
-                        ${start1.start_cnt}
-                    </th>
-                    <th>
-                        ${start1.start_winrate}
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start2.start1}.png" alt="">
-                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start2.start2}.png" alt="">
-                    </th>
-                    <th>
-                        ${start2.start_pick}<br>
-                        ${start2.start_cnt}
-                    </th>
-                    <th>
-                        ${start2.start_winrate}
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div> <!-- end start_box -->
+	<div id="spell_start_box">
+	    <div id="spell_box">
+	        <table id="spell_table">
+	            <thead style="font-size: 20px;">
+	                <tr>
+	                    <th>소환사 주문</th>
+	                    <th>픽률</th>
+	                    <th>승률</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <th>
+	                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell.spell1}.png" alt="">
+	                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell.spell2}.png" alt="">
+	                    </th>
+	                    <th>
+	                        <font font-weight="bold" size="4">${spell.spell_pick}%</font><br>
+	                        <font font-weight="lighter">${spell.spell_cnt}</font>
+	                    </th>
+	                    <th>
+	                        ${spell.spell_winrate}%
+	                    </th>
+	                </tr>
+	                <tr>
+	                    <th>
+	                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2.spell1}.png" alt="">
+	                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spell2.spell2}.png" alt="">
+	                    </th>
+	                    <th>
+	                        <font font-weight="bold" size="4">${spell2.spell_pick}%</font><br>
+	                        <font font-weight="lighter">${spell2.spell_cnt}</font>
+	                    </th>
+	                    <th>
+	                        ${spell2.spell_winrate}%
+	                    </th>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </div> <!-- end spell_box -->
+	    
+	    <div id="start_box">
+	        <table id="start_table">
+	            <thead style="font-size: 20px;">
+	                <tr>
+	                    <th>시작 아이템</th>
+	                    <th>픽률</th>
+	                    <th>승률</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <th>
+	                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start1.start1}.png" alt="">
+	                        <img style="width: 50px; height: 50px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start1.start2}.png" alt="">
+	                    </th>
+	                    <th>
+	                        ${start1.start_pick}<br>
+	                        ${start1.start_cnt}
+	                    </th>
+	                    <th>
+	                        ${start1.start_winrate}
+	                    </th>
+	                </tr>
+	                <tr>
+	                    <th>
+	                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start2.start1}.png" alt="">
+	                        <img style="width: 50px; height: 50px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${start2.start2}.png" alt="">
+	                    </th>
+	                    <th>
+	                        ${start2.start_pick}<br>
+	                        ${start2.start_cnt}
+	                    </th>
+	                    <th>
+	                        ${start2.start_winrate}
+	                    </th>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </div> <!-- end start_box -->
+	</div> <!-- end spell_start_box -->
+	
+   	<div id="skill_box">
+   		<div id="skill_text">
+   			<br>
+   			<h4>스킬 빌드</h4>
+   		</div>
+   		<div id="lv" style="border-bottom: solid 1px gray; width: 700px; height: 10px;">
+			<div class="LV1" style="margin-left: 10px;"><font class="lv1" size="5px">${skill1.lv1}</font></div>
+			<div class="LV2"><font class="lv2" size="5px">${skill1.lv2}</font></div>
+			<div class="LV3"><font class="lv3" size="5px">${skill1.lv3}</font></div>
+			<div class="LV4"><font class="lv4" size="5px">${skill1.lv4}</font></div>
+			<div class="LV5"><font class="lv5" size="5px">${skill1.lv5}</font></div>
+			<div class="LV6"><font color="white" size="5px">R</font></div>
+			<div class="LV7"><font class="lv7" size="5px">${skill1.lv7}</font></div>
+			<div class="LV8"><font class="lv8" size="5px">${skill1.lv8}</font></div>
+			<div class="LV9"><font class="lv9" size="5px">${skill1.lv9}</font></div>
+			<div class="LV10"><font class="lv10" size="5px">${skill1.lv10}</font></div>
+			<div class="LV11"><font class="lv11" color="white" size="5px">R</font></div>
+			<div class="LV12"><font class="lv12" size="5px">${skill1.lv12}</font></div>
+			<div class="LV13"><font class="lv13" size="5px">${skill1.lv13}</font></div>
+			<div class="LV14"><font class="lv14" size="5px">${skill1.lv14}</font></div>
+			<div class="LV15"><font class="lv15" size="5px">${skill1.lv15}</font></div>
+   		</div>
+   		<div id="skill_win_cnt" style="float:left; width:300px; height:200px;">
+   			<div>${skill1.skill_winrate}%</div>
+   			<div>${skill1.skill_cnt}게임</div>
+   		</div>
+     </div> <!-- end skill_box -->
         
     </div> <!--end build_box-->
 </body>
@@ -893,7 +977,31 @@ $(function () {
 		}
 	}
 	
+	lv_list=[$(".lv1"),$(".lv2"),$(".lv3"),$(".lv4"),$(".lv5"),$(".lv7"),$(".lv8"),$(".lv9"),$(".lv10"),$(".lv12"),$(".lv13"),$(".lv14"),$(".lv15")]
+	lv=["${skill1.lv1}","${skill1.lv2}","${skill1.lv3}","${skill1.lv4}","${skill1.lv5}","${skill1.lv7}","${skill1.lv8}","${skill1.lv9}","${skill1.lv10}",
+		"${skill1.lv12}","${skill1.lv13}","${skill1.lv14}","${skill1.lv15}"]
+	
+	for(var j=0;j<lv_list.length;j++){
+		if(lv[j]==="Q") lv_list[j].css("color","lightskyblue");
+		
+		else if(lv[j]==="W") lv_list[j].css("color","lightcoral");
+		
+		else lv_list[j].css("color","lightgreen");
+	}
 });
+
+/* $(function (){
+	lv_list=[$(".lv1"),$(".lv2"),$(".lv3"),$(".lv4"),$(".lv5"),$(".lv7"),$(".lv8"),$(".lv9"),$(".lv10"),$(".lv12"),$(".lv13"),$(".lv14"),$(".lv15")]
+	lv=["${skill1.lv1}","${skill1.lv2}","${skill1.lv3}","${skill1.lv4}","${skill1.lv5}","${skill1.lv7}","${skill1.lv8}","${skill1.lv9}","${skill1.lv10}",
+		"${skill1.lv12}","${skill1.lv13}","${skill1.lv14}","${skill1.lv15}"]
+	
+	for(var j=0;j<lv_list.length;j++){
+		if(lv[j]==="Q") lv_list[j].css("color","lightskyblue");
+		
+		else if(lv[j]==="W") lv_list[j].css("color","lightcoral");
+		
+		else lv_list[j].css("color","lightgreen");
+}); */
 
 $("#top1").click(function(){
 	
