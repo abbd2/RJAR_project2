@@ -171,12 +171,21 @@
 		ON A.CHAMPIONID=B.CHAMPIONID
 		WHERE <![CDATA[ROWNUM<=2]]>
 	</select>
-	
+
 	<select resultType="ChampionDetail" id="getSkill_build">
 		SELECT *
 		FROM (SELECT * FROM SKILL_BUILD
 			  WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
 			  ORDER BY SKILL_PICK DESC)
-		WHERE <![CDATA[ROWNUM=1]]>
+		WHERE ROWNUM=1
+	</select>
+	
+	<select resultType="ChampionDetail" id="getBoots">
+		SELECT *
+		FROM (SELECT *
+		      FROM boots
+		      WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+		      ORDER BY BOOTS_CNT DESC)
+		WHERE <![CDATA[ROWNUM<=2]]>
 	</select>
 </mapper>

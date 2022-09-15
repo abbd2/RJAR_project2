@@ -336,6 +336,17 @@ public class ChampionDetailMM {
 			System.out.println("start2="+start2);
 		}
 		
+		//신발 판수, 승률, 픽률
+		List<ChampionDetail> boots = champDao.getBoots(champion_eg_name, lane1);
+		ChampionDetail boots1=boots.get(0);
+		ChampionDetail boots2=boots.get(1);
+		
+		mav.addObject("boots1",boots1);
+		System.out.println("boots1="+boots1);
+		
+		mav.addObject("boots2",boots2);
+		System.out.println("boots2="+boots2);
+		
 		
 		//스킬 빌드
 		List<ChampionDetail> skill_build=champDao.getSkill_build(champion_eg_name, lane1);
@@ -361,6 +372,9 @@ public class ChampionDetailMM {
 		
 		mav.addObject("skill1",skill1);
 		System.out.println("skill1="+skill1);
+		
+		// 아이템 빌드
+		List<ChampionDetail> item_build;
 		
 		mav.setViewName("Detail/championDetail");
 		return mav;

@@ -29,13 +29,30 @@ public class ChampionDetail {
 	private int spell_win;
 	private int spell_total; // 해당 라인 판수
 	
-	//아이템
+	//시작 아이템
 	private String start1;
 	private String start2;
 	private int start_cnt;
 	private int start_win;
 	private double start_winrate;
 	private double start_pick;
+	
+	// 신발
+	private String boots;
+	private String boots_cnt;
+	private int boots_win;
+	private double boots_winrate;
+	private double boots_pick;
+	
+	//아이템 빌드
+	private int item1;
+	private int item2;
+	private int item3;
+	private int item_cnt;
+	private int item_win;
+	private int item_total;
+	private double item_winrate;
+	private double item_pick;
 	
 	//스킬
 	private String lv1;
