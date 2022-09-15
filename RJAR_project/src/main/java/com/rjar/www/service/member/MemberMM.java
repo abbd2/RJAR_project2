@@ -48,7 +48,9 @@ public class MemberMM {
 				System.out.println("로그인 중...");
 				// 세션에 로그인 마킹
 				session.setAttribute("m_nick", member.getM_nick());
-				System.out.println("nick : "+member.getM_nick());
+				session.setAttribute("m_id", mm.getM_id());
+				System.out.println("id : " + mm.getM_id());
+				System.out.println("nick : " + member.getM_nick());
 				view = "redirect:/home";
 			} else { // 비밀번호 오류
 				System.out.println("잘못된 비밀번호 :" + mm.getM_pw());
@@ -202,19 +204,19 @@ public class MemberMM {
 
 	public ModelAndView getMyPageInfo(String m_nick) {
 		mav = new ModelAndView();
-		List<Member> myPage = new ArrayList<>();	
-		myPage=mDao.getMyPageInfo(m_nick);
+		List<Member> myPage = new ArrayList<>();
+		myPage = mDao.getMyPageInfo(m_nick);
 		System.out.println(myPage);
 		System.out.println(myPage.get(0).getM_id());
 		System.out.println(myPage.get(0).getM_name());
 		System.out.println(myPage.get(0).getM_phone());
 		System.out.println(myPage.get(0).getM_tel());
-		
-		mav.addObject("m_name", myPage.get(0).getM_name());		
-		mav.addObject("m_id", myPage.get(0).getM_id());		
-		mav.addObject("m_phone", myPage.get(0).getM_phone());		
-		mav.addObject("m_tel", myPage.get(0).getM_tel());		
-		
+
+		mav.addObject("m_name", myPage.get(0).getM_name());
+		mav.addObject("m_id", myPage.get(0).getM_id());
+		mav.addObject("m_phone", myPage.get(0).getM_phone());
+		mav.addObject("m_tel", myPage.get(0).getM_tel());
+
 		return mav;
 	}
 
@@ -225,7 +227,7 @@ public class MemberMM {
 
 		int result = mDao.nickModify(member);
 		System.out.println(result);
-		
+
 		if (result > 0) {
 			System.out.println(result + " 닉네임 변경 선공");
 			session.setAttribute("m_nick", wantNick);
@@ -233,11 +235,10 @@ public class MemberMM {
 			mav.addObject("msg", "비밀번호 변경 성공");
 			mav.setViewName("redirect:/home");
 			return mav;
-			
+
 		} else {
 			throw new NoMatchingPwException("오류");
 		}
 	}
-
 
 }
