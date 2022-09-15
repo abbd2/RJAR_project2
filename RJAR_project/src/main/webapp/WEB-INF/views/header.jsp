@@ -107,7 +107,7 @@
 					</div>
 				</form>
 
-				<c:if test="${sessionScope.m_id != null}">
+				<c:if test="${sessionScope.m_nick != null}">
 					<form method="post" id='logOutFrm' name="form"
 						style="margin: 0px;">
 						<ul class="navbar-nav me-auto" id="myDropMenu">
@@ -128,7 +128,7 @@
 						</ul>
 					</form>
 				</c:if>
-				<c:if test="${sessionScope.m_id == null}">
+				<c:if test="${sessionScope.m_nick == null}">
 					<a href="./login">
 						<button id="login-btn" type="button" class="btn btn-success"
 							style="font-family: 'Poor Story', cursive">로그인</button>
