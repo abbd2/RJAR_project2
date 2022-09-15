@@ -55,5 +55,9 @@
 		select m_id from member where m_name = #{m_name}
 	</select>
 	
+	<select id="getMyPageInfo" resultType="Member">
+	    select * from member where m_nick = #{m_nick}
+	</select>
+	
 </mapper>
 

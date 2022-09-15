@@ -88,8 +88,6 @@
 							style="font-family: 'Poor Story', cursive">연구소</a></li>
 						<li class="nav-item"><a class="nav-link" href="./multiSearch"
 							style="font-family: 'Poor Story', cursive">멀티서치</a></li>
-						<li class="nav-item"><a class="nav-link" href="./myPage"
-							style="font-family: 'Poor Story', cursive">커뮤니티</a></li>
 						<li class="nav-item"><a class="nav-link" href="./lck"
 							style="font-family: 'Poor Story', cursive">LCK분석</a></li>
 					</ul>
@@ -110,9 +108,24 @@
 				</form>
 
 				<c:if test="${sessionScope.m_id != null}">
-					<form action="./logout" method="post">
-						<button id="login-btn" type="submit" class="btn btn-success"
-							style="font-family: 'Poor Story', cursive">로그아웃</button>
+					<form method="post" id='logOutFrm' name="form"
+						style="margin: 0px;">
+						<ul class="navbar-nav me-auto" id="myDropMenu">
+							<li class="nav-item dropdown" style="height: 40px"><p
+									class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+									role="button" aria-haspopup="true" aria-expanded="false"
+									style="font-family: 'Poor Story', cursive">${sessionScope.m_id}</p>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#" onclick="document.form.action='./myPage'; document.form.submit()"
+										style="font-family: 'Poor Story', cursive">나의 정보</a>
+
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="#"
+										onclick="document.form.action='./logout'; document.form.submit()"
+										style="font-family: 'Poor Story', cursive">로그아웃</a>
+								</div>
+							</li>
+						</ul>
 					</form>
 				</c:if>
 				<c:if test="${sessionScope.m_id == null}">
@@ -124,5 +137,22 @@
 			</div>
 		</nav>
 	</div>
+	<script type="text/javascript">
+	$(document).ready(
+			function() {
+				//서브메뉴 우선 숨기기
+				$('.dropdown-menu').hide();
+				//메인메뉴의 <li> 태그를 클릭할때마다 이벤트 함수 발생
+				$('#myDropMenu>li').click(
+						function(e) {
+							//click 시 <li> 태그의 a 태그 href(하이퍼링크) 타는 것을 막아주기
+							e.preventDefault();
+							// 클릭한 메인메뉴 <li>태그의 .sub_menu 를 제외한 모든 서브메뉴는 hide()로 숨기기
+							$('.dropdown-menu').not($(this).find('.dropdown-menu').toggle()).hide();
+						});
+
+			});
+	console.log('${sessionScope.m_id}')
+</script>
 </body>
 </html>
