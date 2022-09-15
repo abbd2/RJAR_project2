@@ -24,4 +24,6 @@ public interface IMemberDao {
 	String checkUser(String m_name);
 
 	List<Member> getMyPageInfo(String m_nick);
+
+	int nickModify(Member mm);
 }

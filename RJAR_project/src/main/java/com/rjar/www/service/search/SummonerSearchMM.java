@@ -40,20 +40,22 @@ public class SummonerSearchMM {
 
 	// 전적 검색에 필요한 데이터를 API로 받아오기
 	ModelAndView mav;
-	String api_key = "RGAPI-4843ae9e-7ede-4140-8341-164bbda24a7b";
+	String api_key = "RGAPI-c1e2d22b-74b0-43fc-8d41-c6c2445bcc1f";
 	BufferedReader br = null;
 	JsonParser jsonParser = new JsonParser();
 
+	@SuppressWarnings("deprecation")
 	public ModelAndView sSummonerSearch(String summonerName) {
 
-		log.info("소환사 이름: " + summonerName);
+		log.info("소환사 이름:"+summonerName);
 		mav = new ModelAndView();
 
 		try {
 			// 소환사 프로필 정보 및 id(puuid, accountId) 추출
-			String apiUrl = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName
-					+ "?api_key=" + api_key;
+			String apiUrl = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key="+api_key;
 			String urlBr = getUrl(apiUrl);
+			
+			System.out.println("1="+urlBr);
 
 			// bufferedReader로 가져온 urlBr 데이터를 json 객체로 Parser
 			JsonObject k = (JsonObject) jsonParser.parse(urlBr);
@@ -64,24 +66,25 @@ public class SummonerSearchMM {
 			String name = k.get("name").getAsString();
 
 			// 소환사 상세정보 추출(전체게임 승률, 티어, 티어포인트)
-			String apiUrl1 = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + id + "?api_key="
-					+ api_key;
+			String apiUrl1 = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/"+id+"?api_key="+api_key;
 
 			urlBr = getUrl(apiUrl1);
 			JsonArray jsonArray = (JsonArray) jsonParser.parse(urlBr);
+			
+			System.out.println("2="+urlBr);
 
 			// 위에 jsonArray를 parser하고난 후에 json object를 구하기 위한 과정이다.
 			// solo rank와 free rank가 추출되는데, 둘다, 둘중 하나 혹은 하나도 출력되지 않는 경우도 있기에 아래와 같이 수식을
 			// 작성하였다.
-			String freeTier = null;
-			String freeRank = null;
+			String freeTier = "";
+			String freeRank = "";
 			int freeLeaguePoint = 0;
 			int freeWins = 0;
 			int freeLosses = 0;
 			double freeWinRate = 0;
 
-			String soloTier = null;
-			String soloRank = null;
+			String soloTier = "";
+			String soloRank = "";
 			int soloLeaguePoint = 0;
 			int soloWins = 0;
 			int soloLosses = 0;
@@ -148,12 +151,14 @@ public class SummonerSearchMM {
 				soloTier = "Unranked";
 				freeTier = "Unranked";
 			}
+			
+			System.out.println("3="+soloRank);
 
 			// master, grandmaster, challenger는 rank 숫자가 없지만, api에서는 1을 제공한다.
 			// 따라서 해당 티어들인 경우에는 null을 넘겨준다
 			// 로마 숫자를 아라비아 숫자로 변경
 			if (soloTier.equals("MASTER") || soloTier.equals("GRANDMASTER") || soloTier.equals("CHALLENGER")) {
-				soloRank = null;
+				soloRank = "";
 			}else if(soloRank.equals("I")){
 				soloRank = "1";	
 			}else if(soloRank.equals("II")) {
@@ -165,7 +170,7 @@ public class SummonerSearchMM {
 			}
 
 			if (freeTier.equals("MASTER") || freeTier.equals("GRANDMASTER") || freeTier.equals("CHALLENGER")) {
-				freeRank = null;
+				freeRank = "";
 			}else if(freeRank.equals("I")){
 				freeRank = "1";	
 			}else if(freeRank.equals("II")) {
@@ -215,7 +220,7 @@ public class SummonerSearchMM {
 																					// IOException 발생
 		urlconnection.setRequestMethod("GET");
 		br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
-		System.out.println(br);
+		System.out.println("url1="+br);
 
 		String result = "";
 		String line;
@@ -514,7 +519,8 @@ public class SummonerSearchMM {
 					|| gds.getSs_gameType().equals("자유 5:5 랭크") || gds.getSs_gameType().equals("일반")));
 
 			ModelAndView mostLine = MostLine(mySoloFreeGame);
-			ModelAndView chmpCnt = ChampCnt(mySoloFreeGame);			
+			ModelAndView chmpCnt = ChampCnt(mySoloFreeGame);	
+			System.out.println("myTotalGame="+totalGameData);
 			
 			mav.addObject("myGames", makeHtml_myGameData(myGame, totalGameData));
 			mav.addObject("mySoloGames", makeHtml_myGameData(mySoloGame, totalSoloGameData));

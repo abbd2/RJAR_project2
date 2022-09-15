@@ -88,8 +88,6 @@
 							style="font-family: 'Poor Story', cursive">연구소</a></li>
 						<li class="nav-item"><a class="nav-link" href="./multiSearch"
 							style="font-family: 'Poor Story', cursive">멀티서치</a></li>
-						<li class="nav-item"><a class="nav-link" href="./lck"
-							style="font-family: 'Poor Story', cursive">LCK분석</a></li>
 					</ul>
 				</div>
 				<form action="summonerSearch" method="Get">

@@ -200,13 +200,43 @@ public class MemberMM {
 	}
 
 	public ModelAndView getMyPageInfo(String m_nick) {
+		mav = new ModelAndView();
 		List<Member> myPage = new ArrayList<>();	
 		myPage=mDao.getMyPageInfo(m_nick);
 		System.out.println(myPage);
+		System.out.println(myPage.get(0).getM_id());
+		System.out.println(myPage.get(0).getM_name());
+		System.out.println(myPage.get(0).getM_phone());
+		System.out.println(myPage.get(0).getM_tel());
 		
-		
+		mav.addObject("m_name", myPage.get(0).getM_name());		
+		mav.addObject("m_id", myPage.get(0).getM_id());		
+		mav.addObject("m_phone", myPage.get(0).getM_phone());		
+		mav.addObject("m_tel", myPage.get(0).getM_tel());		
 		
 		return mav;
 	}
+
+	public ModelAndView modifyNick(HttpSession session, String m_nick, String wantNick) {
+		mav = new ModelAndView();
+		member.setM_nick(m_nick);
+		member.setM_MNick(wantNick);
+
+		int result = mDao.nickModify(member);
+		System.out.println(result);
+		
+		if (result > 0) {
+			System.out.println(result + " 닉네임 변경 선공");
+			session.setAttribute("m_nick", wantNick);
+			mav = new ModelAndView();
+			mav.addObject("msg", "비밀번호 변경 성공");
+			mav.setViewName("redirect:/home");
+			return mav;
+			
+		} else {
+			throw new NoMatchingPwException("오류");
+		}
+	}
+
 
 }

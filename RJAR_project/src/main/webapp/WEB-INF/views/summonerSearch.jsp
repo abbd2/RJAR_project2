@@ -658,9 +658,19 @@ a.miniName:hover {
 	<div class="footer"></div>
 
 	<script type="text/javascript">
-	let confirm = ${isNot}
+ 	let confirm = ${isNot}
 	console.log(typeof(confirm))
-	$(document).ready(function() {
+	
+$(document).ready(function() {
+	// 해당 게임의 상세정보 확인
+	// 해당 div를 클릭시 상세정보가 나온다.
+	$(".card").click(
+			function() {
+				$(this).next(".otherPlayerList").stop().slideToggle(300);
+				$(this).toggleClass('on').siblings().removeClass('on');
+				$(this).next(".otherPlayerList").siblings(
+						".otherPlayerList").slideUp(300); // 1개씩 펼치기
+			});
 	// 데이터가 있으면 1 없으면 0을 반환
 	// 데이터가 있을경우 아래 조건문 내용 수행
 	if(confirm == 1){		
@@ -702,16 +712,6 @@ a.miniName:hover {
 							
 		console.log(mostLine);
 		
-		// 해당 게임의 상세정보 확인
-		// 해당 div를 클릭시 상세정보가 나온다.
-		$(".card").click(
-				function() {
-					$(this).next(".otherPlayerList").stop().slideToggle(300);
-					$(this).toggleClass('on').siblings().removeClass('on');
-					$(this).next(".otherPlayerList").siblings(
-							".otherPlayerList").slideUp(300); // 1개씩 펼치기
-				});
-		
 		// 머신러닝, 파이참과 연결하는 ajax
 		// 티어 정보 보기 버튼 클릭시 ajax가 동작 그리고 json 형태로 값을 받아온다
 		$('#myTierBtn').on('click', function() {
@@ -742,25 +742,22 @@ a.miniName:hover {
 		$("#myTierBtn").hide();
 		console.log("노 데이터")
 	}
-});
-	
+
 	// 탭 클릭시 동작 버튼
-		$(document).ready(function() {
-			$('ul.nav-tabs li a').click(function() {
-				// 내가 누른 탭의 내용에 대한 id 값을 저장
-				var tab_id = $(this).attr('data-tab');
-				console.log(tab_id);
+		$('ul.nav-tabs li a').click(function() {
+			// 내가 누른 탭의 내용에 대한 id 값을 저장
+			var tab_id = $(this).attr('data-tab');
+			console.log(tab_id);
 				
-				// 탭을 클릭하면 모든 탭과 내용을 비활성화 시킨다
-				$('ul.nav-tabs li a').removeClass('active');
-				$('.tab-pane').removeClass('active show');
+			// 탭을 클릭하면 모든 탭과 내용을 비활성화 시킨다
+			$('ul.nav-tabs li a').removeClass('active');
+			$('.tab-pane').removeClass('active show');
                 
-				// 현재 내가 클릭한 탭과 내용을 활성화 시킨다
-				$(this).addClass('active');
-				$("#" + tab_id).addClass('active show');
-			})
-		});
-	
+			// 현재 내가 클릭한 탭과 내용을 활성화 시킨다
+			$(this).addClass('active');
+			$("#" + tab_id).addClass('active show');
+		})
+
 	    // 더보기 버튼 구현
 		$(function() {
 			// 10개 단위로 내용을 slice해서 보여준다.
@@ -822,6 +819,8 @@ a.miniName:hover {
 				}
 			});
 		});
+});
+	
 	</script>
 </body>
 </html>

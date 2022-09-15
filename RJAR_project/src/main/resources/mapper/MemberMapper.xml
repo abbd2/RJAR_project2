@@ -59,5 +59,11 @@
 	    select * from member where m_nick = #{m_nick}
 	</select>
 	
+	<update id="nickModify">
+	    update member set
+	    m_nick = #{m_MNick} where m_nick = #{m_nick}
+	
+	</update>
+	
 </mapper>
 

@@ -20,12 +20,13 @@
 	rel="stylesheet">
 
 <style type="text/css">
-body, html {
+body, html:not(.backon) {
 	height: 100%;
 }
 
 .header {
 	width: 1500px;
+	z-index: 3;
 	/* 	height: 500px;
 	position: relative; */
 }
@@ -39,6 +40,7 @@ body, html {
 	height: 775px;
 	background-color: rgba(208, 209, 212, .5);
 	position: relative;
+	z-index: 2;
 }
 
 .middle {
@@ -181,6 +183,51 @@ body, html {
 	background: #fff;
 	box-shadow: 1px 2px 3px #00000020;
 }
+
+.backon {
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+/* 	top: 0;
+	left: 0; */
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 4;
+}
+
+. /* btn-close{
+position : absolute;
+top:-25px;
+ right: 0;
+  cursor:pointer;
+
+} */
+.modal {
+	background-color: #fff;
+	position : relative;
+}
+
+.modalBox{
+    z-index: 5;
+	position : absolute;
+	left: 50%;
+}
+.modal1{
+    position : fixed;
+    width : 400px;
+    height : 200px;
+    left : 35%;
+
+}
+
+.openPopup {
+	  cursor: pointer;
+}
+
+#nickMModal {
+	display: none;
+}
+
 </style>
 
 <title>Insert title here</title>
@@ -197,6 +244,9 @@ body, html {
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 
+
+
+	<div class="backon"></div>
 	<div class="header" style="background-color: rgba(208, 209, 212, .3);">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
@@ -216,6 +266,37 @@ body, html {
 			</div>
 		</nav>
 	</div>
+	<form action="modifyNick" method="Post">
+	<div class="modalBox">
+		<div class="modal1" id="nickMModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-family: 'Poor Story', cursive">닉네임
+							수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">x</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group" style="margin-top : -20px">
+							 <label class="col-form-label mt-4" for="inputDefault" style="font-family: 'Poor Story', cursive">
+							 변경하실 별명을 입력하세요.
+							 </label>
+                             <input type="text" class="form-control" name="wantNick" placeholder="${sessionScope.m_nick}" id="inputDefault" style="font-family: 'Poor Story', cursive">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" style="font-family: 'Poor Story', cursive">수정</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal" style="font-family: 'Poor Story', cursive">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
 	<div class="main" style="font-family: 'Poor Story', cursive">
 		<div class="middle">
 			<div class="middleleft">
@@ -234,7 +315,7 @@ body, html {
 										width="120px">
 								</div>
 								<div style="margin-top: 20px;">
-									<h4 style="font-family: 'Poor Story', cursive">런치버거세트</h4>
+									<h4 style="font-family: 'Poor Story', cursive">${sessionScope.m_nick}</h4>
 								</div>
 							</div>
 							<div></div>
@@ -252,7 +333,7 @@ body, html {
 									aria-selected="false" role="tab" tabindex="-1">회원탈퇴</a></li>
 							</ul>
 						</div>
-						<c:if test="${sessionScope.m_id != null}">
+						<c:if test="${sessionScope.m_nick != null}">
 							<form action="./logout" method="post" id='logOutFrm'
 								style="margin: 0px;">
 								<div style="margin-top: 20px">
@@ -283,14 +364,15 @@ body, html {
 									</div>
 									<div style="width: 68%; height: 100%; float: left;">
 										<div style="margin: 25px; margin-left: 10px">
-											<h3 style="font-family: 'Poor Story', cursive">유성호</h3>
-											<h6 style="font-family: 'Poor Story', cursive">런치버거세트</h6>
+											<h3 style="font-family: 'Poor Story', cursive">${m_name}</h3>
+											<h6 style="font-family: 'Poor Story', cursive">${sessionScope.m_nick}</h6>
 										</div>
 									</div>
 									<div
 										style="width: 20%; height: 100%; float: left; text-align: right">
 										<div style="margin-top: 35px">
-											<button type="button" class="btn btn-dark disabled"
+											<button type="button" id="nickModifyButton"
+												class="btn btn-dark disabled"
 												style="font-family: 'Poor Story', cursive">닉네임수정</button>
 										</div>
 									</div>
@@ -303,7 +385,8 @@ body, html {
 													style="width: 25px; height: 25px">
 											</div>
 											<div style="float: left">
-												<h5 style="margin-top: 3px; margin-left: 3px">010-****-****</h5>
+												<h5 style="margin-top: 3px; margin-left: 3px">+82
+													${m_phone}</h5>
 											</div>
 										</div>
 									</div>
@@ -388,37 +471,62 @@ body, html {
 							<div class="card-body">
 								<div style="margin: -10px; height: 15%;">
 									<h4 style="font-family: 'Poor Story', cursive">탈퇴 안내</h4>
-									<h6 style="font-family: 'Poor Story', cursive; color:gray">회원탈퇴를 신청하기전에 안내사항을 꼭 확인하세요.</h6>
+									<h6 style="font-family: 'Poor Story', cursive; color: gray">회원탈퇴를
+										신청하기전에 안내사항을 꼭 확인하세요.</h6>
 								</div>
-								<div style="margin: 10px; margin-top:-10px; height: 20%;">
-								     <p style="font-weight:bold; font-size:16px"><span style="color: green;">✔</span> 사용하고 계신 아이디(<span style="color : blue">${sessionScope.m_id}</span>)는 탈퇴할 경우 재사용 및 복구가 불가능합니다.</p>
-								     <p style="color:gray; font-size:14px"><span style="color : red">탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가</span>하오니 신중하게 선택하시기 바랍니다.</p>
-								     
+								<div style="margin: 10px; margin-top: -10px; height: 20%;">
+									<p style="font-weight: bold; font-size: 16px">
+										<span style="color: green;">✔</span> 사용하고 계신 아이디(<span
+											style="color: blue">${m_id}</span>)는 탈퇴할 경우 재사용 및 복구가 불가능합니다.
+									</p>
+									<p style="color: gray; font-size: 14px">
+										<span style="color: red">탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가
+											불가</span>하오니 신중하게 선택하시기 바랍니다.
+									</p>
+
 								</div>
-								<div style="margin: 10px; margin-top:-25px; height: 20%;">
-								     <p style="font-weight:bold; font-size:16px"><span style="color: green;">✔</span> 탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</p>
-								     <p style="color:gray; font-size:14px">회원정보 개인형 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.<br> 삭제되는 내용을 확인하시고 필요한 데이터는 미리 백업을 해주세요.</p>
+								<div style="margin: 10px; margin-top: -25px; height: 20%;">
+									<p style="font-weight: bold; font-size: 16px">
+										<span style="color: green;">✔</span> 탈퇴 후 회원정보 및 개인형 서비스 이용기록은
+										모두 삭제됩니다.
+									</p>
+									<p style="color: gray; font-size: 14px">
+										회원정보 개인형 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.<br> 삭제되는
+										내용을 확인하시고 필요한 데이터는 미리 백업을 해주세요.
+									</p>
 								</div>
-								<div style="margin: 10px; margin-top:-10px; height: 20%; border-bottom: 1px solid rgba(132, 129, 140, .5)" >
-								     <p style="font-weight:bold; font-size:16px"><span style="color: green;">✔</span> 탈퇴 후에도 게시판형 서비스에 등록한 게시물은 그대로 남아 있습니다.</p>
-								     <p style="color:gray; font-size:14px">챔피언 분석에 올린 댓글은 탈퇴 시 자동 삭제되지 않고 그대로 남아 있습니다.<br> 
-								     <span style="color : red">삭제를 원하는 댓글이 있다면 반드시 탈퇴 전에 삭제하시기 바랍니다.</span><br>
-								     탈퇴 후에는 회원정보가 삭제되어 본인 여부를 확인할 수 있는 방법이 없어, 댓글을 임의로 삭제해드릴 수 없습니다.								     
-								     </p>
+								<div
+									style="margin: 10px; margin-top: -10px; height: 20%; border-bottom: 1px solid rgba(132, 129, 140, .5)">
+									<p style="font-weight: bold; font-size: 16px">
+										<span style="color: green;">✔</span> 탈퇴 후에도 게시판형 서비스에 등록한 게시물은
+										그대로 남아 있습니다.
+									</p>
+									<p style="color: gray; font-size: 14px">
+										챔피언 분석에 올린 댓글은 탈퇴 시 자동 삭제되지 않고 그대로 남아 있습니다.<br> <span
+											style="color: red">삭제를 원하는 댓글이 있다면 반드시 탈퇴 전에 삭제하시기
+											바랍니다.</span><br> 탈퇴 후에는 회원정보가 삭제되어 본인 여부를 확인할 수 있는 방법이 없어, 댓글을
+										임의로 삭제해드릴 수 없습니다.
+									</p>
 								</div>
-								<div style="margin: 10px; margin-top : 20px; height: 15%;">
-								     <p style="color:red; font-size:14px; font-weight:bold; margin-bottom:5px">탈퇴 후에는 아이디 <span style="color : blue">${sessionScope.m_id}</span> 로 다시 가입할 수 없으며 아이디와 데이터는 복구할 수 없습니다.<br> 
-								     챔피언 분석에 남아 있는 댓글은 탈퇴 후 삭제할 수 없습니다.
-								     </p>
+								<div style="margin: 10px; margin-top: 20px; height: 15%;">
+									<p
+										style="color: red; font-size: 14px; font-weight: bold; margin-bottom: 5px">
+										탈퇴 후에는 아이디 <span style="color: blue">${m_id}</span> 로 다시 가입할 수
+										없으며 아이디와 데이터는 복구할 수 없습니다.<br> 챔피언 분석에 남아 있는 댓글은 탈퇴 후 삭제할
+										수 없습니다.
+									</p>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="" style="margin-left :-1px;"
-											id="flexCheckDefault"> <label style="margin-left:-40px; font-family: 'Poor Story', cursive; font-size:14px"
+										<input class="form-check-input" type="checkbox" value=""
+											style="margin-left: -1px;" id="flexCheckDefault"> <label
+											style="margin-left: -40px; font-family: 'Poor Story', cursive; font-size: 14px"
 											class="form-check-label" for="flexCheckDefault">
 											안내사항을 모두 확인하였으며, 이에 동의합니다. </label>
 									</div>
 								</div>
-								<div style="margin: 10px; margin-top:30px; height: 10%; text-align:center;">
-									<button type="button" class="btn btn-success" style="font-family: 'Poor Story', cursive">확인</button>
+								<div
+									style="margin: 10px; margin-top: 30px; height: 10%; text-align: center;">
+									<button type="button" class="btn btn-success"
+										style="font-family: 'Poor Story', cursive">확인</button>
 								</div>
 							</div>
 						</div>
@@ -431,38 +539,50 @@ body, html {
 
 
 	<script type="text/javascript">
-		console.log('${sessionScope.m_id}')
-
-		$(document).ready(function() {
-			$(".btn-success").attr("disabled", true);
-		    $("#flexCheckDefault").on('click',function(){
-		        var chk = $('input:checkbox[id="flexCheckDefault"]').is(":checked");
-		        if(chk==true){
-		            $(".btn-success").removeAttr('disabled');
-		        }else{
-		            $(".btn-success").attr("disabled", true);
-		        }
-		    });
-			
-			
-			
-			
-			$('ul.nav-tabs li a').click(function() {
-				var tab_id = $(this).attr('data-tab');
-				console.log(tab_id);
-
-				$('ul.nav-tabs li a').removeClass('active');
-				$('.tab-pane').removeClass('active show');
-
-				$(this).addClass('active');
-				$("#" + tab_id).addClass('active show');
-			})
-
-		})
-
+		console.log('${sessionScope.m_nick}')
 		$(document)
 				.ready(
 						function() {
+							$("#nickModifyButton").on("click", function(event) {
+								$("#nickMModal").fadeIn(300);
+								$(".backon").fadeIn(300);
+							});
+
+							$(".backon, .btn-secondary, .btn-close").on(
+									"click", function(event) {
+										$("#nickMModal").fadeOut(300);
+										$(".backon").fadeOut(300);
+									});
+
+							$(".btn-success").attr("disabled", true);
+							$("#flexCheckDefault")
+									.on(
+											'click',
+											function() {
+												var chk = $(
+														'input:checkbox[id="flexCheckDefault"]')
+														.is(":checked");
+												if (chk == true) {
+													$(".btn-success")
+															.removeAttr(
+																	'disabled');
+												} else {
+													$(".btn-success").attr(
+															"disabled", true);
+												}
+											});
+
+							$('ul.nav-tabs li a').click(function() {
+								var tab_id = $(this).attr('data-tab');
+								console.log(tab_id);
+
+								$('ul.nav-tabs li a').removeClass('active');
+								$('.tab-pane').removeClass('active show');
+
+								$(this).addClass('active');
+								$("#" + tab_id).addClass('active show');
+							})
+
 							var chkList = $("input[name=checkSwitch]");
 							$('#switch')
 									.focus(function() {
