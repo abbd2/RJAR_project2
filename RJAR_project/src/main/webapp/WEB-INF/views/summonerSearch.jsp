@@ -32,7 +32,7 @@ body, html {
 }
 
 .middle {
-	width: 1100px;
+	width: 1150px;
 	height: 100%;
 	position: absolute;
 	top: 50%;
@@ -41,14 +41,14 @@ body, html {
 }
 
 .middleHead {
-	width: 1100px;
+	width: 1150px;
 	height: 19%;
 	/* position: absolute; */
 	margin: auto;
 }
 
 .middleDetail {
-	width: 1100px;
+	width: 1150px;
 	height: 81%;
 }
 
@@ -62,7 +62,6 @@ body, html {
 	width: 20%;
 	height: 100%;
 	float: left;
-	background-color: black;
 }
 
 .summoner-search-outter-box {
@@ -471,6 +470,10 @@ a.miniName:hover {
 	height: 20px;
 	/* margin-bottom : 30px; */
 }
+
+.card-title {
+	font-family: 'Poor Story', cursive;
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -493,11 +496,11 @@ a.miniName:hover {
 		<div class="middle">
 			<div class="middleHead">
 				<div class="card" id="summonerInfo" style="margin-top: 10px">
-					<div class="card-body" style="width: 1100px; float: left;">
+					<div class="card-body" style="width: 1150px; float: left;">
 						<div class="profileImageBox">
 							<div id="profileImage">
 								<img
-									src="http://ddragon.leagueoflegends.com/cdn/12.15.1/img/profileicon/${profileIconId}.png"
+									src="http://ddragon.leagueoflegends.com/cdn/12.17.1/img/profileicon/${profileIconId}.png"
 									width="100px">
 							</div>
 							<div id="Level">
@@ -579,81 +582,245 @@ a.miniName:hover {
 							class="nav-link" data-bs-toggle="tab" href="#profile"
 							aria-selected="false" role="tab" tabindex="-1"
 							style="font-family: 'Poor Story', cursive">기타</a></li>
-
-
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						<div class="tab-pane fade active show" id="total" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
 									<div class="mainMatch">${myGames}</div>
+									<div class="mainMoreButton">
+										<button id="MMbutton" type="button"
+											class="btn btn-outline-primary"
+											style="width: 900px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="solo" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
-									<div class="mainMatch">${mySoloGames}</div>
+									<div class="soloMatch">${mySoloGames}</div>
+									<div class="soloMoreButton">
+										<button type="button" class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="free" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
-									<div class="mainMatch">${myFreeGame}</div>
+									<div class="freeMatch">${myFreeGame}</div>
+									<div class="freeMoreButton">
+										<button type="button" class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane fade" id="other" role="tabpanel">
 							<div id="detail">
 								<div class="matchBox">
-									<div class="mainMatch">${myOtherGame}</div>
+									<div class="otherMatch">${myOtherGame}</div>
+									<div class="otherMoreButton">
+										<button type="button" class="btn btn-outline-primary"
+											style="width: 870px; font-family: 'Poor Story', cursive">더보기</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="middleRightSide"></div>
+
+				<div class="middleRightSide" id="gogo">
+					<div class="card border-primary mb-3"
+						style="margin: 5px; font-family: 'Poor Story', cursive; text-align: center; margin-right: -5px">
+						<div class="card-header">최근 경기 기록(랭크, 일반)</div>
+						<div class="card-body" 
+							style="margin: -15px; margin-top: -20px">
+							<div id="myChampData">
+							</div>
+
+							<div id="myRealTier" style="font-family: 'Poor Story', cursive">
+							</div>
+							<div style="margin-top: 10px">
+								<button type="button" class="btn btn-outline-success"
+									id="myTierBtn" style="font-family: 'Poor Story', cursive;">나의
+									티어 예측</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
-
 	<div class="footer"></div>
-	<!-- 	<button type="button" id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
-  Loading state
-</button>
- -->
 
 	<script type="text/javascript">
-		$(".card").click(
-				function() {
-					$(this).next(".otherPlayerList").stop().slideToggle(300);
-					$(this).toggleClass('on').siblings().removeClass('on');
-					$(this).next(".otherPlayerList").siblings(
-							".otherPlayerList").slideUp(300); // 1개씩 펼치기
-				});
+ 	let confirm = ${isNot}
+	console.log(typeof(confirm))
+	
+$(document).ready(function() {
+	// 해당 게임의 상세정보 확인
+	// 해당 div를 클릭시 상세정보가 나온다.
+	$(".card").click(
+			function() {
+				$(this).next(".otherPlayerList").stop().slideToggle(300);
+				$(this).toggleClass('on').siblings().removeClass('on');
+				$(this).next(".otherPlayerList").siblings(
+						".otherPlayerList").slideUp(300); // 1개씩 펼치기
+			});
+	// 데이터가 있으면 1 없으면 0을 반환
+	// 데이터가 있을경우 아래 조건문 내용 수행
+	if(confirm == 1){		
+		var mostLine = {
+				"LANE" : '${MLane}',
+				"PERMINUTE_CS" : ${MostLaneCs},
+				"PER_GOLDEARN" : ${MostLaneGold},
+				"PER_VISIONWARD" : ${MostLaneVW},
+				"PER_WARDPLACED" : ${MostLaneWP},
+				"PER_WARDSKILLED" : ${MostLaneWK}
+				
+		}
+		
+		// 게임이 있을경우에만 오른쪽 사이드바에 챔피언 정보 출력
+		$('#myChampData').append('<table class="table table-hover" style="width: 215px; top: 10px">'
+				+'<thead>'
+				+'<tr class="table-light" style="font-size: 3px;">'
+				+'<th scope="col" style="width: 47%; padding: 3px; text-align: left;">최근 ${RGCnt} 게임</th>'
+				+'<th scope="col" style="width: 23%; padding: 3px">게임</th>'
+				+'<th scope="col" style="width: 15%; padding: 3px">KDA</th>'
+				+'<th scope="col" style="width: 15%; padding: 3px">승률</th>'
+				+'</thead>'
+				+'<tbody>'
+				+'<tr class="table-light" style="font-size: 12px">'
+				+'<th scope="row" style="padding: 3px">'
+				+'<div style="float: left; width: 18px;">'
+				+'<img src="./resources/laneImg/${MLane}.png" width="18px">'
+				+'</div>'
+				+'<div style="float: left; width: 70px;">${MLane}</div>'
+				+'</th>'
+				+'<td style="padding: 3px">${MostLane} 경기</td>'
+				+'<td style="padding: 3px">${MostLaneKda}</td>'
+				+'<td style="padding: 3px">${MostwinRate}%</td>'
+				+'</tr>'
+				+'${myChampPlay}'
+				+'</tbody>'
+				+'</table>'
+		)
+							
+		console.log(mostLine);
+		
+		// 머신러닝, 파이참과 연결하는 ajax
+		// 티어 정보 보기 버튼 클릭시 ajax가 동작 그리고 json 형태로 값을 받아온다
+		$('#myTierBtn').on('click', function() {
+			$.ajax({
+				type : 'POST',
+				url : 'http://127.0.0.1:5000/mytier',
+				data : mostLine,
+				dataType : 'JSON',
+				success : function(res) {
+					console.log(res)
+					console.log(res.TIER)
+					$("#myRealTier").append('<div class="card" style="padding : -10px">'
+							+'<div class="card-body" style="margin : -15px">'
+							+'<h6 class="card-title" style="text-align : left;">나의 예상 티어는..</h6>'
+							+'<img src="./resources/tierImg/'+res.TIER+'.png" width="70px" style="margin-bottom : 13px">'
+							+'<h6 class="card-title" style="text-align : right; margin-bottom:-4px">'+res.TIER+' 입니다.</h6>'
+							+'</div>'
+							+'</div>');
+					$("#myTierBtn").hide();
+				},
+				error : function() {
+					alert('요청 실패');
+				}
+			}) 
+		})
+	}else{
+		$('#myChampData').append('<p style="margin-top : 15px"> 기록된 전적이 없습니다 </p>')
+		$("#myTierBtn").hide();
+		console.log("노 데이터")
+	}
 
-		$('#myButton').on('click', function() {
-			var $btn = $(this).button('loading');
-			// business logic...
-			$btn.button('reset');
+	// 탭 클릭시 동작 버튼
+		$('ul.nav-tabs li a').click(function() {
+			// 내가 누른 탭의 내용에 대한 id 값을 저장
+			var tab_id = $(this).attr('data-tab');
+			console.log(tab_id);
+				
+			// 탭을 클릭하면 모든 탭과 내용을 비활성화 시킨다
+			$('ul.nav-tabs li a').removeClass('active');
+			$('.tab-pane').removeClass('active show');
+                
+			// 현재 내가 클릭한 탭과 내용을 활성화 시킨다
+			$(this).addClass('active');
+			$("#" + tab_id).addClass('active show');
 		})
 
-		$(document).ready(function() {
-			$('ul.nav-tabs li a').click(function() {
-				var tab_id = $(this).attr('data-tab');
-				console.log(tab_id);
-
-				$('ul.nav-tabs li a').removeClass('active');
-				$('.tab-pane').removeClass('active show');
-
-				$(this).addClass('active');
-				$("#" + tab_id).addClass('active show');
+	    // 더보기 버튼 구현
+		$(function() {
+			// 10개 단위로 내용을 slice해서 보여준다.
+			$(".mainMatch .card").slice(0, 10).show();
+			$(".soloMatch .card").slice(0, 10).show();
+			$(".freeMatch .card").slice(0, 10).show();
+			$(".otherMatch .card").slice(0, 10).show();
+            
+			// 더보기버튼 비활성화 조건문
+			// 현재 보여준 내용이 10개 미만이거나 뒤에 숨겨진 내용이 없다면 더보기버튼은 비활성화
+			if ($(".mainMatch .card").slice(0, 10).show().length < 10
+					|| ($(".mainMatch .card").slice(0, 10).show().length == 10 && $(".mainMatch .card:hidden").length == 0)) {
+				$('.mainMoreButton').hide();
+			}
+			if ($(".soloMatch .card").slice(0, 10).show().length < 10
+					|| ($(".soloMatch .card").slice(0, 10).show().length == 10 && $(".soloMatch .card:hidden").length == 0)) {
+				$('.soloMoreButton').hide();
+			}
+			if ($(".freeMatch .card").slice(0, 10).show().length < 10
+					|| ($(".freeMatch .card").slice(0, 10).show().length == 10 && $(".freeMatch .card:hidden").length == 0)) {
+				$('.freeMoreButton').hide();
+			}
+			if ($(".otherMatch .card").slice(0, 10).show().length < 10
+					|| ($(".otherMatch .card").slice(0, 10).show().length == 10 && $(".otherMatch .card:hidden").length == 0)) {
+				$('.otherMoreButton').hide();
+			}
+			
+			// 더보기 버튼을 클릭시 숨겨진 다음 10개의 slice를 보여준다
+			// 메인 더보기 버튼
+			$(".mainMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".mainMatch .card:hidden").slice(0, 10).show();
+				if ($(".mainMatch .card:hidden").length == 0) {
+					$('.mainMoreButton').hide();
+				}
+			});
+            // 솔랭 더보기 버튼
+			$(".soloMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".soloMatch .card:hidden").slice(0, 10).show();
+				if ($(".soloMatch .card:hidden").length == 0) {
+					$('.soloMoreButton').hide();
+				}
+			});
+            // 자랭 더보기 버튼
+			$(".freeMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".freeMatch .card:hidden").slice(0, 10).show();
+				if ($(".freeMatch .card:hidden").length == 0) {
+					$('.freeMoreButton').hide();
+				}
+			});
+            // 기타 더보기 버튼
+			$(".otherMoreButton").click(function(e) {
+				e.preventDefault();
+				$(".otherMatch .card:hidden").slice(0, 10).show();
+				if ($(".otherMatch .card:hidden").length == 0) {
+					$('.otherMoreButton').hide();
+				}
 			});
 		});
+});
+	
 	</script>
-
-
 </body>
 </html>

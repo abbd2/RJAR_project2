@@ -19,5 +19,6 @@ public class Member {
 	private String m_tel;
 	private int m_que;
 	private String m_ans;
+	private String m_MNick;
 
 }

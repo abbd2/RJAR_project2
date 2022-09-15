@@ -9,11 +9,9 @@
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css">
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" -->
-<!-- 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" -->
-<!-- 	crossorigin="anonymous"> -->
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
+	crossorigin="anonymous">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -33,10 +31,7 @@
 
 .container-fluid {
 	width: 1100px;
-	
 }
-
-
 
 .summoner-search-outter-box {
 	display: flex;
@@ -127,20 +122,36 @@
 .main-text {
 	font-size: 50px;
 }
+
+#myDropMenu li ul {
+	display: block;
+	border: 1px solid black;
+	border-top: none;
+}
+
+/* hover 이벤트로 border 효과를 택스트가 포함된 a 태그에 적용 */
+#myDropMenu>li:hover>a {
+	border-bottom: 2px solid black;
+}
+
+.dropdown-menu a:hover {
+	border-bottom: 2px solid black;
+}
 </style>
 
 </head>
 <body>
 	<!-- Option 1: Bootstrap Bundle with Popper -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"></script>
-<!-- 	<script src="https://code.jquery.com/jquery-3.5.1.slim.js" -->
-<!-- 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" -->
-<!-- 		crossorigin="anonymous"></script> -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"></script>
-<!-- 	<script -->
-<!-- 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js" -->
-<!-- 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" -->
-<!-- 		crossorigin="anonymous"></script> -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.js"
+		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+		crossorigin="anonymous"></script>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<div id="header" style="width: 1500px">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -156,37 +167,52 @@
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item"><a class="nav-link"
 							href="./championHome" style="font-family: 'Poor Story', cursive">챔피언분석</a></li>
-						<li class="nav-item"><a class="nav-link" href="./laboratory" style="font-family: 'Poor Story', cursive">연구소</a></li>
-						<li class="nav-item"><a class="nav-link" href="./multiSearch" style="font-family: 'Poor Story', cursive">멀티서치</a></li>
-						<li class="nav-item"><a class="nav-link" href="./myPage" style="font-family: 'Poor Story', cursive">커뮤니티</a></li>
-						<li class="nav-item"><a class="nav-link" href="./lck" style="font-family: 'Poor Story', cursive">LCK분석</a></li>
+						<li class="nav-item"><a class="nav-link" href="./laboratory"
+							style="font-family: 'Poor Story', cursive">연구소</a></li>
+						<li class="nav-item"><a class="nav-link" href="./multiSearch"
+							style="font-family: 'Poor Story', cursive">멀티서치</a></li>
 					</ul>
 				</div>
-				
-				<c:if test="${sessionScope.m_id != null}">
-					<form action="./logout" method="post" style="margin: 0px;">
-					<button id="login-btn" type="submit" class="btn btn-success"
-						style="font-family: 'Poor Story', cursive">로그아웃</button>
+
+				<c:if test="${sessionScope.m_nick != null}">
+					<form method="post" id='logOutFrm' name="form"
+						style="margin: 0px;">
+						<ul class="navbar-nav me-auto" id="myDropMenu">
+							<li class="nav-item dropdown" style="height: 40px"><p
+									class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+									role="button" aria-haspopup="true" aria-expanded="false"
+									style="font-family: 'Poor Story', cursive">${sessionScope.m_nick}</p>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#" onclick="document.form.action='./myPage'; document.form.submit()"
+										style="font-family: 'Poor Story', cursive">나의 정보</a>
+
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="#"
+										onclick="document.form.action='./logout'; document.form.submit()"
+										style="font-family: 'Poor Story', cursive">로그아웃</a>
+								</div>
+							</li>
+						</ul>
 					</form>
 				</c:if>
-				<c:if test="${sessionScope.m_id == null}">
+				<c:if test="${sessionScope.m_nick == null}">
 					<a href="./login">
 						<button id="login-btn" type="button" class="btn btn-success"
 							style="font-family: 'Poor Story', cursive">로그인</button>
 					</a>
 				</c:if>
-			
 			</div>
 		</nav>
 	</div>
 	<form action="summonerSearch" method="Get">
-		<div class="main" style="width:500px">
+		<div class="main" style="width: 500px">
 			<div class="container">
 				<div class="main-text-center">
 					<h1 class="main-text">RJAR.GG</h1>
 					<div class="input-group mb-3" id="summoner-search-box">
 						<input type="text" class="form-control" placeholder="소환사명을 입력하세요"
 							aria-label="Recipient's username"
+							style="font-family: 'Poor Story', cursive"
 							aria-describedby="button-addon2" name="summonerName">
 						<button type="submit" class="btn btn-success">search</button>
 					</div>
@@ -194,6 +220,24 @@
 			</div>
 		</div>
 	</form>
+	<script type="text/javascript">
+		console.log('${sessionScope.m_nick}')
+
+		$(document).ready(
+				function() {
+					//서브메뉴 우선 숨기기
+					$('.dropdown-menu').hide();
+					//메인메뉴의 <li> 태그를 클릭할때마다 이벤트 함수 발생
+					$('#myDropMenu>li').click(
+							function(e) {
+								//click 시 <li> 태그의 a 태그 href(하이퍼링크) 타는 것을 막아주기
+								e.preventDefault();
+								// 클릭한 메인메뉴 <li>태그의 .sub_menu 를 제외한 모든 서브메뉴는 hide()로 숨기기
+								$('.dropdown-menu').not($(this).find('.dropdown-menu').toggle()).hide();
+							});
+
+				});
+	</script>
 <script type="text/javascript">
 	console.log(${sessionScope.m_id})
 </script>

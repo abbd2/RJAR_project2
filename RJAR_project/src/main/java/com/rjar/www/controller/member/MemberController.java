@@ -2,9 +2,9 @@ package com.rjar.www.controller.member;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +28,18 @@ public class MemberController {
 	ModelAndView mav;
 
 	@GetMapping(value = "/login")
-	public String login() {
+	public ModelAndView login(@RequestParam(value = "msg", required = false) String msg) {
+		
+		System.out.println("로그인 페이지로 이동");
+		mav = new ModelAndView();
+		
+		if(StringUtils.hasText(msg)) { // null 이면 false
+			mav.addObject("msg", msg);
+			System.out.println("alert 출력");
+		}
+		mav.setViewName("login");
 
-		return "login";
+		return mav;
 	}
 
 	@PostMapping(value = "/access")
@@ -44,12 +53,11 @@ public class MemberController {
 	@PostMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		System.out.println("로그아웃");
-		if (session.getAttribute("m_id") != null) {
+		if (session.getAttribute("m_nick") != null) {
 			session.invalidate(); // 세션 무효화
 			System.out.println("세션 무효화");
 		} else {
-			System.out.println("아이디 null");
-			session.invalidate(); // 세션 무효화
+			System.out.println("닉네임 null");
 		}
 		return "redirect:/home";
 	}
@@ -63,7 +71,7 @@ public class MemberController {
 	@GetMapping(value = "/join2")
 	public String join2() {
 		System.out.println("회원가입 페이지2로 이동");
-		return "join2";
+		return "/join2";
 	}
 
 	@PostMapping(value = "memberJoin")
@@ -132,10 +140,22 @@ public class MemberController {
 
 		log.info("changePw : " + m_pw);
 		log.info("currentPw : " + currentPw);
-		String view = membermm.changePw(m_pw, currentPw);
-		mav.setViewName(view);
+		mav = membermm.changePw(m_pw, currentPw);
 
 		return mav;
 	}
+	@PostMapping(value = "/modifyNick")
+	public ModelAndView modifyNick(HttpSession session, String wantNick) {
+		String m_nick = (String)session.getAttribute("m_nick");
+		log.info("wantNick="+wantNick);
+		System.out.println(m_nick);
+		
+		mav = membermm.modifyNick(session, m_nick, wantNick);
+		mav.setViewName("home");
+		
+		return mav;
+	}
+
+	
 
 }

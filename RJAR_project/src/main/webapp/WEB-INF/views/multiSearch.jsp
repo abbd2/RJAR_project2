@@ -6,6 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>멀티서치</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
+	crossorigin="anonymous">
 <style type="text/css">
 
 .summoner-search-outter-box {
@@ -60,9 +65,27 @@ body {
 	position: absolute;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div id="main"></div>
 	<div id="multiSearch">
@@ -104,7 +127,6 @@ body {
 	</div>
 	<div id="footer"></div>
 	
-		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 	
 		function multiSearch() {
@@ -189,8 +211,8 @@ body {
 										+ '</div>'
 										+'</div>'
 										+ '<div class="summonerName" style="text-align:center;">'
-											+ '<a href="">'
-											+ data[i].summonerName
+											+ '<a href="./summonerSearch?summonerName='+data[i].summonerName+'" style="text-decoration: none;">'
+												+ data[i].summonerName
 											+ '</a>'
 										+ '</div>'
 										+ '<div class="lp" style="text-align: center; font-size: 13px;">'

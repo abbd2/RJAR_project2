@@ -151,6 +151,23 @@
 	margin-bottom: 7px;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 <!--  <script type="text/javascript"> -->
@@ -166,7 +183,9 @@
 <!-- <body onpagehide="Init()"></body> -->
 
 	<div id="joinPage2">
-		<div id="titleDiv">RJAR.GG</div>
+		<div id="titleDiv">
+			<a href="./home" style=" text-decoration: none;">RJAR.GG</a>
+		</div>
 		<div id="joinTextDiv">회원가입</div>
 		<div id="pageSeparator">
 			<div class="circle"></div>

@@ -34,8 +34,8 @@
 		#{m_name}, #{m_tel}, #{m_que}, #{m_ans}, #{m_phone})
 	</insert>
 	
-	<select id="getSecurityPw" resultType="String">
-		SELECT M_PW FROM M WHERE M_ID=#{m_id}
+	<select id="getSecurityPw" resultType="Member">
+		SELECT M_PW, M_NICK FROM M WHERE M_ID=#{m_id}
 	</select>
 	
 	<select id="checkName" resultType="Member">
@@ -54,6 +54,16 @@
 	<select id="checkUser" resultType="String">
 		select m_id from member where m_name = #{m_name}
 	</select>
+	
+	<select id="getMyPageInfo" resultType="Member">
+	    select * from member where m_nick = #{m_nick}
+	</select>
+	
+	<update id="nickModify">
+	    update member set
+	    m_nick = #{m_MNick} where m_nick = #{m_nick}
+	
+	</update>
 	
 </mapper>
 

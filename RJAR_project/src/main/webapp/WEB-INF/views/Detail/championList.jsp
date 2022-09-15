@@ -34,7 +34,7 @@ option {
 }
 
 .lane_ {
-	width: 130px;
+	width: 155px;
 	height: 66px;
 	background-color: white;
 	border: hidden;
@@ -116,7 +116,7 @@ option {
 
 .tierList {
 	float: right;
-	width: 650px;
+	width: 715px;
 }
 
 .tierList th {
@@ -212,7 +212,7 @@ font {
 
 </head>
 <body>
-	<div style="width: 1200px; margin: auto;">
+	<div style="width: 1300px; margin: auto;">
 		<table style="width: 1200px;">
 			<tr>
 				<td style="width: 450px;">

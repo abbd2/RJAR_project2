@@ -1,5 +1,7 @@
 package com.rjar.www.service.member;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -37,14 +39,18 @@ public class MemberMM {
 		String view = null;
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		// 회원가입할 때 암호화해서 저장해뒀던 비밀번호를 받아옴
-		String pwEncode = mDao.getSecurityPw(mm.getM_id());
+		member = mDao.getSecurityPw(mm.getM_id());
+		String pwEncode = member.getM_pw();
 		System.out.println("가져온 암호화된 비밀번호 : " + pwEncode);
 
 		if (pwEncode != null) {
 			if (pwEncoder.matches(mm.getM_pw(), pwEncode)) {
 				System.out.println("로그인 중...");
 				// 세션에 로그인 마킹
+				session.setAttribute("m_nick", member.getM_nick());
 				session.setAttribute("m_id", mm.getM_id());
+				System.out.println("id : " + mm.getM_id());
+				System.out.println("nick : " + member.getM_nick());
 				view = "redirect:/home";
 			} else { // 비밀번호 오류
 				System.out.println("잘못된 비밀번호 :" + mm.getM_pw());
@@ -74,8 +80,8 @@ public class MemberMM {
 			System.out.println("회원가입 페이지3으로 이동");
 		} else {
 			System.out.println("insert 실패");
+			mav.setViewName("./");
 		}
-
 		return mav;
 	}
 
@@ -164,19 +170,20 @@ public class MemberMM {
 		}
 	}
 
-	public String changePw(String m_pw, String currentPw) {
-
+	public ModelAndView changePw(String m_pw, String currentPw) {
 
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		m_pw = pwEncoder.encode(m_pw); // 변경할 비밀번호 암호화
 		member.setM_pw(m_pw);
 		System.out.println(m_pw);
-		
 		int result = mDao.changePw(member);
-		
+
 		if (result > 0) {
 			System.out.println(result + " 비밀번호 변경 성공");
-			return "redirect:/login";
+			mav = new ModelAndView();
+			mav.addObject("msg", "비밀번호 변경 성공");
+			mav.setViewName("redirect:/login");
+			return mav;
 		} else {
 			throw new NoMatchingPwException("오류");
 		}
@@ -189,9 +196,48 @@ public class MemberMM {
 
 		if (result != null) {
 			System.out.println("!null");
-			throw new CheckUserException("alert(\'이미 생성된 계정이 존재합니다.\')");
+			throw new CheckUserException("이미 생성된 계정이 존재합니다.");
 		} else {
 			System.out.println("null");
+		}
+	}
+
+	public ModelAndView getMyPageInfo(String m_nick) {
+		mav = new ModelAndView();
+		List<Member> myPage = new ArrayList<>();
+		myPage = mDao.getMyPageInfo(m_nick);
+		System.out.println(myPage);
+		System.out.println(myPage.get(0).getM_id());
+		System.out.println(myPage.get(0).getM_name());
+		System.out.println(myPage.get(0).getM_phone());
+		System.out.println(myPage.get(0).getM_tel());
+
+		mav.addObject("m_name", myPage.get(0).getM_name());
+		mav.addObject("m_id", myPage.get(0).getM_id());
+		mav.addObject("m_phone", myPage.get(0).getM_phone());
+		mav.addObject("m_tel", myPage.get(0).getM_tel());
+
+		return mav;
+	}
+
+	public ModelAndView modifyNick(HttpSession session, String m_nick, String wantNick) {
+		mav = new ModelAndView();
+		member.setM_nick(m_nick);
+		member.setM_MNick(wantNick);
+
+		int result = mDao.nickModify(member);
+		System.out.println(result);
+
+		if (result > 0) {
+			System.out.println(result + " 닉네임 변경 선공");
+			session.setAttribute("m_nick", wantNick);
+			mav = new ModelAndView();
+			mav.addObject("msg", "비밀번호 변경 성공");
+			mav.setViewName("redirect:/home");
+			return mav;
+
+		} else {
+			throw new NoMatchingPwException("오류");
 		}
 	}
 

@@ -96,12 +96,31 @@
  	float: left;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 <body>
 <%-- <jsp:include page="header.jsp"></jsp:include> --%>
 	<div id="joinPage1">
-		<div id="titleDiv">RJAR.GG</div>
+		<div id="titleDiv">
+			<a href="./home" style=" text-decoration: none;">RJAR.GG</a>
+		</div>
 		<div id="joinTextDiv">회원가입</div>
 		<div id="pageSeparator">
 			<div class="circle" style="background-color: #333333;"></div>
@@ -215,14 +234,20 @@
 	<script type="text/javascript">
 
 		let checkflag = false;
+		let essentialCheckflag = false;
 		
 		function checkBox() {
 			if(checkflag){
 				$('#checkAll').prop('checked', false);
 				checkflag = false;
+				essentialCheckflag = false;
+			}else if($('#checkBox1').is(':checked') && $('#checkBox2').is(':checked')){
+				console.log('필수 체크박스 on');
+				essentialCheckflag = true;
 			}else if ($('#checkBox1').is(':checked') && $('#checkBox2').is(':checked') && $('#checkBox3').is(':checked')) {
 				$('#checkAll').prop('checked', true);
 				console.log('체크박스 세개 on')
+				essentialCheckflag = false;
 				checkflag = true;
 				return true
 			} 
@@ -240,6 +265,7 @@
 					field[i].checked = false;
 				}
 				checkflag = false;
+				essentialCheckflag = false;
 				return "unCheck All";
 			}
 		} // end check()
@@ -247,6 +273,9 @@
 		function isChekcBox() {
 			if (checkflag) {
 				console.log('체크');
+				return true
+			}else if(essentialCheckflag){
+				console.log('필수 체크');
 				return true
 			}else {
 				alert('약관에 동의해 주세요.')

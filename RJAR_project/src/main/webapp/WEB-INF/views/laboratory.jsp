@@ -15,15 +15,15 @@
 .main {
 	width: 1500px;
 	height: 1500px;
-	background-color: white;
-	position: relative;
+	background-color: blue;
+	z-index: 1;
 }
 
 .middle {
 	width: 1100px;
 	height: 1500px;
 	background-color: red;
-	position: absolute;
+	position: relative;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -32,15 +32,28 @@
 .middleHead {
 	width: 1100px;
 	height: 200px;
-	position: absolute;
+	position: relative;
 	background-color: green;
 	margin: auto;
 }
 
 .middleDetail {
-	width: 1000px;
-	height: 500px;
-	background-color: yello;
+	width: 1500px;
+	height: 1000px;
+	position: absolute;
+	background-color: yellow;
+}
+
+.test {
+	width: 1500px;
+	height: 1000px;
+	position: absolute;
+	background: purple;
+	z-index: 3;
+}
+
+.header{
+    z-index:2;
 }
 </style>
 
@@ -55,12 +68,14 @@
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 
-	<jsp:include page="header.jsp"></jsp:include>
+	<div class="test"></div>
+	<div class="header">
+
+		<jsp:include page="header.jsp"></jsp:include>
+	</div>
 	<div class="main">
 		<div class="middle">
-			<div class="middleHead">
-			
-			</div>
+			<div class="middleHead"></div>
 			<div class="middleDetail"></div>
 		</div>
 	</div>

@@ -11,8 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class GameDetailShowInfo {
 
+
 	// 사용하지 않는 것들은 지울 예정
-	private String ss_gameId;
+//	private String ss_gameId;
 	private int ss_participantId;
 	private int ss_championId;
 	private String ss_championName; // 검색한 소환사의 챔피언 이름
@@ -40,7 +41,6 @@ public class GameDetailShowInfo {
 	private int ss_cs; // cs
 	private String ss_perCs;
 	
-
 //	private int ss_item0; // 0번 아이템 슬롯
 //	private int ss_item1; // 1번 아이템 슬롯
 //	private int ss_item2; // 2번 아이템 슬롯

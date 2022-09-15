@@ -40,9 +40,9 @@
 	</div>
 </body>
 <script type="text/javascript">
+let tier = '${tier}';
 
 $(function() {
-	let tier = '${tier}';
 
 	switch (tier) {
 	case 'bronze':
@@ -83,7 +83,7 @@ $('.a_img').click(function (){
 	$.ajax({
 		type : 'get',
 		url : 'laneImg',
-		data : {lane: lane}
+		data : {lane: lane, tier: tier}
 		
 	}).done(function(data){
 		console.log("성공");			
@@ -201,18 +201,18 @@ $('#searchInput').keyup(function () {
 
 
 //챔피언 아이디를 파라미터로 분석 상세 페이지로 이동(url : clickDetail))
-$('.champion').click(function (){
+$('body').on('click', '.champion', function (){
 	let data_championId = $(this).attr("data-championId");
 	let $form = $("<form action='clickDetail' method ='get'></form>");
-	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championId").val(data_championId).appendTo($form);
 	$form.appendTo("body"); //body태그 안에 있어야 submit 작동함
 	$form.submit();
 })
 
-$('.tierChamp').click(function (){
+$("body").on("click", ".tierChamp", function (){
 	let data_championId = $(this).attr('data-championId');
 	let $form = $("<form action='clickDetail' method ='get'></form>");
-	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championId").val(data_championId).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 })
