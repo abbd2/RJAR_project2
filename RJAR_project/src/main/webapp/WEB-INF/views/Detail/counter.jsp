@@ -10,6 +10,15 @@
 <title>Insert title here</title>
 </head>
 <style type="text/css">
+#selectOption {
+	width: 200px;
+	height: 55px;
+	margin: 5px;
+	border-radius: 7px;
+	border: 2px solid black;
+	font-size: 20px;
+	font-weight: bold;
+}
 #champion_profile {
 	width: 100%;
 	height: 300px;
@@ -87,11 +96,12 @@
 }
 
 #rune_box1 {
-	width: 842px;
+	width: 900px;
 	height: 1080px;
 	margin-top: 30px;
 	border-radius: 8px;
 	margin-left: 181px;
+	padding-left: 45px;
 }
 
 .rune_table, .rune_table2 {
@@ -192,7 +202,7 @@
 }
 
 .wholeBox {
-	width: 1250px;
+	width: 1300px;
 }
 
 .vsBox {
@@ -309,7 +319,18 @@
 </style>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-
+	<form id="select" action="tierDetail" method="get">
+		<div class="tierVersion">
+			<select id="selectOption" name="tier">
+				<option id="bronze" value="bronze" style="color: #964b00;">+Bronze</option>
+				<option id="silver" value="silver" style="color: #c0c0c0;">+Silver</option>
+				<option id="gold" value="gold" style="color: #ffd700;">+Gold</option>
+				<option id="platinum" value="platinum" style="color: #006fff;">+Platinum</option>
+				<option id="diamond" value="diamond" style="color: #87cefa;">+Diamond</option>
+			</select>
+			<input value="${championName}" name="championName" type="hidden">
+		</div>
+	</form>
 	<div id="champion_profile">
 		<div id="champ_img_box">
 			<div id="lane_btn_box">
@@ -324,7 +345,7 @@
 					alt="">
 			</div>
 			<div id="champ_text">
-				<h2 style="margin-top: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;${champion_kr_name}-${lane1}</h2>
+				<h2 style="margin-top: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;${champion_kr_name}-${lane}</h2>
 				<br>
 				<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;챔피언 티어 : 3티어</h5>
 			</div>
@@ -374,70 +395,70 @@
 			<td class="counterList"></td>
 			<td class="counterList">이름</td>
 			</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter1}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter1}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter1} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(0).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter2}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter2}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter2} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(1).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter3}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter3}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter3} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(2).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter4}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter4}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter4} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(3).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter5}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter5}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter5} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(4).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter6}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter6}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter6} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(5).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter7}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter7}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter7} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(6).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter8}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter8}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter8} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(7).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter9}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter9}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter9} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(8).getVsWinRate()}</font></td>
 				</tr>
-				<tr>
+				<tr class="championTr" data-champion="${counters.counter10}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter10}.png"
 						style="width: 40px; height: 40px;"></td>
@@ -743,9 +764,31 @@
 	</div>
 </body>
 <script type="text/javascript">
-
+let tier = '${tier}';
+let lane = '${lane}';
 $(function () {
+	
+	switch (tier) {
+	case 'bronze':
+		$('#bronze').prop('selected', true);
+		break;
+	case 'silver':
+		$('#silver').prop('selected', true);
+		break;
+	case 'gold':
+		$('#gold').prop('selected', true);
+		break;
+	case 'platinum':
+		$('#platinum').prop('selected', true);		
+		break;
+	case 'diamond':
+		$('#diamond').prop('selected', true);
+		break;
 
+	default:
+		break;
+	}
+	
 	statperks_ids1 = [$("#statperks1"),$("#statperks2"),$("#statperks3")]	
 	statperks_ids2 = [$("#statperks4"),$("#statperks5"),$("#statperks6")]
 	statperks_ids3 = [$("#statperks7"),$("#statperks8"),$("#statperks9")]
@@ -755,6 +798,7 @@ $(function () {
 			console.log('같음');
 		} else{
 			statperks_ids1[i].css("filter", "grayscale(100%)");
+			statperks_ids1[i].css("opacity", "0.7");
 		}
 	}
 	for (var i = 0; i < statperks_ids2.length; i++) {
@@ -762,6 +806,7 @@ $(function () {
 			console.log('같음');
 		} else{
 			statperks_ids2[i].css("filter", "grayscale(100%)");
+			statperks_ids2[i].css("opacity", "0.7");
 		}
 	}
 	for (var i = 0; i < statperks_ids3.length; i++) {
@@ -769,9 +814,39 @@ $(function () {
 			console.log('같음');
 		} else{
 			statperks_ids3[i].css("filter", "grayscale(100%)");
+			statperks_ids3[i].css("opacity", "0.7");
 		}
 	}
 
+});
+
+//클릭 시 상세페이지로 다시 이동
+$(".lane_btn").click(function(){
+	console.log($(this).val());
+	let championName = "${championName}";
+	let button_value = $(this).val();
+	let $form = $("<form action='runeLine' method ='get'></form>");
+	$("<input>").attr("name", "lane").val(button_value).appendTo($form);
+	$("<input>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input>").attr("name", "tier").val(tier).appendTo($form);
+	$form.appendTo("body");
+	$form.submit();
+});
+
+$('#selectOption').on('change', function (){
+	$('#select').submit();
+});
+
+$('.championTr').click(function(){
+	let championName = "${championName}";
+	let counter = $(this).attr('data-champion');
+	let $form = $("<form action='counterCal' method ='get'></form>");
+	$("<input>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input>").attr("name", "counter1").val(counter).appendTo($form);	
+	$("<input>").attr("name", "lane").val(lane).appendTo($form);
+	$("<input>").attr("name", "tier").val(tier).appendTo($form);
+	$form.appendTo("body");
+	$form.submit();
 });
 
 </script>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.rjar.www.bean.Champion;
 import com.rjar.www.bean.ChampionDetail;
+import com.rjar.www.bean.Reply;
 
 public interface IchampionDao {
 
@@ -14,7 +15,7 @@ public interface IchampionDao {
 
 	List<Champion> getTierList(@Param("tier") String tier, @Param("lane") String lane);
 	
-	List<Champion> getLaneChamp(String lane);
+	List<Champion> getLaneChamp(@Param("lane")String lane, @Param("tier")String tier);
 	
 	List<Champion> getRotaion(@Param("championId1") int championId1, @Param("championId2") int championId2, @Param("championId3") int championId3, @Param("championId4") int championId4,
 	         @Param("championId5") int championId5, @Param("championId6") int championId6, @Param("championId7") int championId7, @Param("championId8") int championId8,
@@ -51,6 +52,10 @@ public interface IchampionDao {
 	List<ChampionDetail> getSpellPlus(@Param("championName") String champion_eg_name, @Param("lane") String lane1, @Param("tier") String tier);
 
 	List<ChampionDetail> getStart_items(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
+
+	boolean replyInsert(Reply reply);
+
+	List<Reply> getReplyList(int championId);
 	
 	List<ChampionDetail> getSkill_build(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
 }

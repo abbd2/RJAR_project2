@@ -12,6 +12,7 @@ public class ChampionDetail {
    
 	private String championName;
 	private String champion_kr_name;
+	private int championId;
 	
 	//스킬 이미지
 	private String passive;

@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.rjar.www.bean.Champion;
 import com.rjar.www.bean.ChampionDetail;
+import com.rjar.www.bean.Reply;
 import com.rjar.www.dao.IchampionDao;
 
 @Service
@@ -52,7 +53,7 @@ public class ChampionDetailMM {
 		sb.append("<tr class = 'jool'>");
 		sb.append("<th>순위</th>");
 		sb.append("<th colspan=\"2\" style=\"padding-left: 45px;\">챔피언</th>");
-//		<td>티어</td>
+		sb.append("<th>티어</th>");
 		sb.append("<th>승률</th>");
 		sb.append("<th>픽률</th>");
 		sb.append("<th>밴률</th>");
@@ -76,7 +77,7 @@ public class ChampionDetailMM {
 			sb.append("<td class = 'kr_name'><small style = 'font-weight: bolder'>"
 					+ tierList.get(i).getChampion_kr_name() + "</small></td>");
 
-			// 티어가 들어갈 자리
+			sb.append("<td class = 'rate'><font>" + tierList.get(i).getChampTier() + "</font></td>");
 			sb.append("<td class = 'rate'><font>" + tierList.get(i).getWinRate1() + "</font></td>");
 			sb.append("<td class = 'rate'><font>" + tierList.get(i).getBanRate1() + "</font></td>");
 			sb.append("<td class = 'rate'><font>" + tierList.get(i).getPickRate() + "</font></td>");
@@ -128,6 +129,7 @@ public class ChampionDetailMM {
 
 	public String restChampionList(Champion champ) {
 		String lane = champ.getLane();
+		String tier = champ.getTier();
 		String all = "all";
 
 		List<Champion> restChampionList = null;
@@ -135,7 +137,7 @@ public class ChampionDetailMM {
 		if (lane.equals(all)) {
 			restChampionList = champDao.getChampionList();
 		} else {
-			restChampionList = champDao.getLaneChamp(lane);
+			restChampionList = champDao.getLaneChamp(lane, tier);
 		}
 
 		String championList = makechampList(restChampionList);
@@ -190,6 +192,7 @@ public class ChampionDetailMM {
 		}
 		mav.addObject("championName", champion_eg_name);
 		mav.addObject("champion_kr_name", champion_kr_name);
+		mav.addObject("championId", championId);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
 		mav.addObject("lane", lane1);
@@ -287,13 +290,9 @@ public class ChampionDetailMM {
 					pickrate=Math.round(pickrate*100)/100.0;
 					String spell_pickrate=String.format("%.2f", pickrate);
 					
-					System.out.println("i="+i);
-					System.out.println("j="+j);
-					System.out.println("spell_winrate="+spell_winrate);
 					
 					
 					cnt++;
-					System.out.println("cnt="+cnt);
 					
 					if (cnt==1) {
 						spell=spells.get(j);
@@ -305,7 +304,6 @@ public class ChampionDetailMM {
 						spells.set(i, spell.setSpell_pick(spell_pickrate));
 						spells.set(i, spell.setLane(ChampionLane(spell.getLane())));
 						mav.addObject("spell",spell);
-						System.out.println("spell="+spell);
 					}
 					else if(cnt==2) {
 						spell=spells.get(j);
@@ -316,7 +314,6 @@ public class ChampionDetailMM {
 						spells.set(i, spell.setSpell_winrate(spell_winrate));
 						spells.set(i, spell.setSpell_pick(spell_pickrate));
 						mav.addObject("spell2",spell);
-						System.out.println("spell2="+spell);
 					}
 					if (cnt==3) break;
 				}
@@ -328,12 +325,10 @@ public class ChampionDetailMM {
 		ChampionDetail start1=start_items.get(0);
 		
 		mav.addObject("start1",start1);
-		System.out.println("start1="+start1);
 		
 		if (start_items.get(1).getStart1()!=null){
 			ChampionDetail start2=start_items.get(1);
 			mav.addObject("start2",start2);
-			System.out.println("start2="+start2);
 		}
 		
 		
@@ -392,21 +387,22 @@ public class ChampionDetailMM {
 		// 챔피언이름/주로 가는 2가지 라인 가져오기
 		List<ChampionDetail> championNameLane = champDao.getChampionName2(championName, tier);
 		
-		String champion_eg_name = championNameLane.get(0).getChampionName();
 		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
+		int championId = championNameLane.get(0).getChampionId();
 		String lane1 = championNameLane.get(0).getLane();
 		String lane2 = null;
 		if(championNameLane.size() != 1) {
 			lane2 = championNameLane.get(1).getLane();
 		}
-		mav.addObject("championName", champion_eg_name);
+		mav.addObject("championName", championName);
 		mav.addObject("champion_kr_name", champion_kr_name);
+		mav.addObject("championId", championId);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
 		mav.addObject("lane", lane1);
 		
 		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
-		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1, tier);
+		List<ChampionDetail> championRunes = champDao.getChampionRunes(championName, lane1, tier);
 
 		// 승률 1번째로 높은 룬
 		ChampionDetail runes1 = championRunes.get(0);
@@ -467,7 +463,7 @@ public class ChampionDetailMM {
 			String statperks3 = championRunes.get(i).getStatperks();
 
 			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
-					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1, tier));
+					sub_rune, sub_under1, sub_under2, statperks3, championName, lane1, tier));
 
 		}
 
@@ -572,10 +568,13 @@ public class ChampionDetailMM {
 		//승률 2번째로 높은 룬
 		ChampionDetail runes2 =null;
 		for (int i = 1; i < championRunes.size(); i++) {
-			if (championRunes.get(0).getSub_rune()!=championRunes.get(i).getSub_rune()) {
+			if (championRunes.get(0).getSub_rune() != championRunes.get(i).getSub_rune()) {
 				runes2 = championRunes.get(i);
 				break;
-			}			
+			}else if (championRunes.get(0).getMain_rune() != championRunes.get(i).getMain_rune()){
+				runes2 = championRunes.get(i);
+				break;
+			}
 		}
 		
 		//보조 능력치 쪼개기
@@ -610,7 +609,7 @@ public class ChampionDetailMM {
 					sub_rune, sub_under1, sub_under2, statperks3, championName, lane, tier));
 			
 		}
-		
+
 		mav.addObject("rune_win1", rune_pickWin.get(0).getRune_winRate());
 		mav.addObject("rune_win2", rune_pickWin.get(1).getRune_winRate());
 		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
@@ -662,6 +661,7 @@ public class ChampionDetailMM {
 		mav.addObject("champion_kr_name", champion_kr_name);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
+		mav.addObject("lane", lane);
 		mav.addObject("counters", champAndCounter);
 		mav.addObject("counter", champAndCounter.getCounter1());
 		mav.addObject("kda1", remainder.getKda1());
@@ -689,8 +689,94 @@ public class ChampionDetailMM {
 		mav.addObject("statperks1", st1.nextToken());
 		mav.addObject("statperks2", st1.nextToken());
 		mav.addObject("statperks3", st1.nextToken());
+		mav.addObject("tier", tier);
 		mav.setViewName("Detail/counter");
 		return mav;
+	}
+
+	public ModelAndView counterCal(String championName, String counter, String lane, String tier) {
+		mav = new ModelAndView();
+		// 챔피언이름/주로 가는 2가지 라인 가져오기
+		List<ChampionDetail> championNameLane = champDao.getChampionName2(championName, tier);
+		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
+		String lane1 = championNameLane.get(0).getLane();
+		String lane2 = null;
+		if(championNameLane.size() != 1) {
+			lane2 = championNameLane.get(1).getLane();
+		}
+		Champion vsWinRate = champDao.getvsWinRate(championName, counter, lane, tier);
+
+		Champion champAndCounter = champDao.getCounterInfo(championName, lane, tier);
+		//카운터 챔피언에 대한 승률(라인전 기준 카운터이므로 승률은 높을 수 있음)
+		List<Champion> vsWinRateList = new ArrayList<>();
+		String[] counterList = {champAndCounter.getCounter1(), champAndCounter.getCounter2(),
+		                      champAndCounter.getCounter3(), champAndCounter.getCounter4(),
+		                      champAndCounter.getCounter5(), champAndCounter.getCounter6(),
+		                      champAndCounter.getCounter7(), champAndCounter.getCounter8(),
+		                      champAndCounter.getCounter9(), champAndCounter.getCounter10()};
+		for (int i = 0; i < 10; i++) {			
+			vsWinRateList.add(champDao.getvsWinRate(championName, counterList[i], lane, tier));
+		}
+		//해당 and 상대 챔피언 kda+ 딜량 + 킬관여
+		Champion remainder = champDao.getRemainder(championName ,counter, lane, tier); 
+		//포지션 승률/밴률 검색
+		Champion banWinRate = champDao.getBanWinRate(championName, counter, lane, tier);
+		//추천룬 가져오기
+		List<ChampionDetail> counterRunes = champDao.getCounterRunes(championName, counter, lane, tier);
+		// 보조 능력치 쪼개기
+		String statperks = counterRunes.get(0).getStatperks();
+		StringTokenizer st1 = new StringTokenizer(statperks, "|");
+		// 룬 이미지 검색 후 가져오기
+		List<ChampionDetail> mainRunePng = selectRunes(counterRunes.get(0).getMain_rune());
+		List<ChampionDetail> subRunePng = selectRunes(counterRunes.get(0).getSub_rune());
+
+		mav.addObject("killParticipation1", remainder.getKillParticipation1());
+		mav.addObject("killParticipation2", remainder.getKillParticipation2());
+		mav.addObject("championName", championName);
+		mav.addObject("champion_kr_name", champion_kr_name);
+		mav.addObject("lane1", lane1);
+		mav.addObject("lane2", lane2);
+		mav.addObject("lane", lane);
+		mav.addObject("counters", champAndCounter);
+		mav.addObject("counter", counter);
+		mav.addObject("kda1", remainder.getKda1());
+		mav.addObject("kda2", remainder.getKda2());
+		mav.addObject("kdaWidth1", remainder.getKda1()/(remainder.getKda1()+remainder.getKda2())*100);
+		mav.addObject("kdaWidth2", remainder.getKda2()/(remainder.getKda1()+remainder.getKda2())*100);
+		mav.addObject("vsWinRate", vsWinRateList);
+		mav.addObject("vsWinRate1", vsWinRate.getVsWinRate());
+		mav.addObject("vsWinRate2", (100-vsWinRate.getVsWinRate()));
+		mav.addObject("PswinRate1", banWinRate.getWinRate1());
+		mav.addObject("PswinRate2", banWinRate.getWinRate2());
+		mav.addObject("PswinRateWidth1", banWinRate.getWinRate1()/(banWinRate.getWinRate2()+banWinRate.getWinRate1())*100);
+		mav.addObject("PswinRateWidth2", banWinRate.getWinRate2()/(banWinRate.getWinRate2()+banWinRate.getWinRate1())*100);
+		mav.addObject("damageDealt1", Math.round(remainder.getDamageDealt1()));
+		mav.addObject("damageDealt2", Math.round(remainder.getDamageDealt2()));
+		mav.addObject("damageDealtWidth1", remainder.getDamageDealt1()/(remainder.getDamageDealt1()+remainder.getDamageDealt2())*100);
+		mav.addObject("damageDealtWidth2", remainder.getDamageDealt2()/(remainder.getDamageDealt1()+remainder.getDamageDealt2())*100);
+		mav.addObject("banRate1", banWinRate.getBanRate1());
+		mav.addObject("banRate2", banWinRate.getBanRate2());
+		mav.addObject("banRateWidth1", banWinRate.getBanRate1()/(banWinRate.getBanRate1()+banWinRate.getBanRate2())*100);
+		mav.addObject("banRateWidth2", banWinRate.getBanRate2()/(banWinRate.getBanRate1()+banWinRate.getBanRate2())*100);
+		mav.addObject("counterRunes", counterRunes.get(0));
+		mav.addObject("mainRunePng", makeIngTag(mainRunePng, counterRunes.get(0)));
+		mav.addObject("subRunePng", makeIngTag(subRunePng, counterRunes.get(0)));
+		mav.addObject("statperks1", st1.nextToken());
+		mav.addObject("statperks2", st1.nextToken());
+		mav.addObject("statperks3", st1.nextToken());
+		mav.addObject("tier", tier);
+		mav.setViewName("Detail/counter");
+		return mav;
+	}
+
+	public List<Reply> replyInsert(Reply reply) {
+		List<Reply> rList = null;
+		if (champDao.replyInsert(reply)) { //댓글 등록
+			rList = champDao.getReplyList(reply.getChampionId());
+			
+		}
+		System.out.println(rList);
+		return rList;
 	}
 
 }

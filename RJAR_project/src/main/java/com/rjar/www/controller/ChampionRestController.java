@@ -3,11 +3,14 @@ package com.rjar.www.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rjar.www.bean.Champion;
+import com.rjar.www.bean.Reply;
 import com.rjar.www.service.championDetail.ChampionDetailMM;
 
 
@@ -40,6 +43,14 @@ public class ChampionRestController {
 		List<Champion> selectChamp = champmm.getSelectChamp(text);
 		return selectChamp;
 	}
+	
+	@GetMapping(value = "/replyInsert", produces = "application/json;charset=utf-8")
+	public List<Reply> replyInsert(Reply reply, HttpSession session) {
+//		reply.setR_id(session.getAttribute("m_id").toString());
+		List<Reply> rList = champmm.replyInsert(reply);
+		return rList;
+	}
+	
 	
 	
 	
