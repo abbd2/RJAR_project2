@@ -541,19 +541,15 @@ top:-25px;
 
 	<script type="text/javascript">
 		console.log('${sessionScope.m_nick}')
-		$(document)
-				.ready(
-						function() {
-							$("#nickModifyButton").on("click", function(event) {
-								$("#nickMModal").fadeIn(300);
-								$(".backon").fadeIn(300);
-							});
-
-							$(".backon, .btn-secondary, .btn-close").on(
-									"click", function(event) {
-										$("#nickMModal").fadeOut(300);
-										$(".backon").fadeOut(300);
-									});
+		$(document).ready(function() {
+			$("#nickModifyButton").on("click",function(event){
+				$("#nickMModal").fadeIn(300);
+				$(".backon").fadeIn(300);
+			});
+			$(".backon, .btn-secondary, .btn-close").on("click", function(event) {
+				$("#nickMModal").fadeOut(300);
+				$(".backon").fadeOut(300);
+			});
 
 							$(".btn-success").attr("disabled", true);
 							$("#flexCheckDefault")
@@ -595,7 +591,7 @@ top:-25px;
 															+ "(본 수신 동의는 RJAR.GG 통합 서비스에 한하여 유효하며, 일부 개별 수신 동의를 받는 서비스는 개별 서비스 동의 상태를 따릅니다.)")
 												} else {
 													if (!confirm('앞으로는 RJAR.GG에서 제공하는 프로모션 정보를 받을 수 없습니다. \n'
-															+ '정보수신동의 헤제를 진행하시겠습니까?')) {
+															+ '정보수신동의 해제를 진행하시겠습니까?')) {
 														chkList.prop("checked",
 																true);
 													} else {
