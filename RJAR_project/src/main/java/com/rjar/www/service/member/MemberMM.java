@@ -1,5 +1,7 @@
 package com.rjar.www.service.member;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -192,6 +194,16 @@ public class MemberMM {
 		} else {
 			System.out.println("null");
 		}
+	}
+
+	public ModelAndView getMyPageInfo(String m_nick) {
+		List<Member> myPage = new ArrayList<>();	
+		myPage=mDao.getMyPageInfo(m_nick);
+		System.out.println(myPage);
+		
+		
+		
+		return mav;
 	}
 
 }

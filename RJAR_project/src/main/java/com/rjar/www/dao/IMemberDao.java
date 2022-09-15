@@ -1,5 +1,7 @@
 package com.rjar.www.dao;
 
+import java.util.List;
+
 import com.rjar.www.bean.Member;
 
 public interface IMemberDao {
@@ -20,4 +22,6 @@ public interface IMemberDao {
 	int changePw(Member mm);
 
 	String checkUser(String m_name);
+
+	List<Member> getMyPageInfo(String m_nick);
 }

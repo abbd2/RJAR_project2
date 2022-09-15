@@ -13,7 +13,7 @@ public class GameDetailShowInfo {
 
 
 	// 사용하지 않는 것들은 지울 예정
-	private String ss_gameId;
+//	private String ss_gameId;
 	private int ss_participantId;
 	private int ss_championId;
 	private String ss_championName; // 검색한 소환사의 챔피언 이름

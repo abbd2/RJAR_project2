@@ -142,6 +142,7 @@ public class SummonerSearchMM {
 					soloWinRate = Math.round(((double) soloWins / (soloWins + soloLosses)) * 100) / 100.0;
 					freeTier = "Unranked";
 				}
+
 				// solo, free 둘다 없을경우 unranked를 삽입
 			} else {
 				soloTier = "Unranked";
@@ -150,12 +151,29 @@ public class SummonerSearchMM {
 
 			// master, grandmaster, challenger는 rank 숫자가 없지만, api에서는 1을 제공한다.
 			// 따라서 해당 티어들인 경우에는 null을 넘겨준다
+			// 로마 숫자를 아라비아 숫자로 변경
 			if (soloTier.equals("MASTER") || soloTier.equals("GRANDMASTER") || soloTier.equals("CHALLENGER")) {
 				soloRank = null;
+			}else if(soloRank.equals("I")){
+				soloRank = "1";	
+			}else if(soloRank.equals("II")) {
+				soloRank = "2";	
+			}else if(soloRank.equals("III")) {
+				soloRank = "3";	
+			}else if(soloRank.equals("IV")) {
+				soloRank = "4";	
 			}
 
 			if (freeTier.equals("MASTER") || freeTier.equals("GRANDMASTER") || freeTier.equals("CHALLENGER")) {
 				freeRank = null;
+			}else if(freeRank.equals("I")){
+				freeRank = "1";	
+			}else if(freeRank.equals("II")) {
+				freeRank = "2";	
+			}else if(freeRank.equals("III")) {
+				freeRank = "3";	
+			}else if(freeRank.equals("IV")) {
+				freeRank = "4";	
 			}
 
 			String loginDate = TimeCalculate(k.get("revisionDate").getAsLong());
@@ -163,7 +181,8 @@ public class SummonerSearchMM {
 
 			// 검색한 소환사의 최근 10경기 데이터 가져오기
 			ModelAndView matchData = summonerMatchDetail(puuid, summonerName);
-
+            
+			System.out.println("pi="+profileIconId);
 			mav.addObject("profileIconId", profileIconId);
 			mav.addObject("loginDate", loginDate);
 			mav.addObject("LV", summonerLevel);
@@ -323,11 +342,19 @@ public class SummonerSearchMM {
 					} else {
 						killType = "없음";
 					}
+					
+					String endGameTime = null;
+					String playTime = null;
 
 					// 게임 끝난 시간 및 게임 시간을 구하는 과정
-					String endGameTime = TimeCalculate(info.get("gameEndTimestamp").getAsLong());
-					String playTime = (info.get("gameDuration").getAsInt()) / 60 + "분 "
-							+ (info.get("gameDuration").getAsInt()) % 60 + "초";
+					if(info.get("gameEndTimestamp")!=null) {
+						endGameTime = TimeCalculate(info.get("gameEndTimestamp").getAsLong());
+						playTime = (info.get("gameDuration").getAsInt()) / 60 + "분 "
+								+ (info.get("gameDuration").getAsInt()) % 60 + "초";						
+					}else {
+						break;
+					}
+					
 
 					// 7개의 아이템들을 리스트에 넣어 저장
 					List<Integer> items = new ArrayList<Integer>();
@@ -386,7 +413,7 @@ public class SummonerSearchMM {
 					}
 
 					// json object로 가져온것들을 bean에 주입시키는 과정
-					gds.setSs_gameId(matchDataList.get(k).replaceAll("\"", ""));
+
 					gds.setSs_participantId(participant.get("participantId").getAsInt());
 					gds.setSs_championId(participant.get("championId").getAsInt());
 					gds.setSs_champLevel(participant.get("champLevel").getAsInt());
@@ -486,19 +513,15 @@ public class SummonerSearchMM {
 			mySoloFreeGame.removeIf(gds -> !(gds.getSs_gameType().equals("솔랭")
 					|| gds.getSs_gameType().equals("자유 5:5 랭크") || gds.getSs_gameType().equals("일반")));
 
-			if (mySoloFreeGame.size() != 0) {
-				MostLine(mySoloFreeGame);
-				ChampCnt(mySoloFreeGame);
-			} else {
-				mav.addObject("MLane", "대전 데이터가 없습니다");
-				System.out.println("데이터가 없습니다");
-			}
-
+			ModelAndView mostLine = MostLine(mySoloFreeGame);
+			ModelAndView chmpCnt = ChampCnt(mySoloFreeGame);			
+			
 			mav.addObject("myGames", makeHtml_myGameData(myGame, totalGameData));
 			mav.addObject("mySoloGames", makeHtml_myGameData(mySoloGame, totalSoloGameData));
 			mav.addObject("myFreeGame", makeHtml_myGameData(myFreeGame, totalFreeGameData));
 			mav.addObject("myOtherGame", makeHtml_myGameData(myOtherGame, totalOtherGameData));
-//			mav.addObject("test", new Gson().toJson(mySoloFreeGame));
+			
+			System.out.println(myGame);
 
 		} catch (Exception e) {
 			System.out.println("오류=" + e.getMessage());
@@ -509,7 +532,7 @@ public class SummonerSearchMM {
 		return mav;
 	}
 
-	private void ChampCnt(List<GameDetailShowInfo> mySoloFreeGame) {
+	private ModelAndView ChampCnt(List<GameDetailShowInfo> mySoloFreeGame) {
 		HashSet<String> ChampName = new HashSet<>();
 		ArrayList<String> ChampTotalList = new ArrayList<>();
 
@@ -574,7 +597,7 @@ public class SummonerSearchMM {
 		System.out.println(Arrays.toString(ChampDeath));
 		System.out.println(Arrays.toString(ChampAssist));
 
-		mav.addObject("test",
+		return mav.addObject("myChampPlay",
 				makeHtmlMyTier(ChampList, ChampTotalCnt, ChampWinCnt, ChampKill, ChampDeath, ChampAssist));
 
 	}
@@ -584,15 +607,23 @@ public class SummonerSearchMM {
 		StringBuffer sb = new StringBuffer();
 		
 		if(champList.length==0) {
+			System.out.println("데이터 노!");
 			
 		}else {
 			for(int i=0; i<champList.length; i++) {
+				String kda = null;
+				if(champDeath[i]==0) {
+					kda = "Perfect";
+				}else {
+					kda=String.format("%.2f",((double) (champKill[i] + champAssist[i])) / champDeath[i]);					
+				}
+				
 				sb.append("<tr class=\"table-light\" style=\"font-size: 12px\">");
 				sb.append("<th scope=\"row\" style=\"padding: 3px\">");
-				sb.append("<div style=\"float: left; width: 30%;\">");
+				sb.append("<div style=\"float: left; width: 18px\">");
 				sb.append("<img src=\"https://ddragon.leagueoflegends.com/cdn/12.17.1/img/champion/"+champList[i]+".png\" width=\"18px\">");
 				sb.append("</div>");
-				sb.append("<div style=\"float: left; width: 70%; font-size:2px\">");
+				sb.append("<div style=\"float: left; width: 70px; font-size:2px\">");
 				sb.append("<span>" + String.format("%.1f",
 						((double)(champKill[i]) / champTotalCnt[i])) + "</span> / <span style=\"color:red\">" + String.format("%.1f",
 								((double)(champDeath[i]) / champTotalCnt[i]))
@@ -601,8 +632,7 @@ public class SummonerSearchMM {
 				sb.append("</div>");
 				sb.append("</th>");
 				sb.append("<td style=\"padding: 3px\">"+champTotalCnt[i]+"경기</td>");
-				sb.append("<td style=\"padding: 3px\">"+String.format("%.2f",
-						((double) (champKill[i] + champAssist[i])) / champDeath[i])+"</td>");
+				sb.append("<td style=\"padding: 3px; font-weight : bold\">"+kda+"</td>");
 				sb.append("<td style=\"padding: 3px\">"+String.format("%.0f", (((double) champWinCnt[i]) / champTotalCnt[i]) * 100)+"%</td>");
 				sb.append("</tr>");
 				
@@ -611,7 +641,7 @@ public class SummonerSearchMM {
 		return sb.toString();
 	}
 
-	private void MostLine(List<GameDetailShowInfo> mySoloGame) {
+	private ModelAndView MostLine(List<GameDetailShowInfo> mySoloGame) {
 		int[] MostLaneCnt = new int[5];
 		int[] MostLaneWin = new int[5];
 		double[] MostLaneCs = new double[5];
@@ -629,7 +659,10 @@ public class SummonerSearchMM {
 		int max = 0; // 최대 값 저장
 		String MLane = null;
 		for (int i = 0; i < mySoloGame.size(); i++) {
-			int gameTime = Integer.valueOf(mySoloGame.get(i).getSs_gameDuration().substring(0, 2));
+			System.out.println(mySoloGame.get(i).getSs_gameDuration().split("분"));
+			String [] GTime = mySoloGame.get(i).getSs_gameDuration().split("분");
+			System.out.println(GTime[0]);
+			int gameTime = Integer.valueOf(GTime[0]);
 
 			if (mySoloGame.get(i).getSs_lane().equals("TOP")) {
 				MostLaneCnt[0]++;
@@ -699,14 +732,12 @@ public class SummonerSearchMM {
 				}
 
 			}
-
 			for (int j = 0; j < 5; j++) {
 				if (max < MostLaneCnt[j]) { // 최대 값을 구하고 그 값의 인덱스를 저장
 					max = MostLaneCnt[j]; // 최대 값 저장
 					maxIdx = j; // 최대 값의 인덱스 저장
 				}
 			}
-
 			if (maxIdx == 0) {
 				MLane = "TOP";
 			} else if (maxIdx == 1) {
@@ -721,12 +752,17 @@ public class SummonerSearchMM {
 				MLane = "none";
 				System.out.println("none");
 			}
-
 		}
 
-		if (MostLaneCnt[maxIdx] == 0) {
-			mav.addObject("MLane", "대전 데이터가 없습니다");
+		if (maxIdx == -1 || MostLaneCnt[maxIdx] == 0) {
+			mav.addObject("isNot", 0);
+			mav.addObject("MostLaneCs", 0);
+			mav.addObject("MostLaneGold", 0);
+			mav.addObject("MostLaneVW", 0);
+			mav.addObject("MostLaneWP", 0);
+			mav.addObject("MostLaneWK", 0);
 		} else {
+			mav.addObject("isNot", 1);
 			mav.addObject("RGCnt", mySoloGame.size());
 			mav.addObject("MLane", MLane);
 			mav.addObject("MostLane", MostLaneCnt[maxIdx]);
@@ -741,6 +777,7 @@ public class SummonerSearchMM {
 			mav.addObject("MostLaneKda", String.format("%.2f",
 					((double) (MostLaneKill[maxIdx] + MostLaneAssist[maxIdx])) / MostLaneDeath[maxIdx]));
 		}
+		return mav;
 	}
 
 	private Object makeHtml_myGameData(List<GameDetailShowInfo> myGame, List<List<GameDetailShowInfo>> totalGameData) {
@@ -989,7 +1026,8 @@ public class SummonerSearchMM {
 				sb.append("</div>");
 				sb.append("<div class=\"arrowBox\">");
 				sb.append("<div class=\"arrow-wrap\">");
-				sb.append("<span class=\"arrow-top\">⋁</span> <span class=\"arrow-bottom\">⋀</span>");
+				sb.append("<span class=\"arrow-top\"><img src=\"./resources/loginImg/up.png\" width=\"25px\"></span>");
+				sb.append("<span class=\"arrow-bottom\"><img src=\"./resources/loginImg/down.png\" width=\"25px\"></span>");
 				sb.append("</div>");
 				sb.append("</div>");
 				sb.append("</div>");
