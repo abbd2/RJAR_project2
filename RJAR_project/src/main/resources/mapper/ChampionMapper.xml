@@ -165,7 +165,9 @@
 		SELECT *
 		FROM(SELECT * FROM START_ITEM
 		     WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
-		     ORDER BY START_CNT DESC)
+		     ORDER BY START_CNT DESC) A
+		INNER JOIN(SELECT * FROM CHAMP_IMAGE) B
+		ON A.CHAMPIONID=B.CHAMPIONID
 		WHERE <![CDATA[ROWNUM<=2]]>
 	</select>
 	
@@ -178,4 +180,11 @@
 		SELECT * FROM TEST_REPLY 
 		WHERE CHAMPIONID= #{championId}
 	</select>	
+	<select resultType="ChampionDetail" id="getSkill_build">
+		SELECT *
+		FROM (SELECT * FROM SKILL_BUILD
+			  WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+			  ORDER BY SKILL_PICK DESC)
+		WHERE <![CDATA[ROWNUM=1]]>
+	</select>
 </mapper>

@@ -331,6 +331,32 @@ public class ChampionDetailMM {
 			mav.addObject("start2",start2);
 		}
 		
+		
+		//스킬 빌드
+		List<ChampionDetail> skill_build=champDao.getSkill_build(champion_eg_name, lane1);
+		
+		ChampionDetail skill1=skill_build.get(0);
+		System.out.println("skill1="+skill1);
+		skill1=skill_build.get(0);
+		skill_build.set(0, skill1.setLv1(ChampionSKill(skill1.getLv1())));
+		skill_build.set(0, skill1.setLv2(ChampionSKill(skill1.getLv2())));			
+		skill_build.set(0, skill1.setLv3(ChampionSKill(skill1.getLv3())));			
+		skill_build.set(0, skill1.setLv4(ChampionSKill(skill1.getLv4())));
+		skill_build.set(0, skill1.setLv5(ChampionSKill(skill1.getLv5())));
+		skill_build.set(0, skill1.setLv6(ChampionSKill(skill1.getLv6())));
+		skill_build.set(0, skill1.setLv7(ChampionSKill(skill1.getLv7())));
+		skill_build.set(0, skill1.setLv8(ChampionSKill(skill1.getLv8())));
+		skill_build.set(0, skill1.setLv9(ChampionSKill(skill1.getLv9())));
+		skill_build.set(0, skill1.setLv10(ChampionSKill(skill1.getLv10())));
+		skill_build.set(0, skill1.setLv11(ChampionSKill(skill1.getLv11())));
+		skill_build.set(0, skill1.setLv12(ChampionSKill(skill1.getLv12())));
+		skill_build.set(0, skill1.setLv13(ChampionSKill(skill1.getLv13())));
+		skill_build.set(0, skill1.setLv14(ChampionSKill(skill1.getLv14())));
+		skill_build.set(0, skill1.setLv15(ChampionSKill(skill1.getLv15())));
+		
+		mav.addObject("skill1",skill1);
+		System.out.println("skill1="+skill1);
+		
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
@@ -345,7 +371,15 @@ public class ChampionDetailMM {
 		
 		return null;
 	}
-
+	
+	// 스킬 숫자 -> q w e
+	public  String ChampionSKill(String s) {
+		if(s.equals("1")) return "Q";
+		else if(s.equals("2")) return "W";
+		else if(s.equals("3")) return "E";
+		else if(s.equals("4")) return "R";
+		return null;
+	}
 
 	public ModelAndView selectDetail(String championName, String tier) {
 		mav = new ModelAndView();

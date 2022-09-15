@@ -56,5 +56,6 @@ public interface IchampionDao {
 	boolean replyInsert(Reply reply);
 
 	List<Reply> getReplyList(int championId);
-
+	
+	List<ChampionDetail> getSkill_build(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
 }

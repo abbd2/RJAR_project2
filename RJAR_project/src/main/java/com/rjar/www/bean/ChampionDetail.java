@@ -14,6 +14,13 @@ public class ChampionDetail {
 	private String champion_kr_name;
 	private int championId;
 	
+	//스킬 이미지
+	private String passive;
+	private String q;
+	private String w;
+	private String e;
+	private String r;
+	
 	//스펠
 	private String spell1;
 	private String spell2;
@@ -30,6 +37,26 @@ public class ChampionDetail {
 	private int start_win;
 	private double start_winrate;
 	private double start_pick;
+	
+	//스킬
+	private String lv1;
+	private String lv2;
+	private String lv3;
+	private String lv4;
+	private String lv5;
+	private String lv6;
+	private String lv7;
+	private String lv8;
+	private String lv9;
+	private String lv10;
+	private String lv11;
+	private String lv12;
+	private String lv13;
+	private String lv14;
+	private String lv15;
+	private int skill_cnt;
+	private double skill_winrate;
+	private double skill_pick;
 	
 	private int main_rune;
 	private int main_under1;
@@ -49,7 +76,7 @@ public class ChampionDetail {
 	@Override // spell, lane 비교
 	public boolean equals(Object obj) {
 		ChampionDetail cmp=(ChampionDetail)obj;
-		if(spell1==cmp.spell2 || spell2==cmp.spell1 || lane==cmp.lane)
+		if(spell1==cmp.spell2 || spell2==cmp.spell1 || lane==cmp.lane || lv1==cmp.lv1)
 			return true;
 		return false;
 	}
