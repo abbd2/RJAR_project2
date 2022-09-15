@@ -132,7 +132,8 @@ public class MemberController {
 
 		log.info("changePw : " + m_pw);
 		log.info("currentPw : " + currentPw);
-		membermm.changePw(m_pw, currentPw);
+		String view = membermm.changePw(m_pw, currentPw);
+		mav.setViewName(view);
 
 		return mav;
 	}

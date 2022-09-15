@@ -166,13 +166,14 @@ public class MemberMM {
 
 	public String changePw(String m_pw, String currentPw) {
 
-		int result = mDao.changePw(member);
 
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		m_pw = pwEncoder.encode(m_pw); // 변경할 비밀번호 암호화
 		member.setM_pw(m_pw);
 		System.out.println(m_pw);
-
+		
+		int result = mDao.changePw(member);
+		
 		if (result > 0) {
 			System.out.println(result + " 비밀번호 변경 성공");
 			return "redirect:/login";
