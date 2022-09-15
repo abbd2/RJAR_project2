@@ -78,6 +78,7 @@ public class MemberMM {
 			System.out.println("회원가입 페이지3으로 이동");
 		} else {
 			System.out.println("insert 실패");
+			mav.setViewName("./");
 		}
 		return mav;
 	}

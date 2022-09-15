@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -252,12 +253,12 @@ body, html {
 									aria-selected="false" role="tab" tabindex="-1">회원탈퇴</a></li>
 							</ul>
 						</div>
-						<c:if test="${sessionScope.m_id != null}">
+						<c:if test="${sessionScope.m_nick != null}">
 							<form action="./logout" method="post" id='logOutFrm'
 								style="margin: 0px;">
 								<div style="margin-top: 20px">
-									<a href="#" style="margin: 18px"
-										onclick="document.getElementById('logOutFrm').submit();">로그아웃</a>
+								    <a href="#" style="margin: 18px"
+								    onclick="document.getElementById('logOutFrm').submit();">로그아웃</a>
 								</div>
 							</form>
 						</c:if>

@@ -67,7 +67,7 @@
 #bottomDiv {
 	margin: 20px;
 	height: 150px;
-	margin: 0px 0px 0px 20px;
+	margin: 30px 0px 0px 20px;
 }
 
 #loginBtn {
@@ -133,12 +133,12 @@ a {
 				</div>
 				<label id="accessLabel" style="color: red; margin: 0px 0px 0px 30px; font-size: 13px;"></label>
 				
-				<div id="loginState">
-					<input type="checkbox" style="width: 15px; height: 16px; float: left; padding: 0px;">
-					<div id="loginSatteText" style="float: left; padding: 2px 0px 0px 5px;">
-						로그인 유지
-					</div>
-				</div>
+<!-- 				<div id="loginState"> -->
+<!-- 					<input type="checkbox" style="width: 15px; height: 16px; float: left; padding: 0px;"> -->
+<!-- 					<div id="loginSatteText" style="float: left; padding: 2px 0px 0px 5px;"> -->
+<!-- 						로그인 유지 -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 			</div>
 			
 			<div id="bottomDiv">
@@ -152,6 +152,8 @@ a {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
 <script type="text/javascript">
+
+
 
 	let msg = '${msg}';
 	

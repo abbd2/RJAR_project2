@@ -114,7 +114,7 @@
 							<li class="nav-item dropdown" style="height: 40px"><p
 									class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
 									role="button" aria-haspopup="true" aria-expanded="false"
-									style="font-family: 'Poor Story', cursive">${sessionScope.m_id}</p>
+									style="font-family: 'Poor Story', cursive">${sessionScope.m_nick}</p>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" href="#" onclick="document.form.action='./myPage'; document.form.submit()"
 										style="font-family: 'Poor Story', cursive">나의 정보</a>
@@ -152,7 +152,7 @@
 						});
 
 			});
-	console.log('${sessionScope.m_id}')
+	console.log('${sessionScope.m_nick}')
 </script>
 </body>
 </html>

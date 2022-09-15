@@ -6,6 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>멀티서치</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
+	crossorigin="anonymous">
 <style type="text/css">
 
 .summoner-search-outter-box {
@@ -80,6 +85,7 @@ a {
 </style>
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div id="main"></div>
 	<div id="multiSearch">
@@ -121,7 +127,6 @@ a {
 	</div>
 	<div id="footer"></div>
 	
-		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 	
 		function multiSearch() {

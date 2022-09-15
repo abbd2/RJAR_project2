@@ -53,12 +53,11 @@ public class MemberController {
 	@PostMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		System.out.println("로그아웃");
-		if (session.getAttribute("m_id") != null) {
+		if (session.getAttribute("m_nick") != null) {
 			session.invalidate(); // 세션 무효화
 			System.out.println("세션 무효화");
 		} else {
-			System.out.println("아이디 null");
-			session.invalidate(); // 세션 무효화
+			System.out.println("닉네임 null");
 		}
 		return "redirect:/home";
 	}
@@ -72,7 +71,7 @@ public class MemberController {
 	@GetMapping(value = "/join2")
 	public String join2() {
 		System.out.println("회원가입 페이지2로 이동");
-		return "join2";
+		return "/join2";
 	}
 
 	@PostMapping(value = "memberJoin")
