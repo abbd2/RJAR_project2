@@ -37,14 +37,16 @@ public class MemberMM {
 		String view = null;
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		// 회원가입할 때 암호화해서 저장해뒀던 비밀번호를 받아옴
-		String pwEncode = mDao.getSecurityPw(mm.getM_id());
+		member = mDao.getSecurityPw(mm.getM_id());
+		String pwEncode = member.getM_pw();
 		System.out.println("가져온 암호화된 비밀번호 : " + pwEncode);
 
 		if (pwEncode != null) {
 			if (pwEncoder.matches(mm.getM_pw(), pwEncode)) {
 				System.out.println("로그인 중...");
 				// 세션에 로그인 마킹
-				session.setAttribute("m_id", mm.getM_id());
+				session.setAttribute("m_nick", member.getM_nick());
+				System.out.println("nick : "+member.getM_nick());
 				view = "redirect:/home";
 			} else { // 비밀번호 오류
 				System.out.println("잘못된 비밀번호 :" + mm.getM_pw());
