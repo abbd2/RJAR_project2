@@ -35,6 +35,7 @@ public class Champion {
    private double killParticipation1;
    private double killParticipation2;
    private double vsWinRate;
+   private int gameCount;
    private double counterWinRate;
    
    

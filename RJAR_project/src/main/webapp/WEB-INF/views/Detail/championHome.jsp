@@ -40,9 +40,9 @@
 	</div>
 </body>
 <script type="text/javascript">
+let tier = '${tier}';
 
 $(function() {
-	let tier = '${tier}';
 
 	switch (tier) {
 	case 'bronze':
@@ -83,7 +83,7 @@ $('.a_img').click(function (){
 	$.ajax({
 		type : 'get',
 		url : 'laneImg',
-		data : {lane: lane}
+		data : {lane: lane, tier: tier}
 		
 	}).done(function(data){
 		console.log("성공");			
