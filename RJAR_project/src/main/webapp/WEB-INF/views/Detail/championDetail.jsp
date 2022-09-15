@@ -245,6 +245,25 @@
     margin-left: 15px;
 }
 
+#boots_box{
+    float: left;
+    background-color: aquamarine;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-right: 15px;
+    width: 490px;
+    height: 200px;
+    border-radius: 8px;
+}
+
+#boots_table{
+    text-align: left;
+    width: 460px;
+    border: solid 1px;
+    margin-top: 25px;
+    margin-left: 15px;
+}
+
 #skill_box{
     margin-top: 370px;
     margin-left: 20px;
@@ -894,6 +913,45 @@ TOP2
 	            </tbody>
 	        </table>
 	    </div> <!-- end start_box -->
+	      
+	    <div id="boots_box">
+	        <table id="boots_table">
+	            <thead style="font-size: 20px;">
+	                <tr>
+	                    <th>신발</th>
+	                    <th>픽률</th>
+	                    <th>승률</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <th>
+	                        <img style="width: 50px; height: 50px; margin-right: 10px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${boots1.boots}.png" alt="">
+	                    </th>
+	                    <th>
+	                        ${boots1.boots_pick}<br>
+	                        ${boots1.boots_cnt}
+	                    </th>
+	                    <th>
+	                        ${boots1.boots_winrate}
+	                    </th>
+	                </tr>
+	                <tr>
+	                    <th>
+	                        <img style="width: 50px; height: 50px; margin-right: 10px; margin-top: 20px;" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${boots2.boots}.png" alt="">
+	                    </th>
+	                    <th>
+	                        ${boots2.boots_pick}<br>
+	                        ${bootst2.boots_cnt}
+	                    </th>
+	                    <th>
+	                        ${boots2.boots_winrate}
+	                    </th>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </div> <!-- end boots_box -->
+	    
 	</div> <!-- end spell_start_box -->
 	
    	<div id="skill_box">
@@ -990,18 +1048,6 @@ $(function () {
 	}
 });
 
-/* $(function (){
-	lv_list=[$(".lv1"),$(".lv2"),$(".lv3"),$(".lv4"),$(".lv5"),$(".lv7"),$(".lv8"),$(".lv9"),$(".lv10"),$(".lv12"),$(".lv13"),$(".lv14"),$(".lv15")]
-	lv=["${skill1.lv1}","${skill1.lv2}","${skill1.lv3}","${skill1.lv4}","${skill1.lv5}","${skill1.lv7}","${skill1.lv8}","${skill1.lv9}","${skill1.lv10}",
-		"${skill1.lv12}","${skill1.lv13}","${skill1.lv14}","${skill1.lv15}"]
-	
-	for(var j=0;j<lv_list.length;j++){
-		if(lv[j]==="Q") lv_list[j].css("color","lightskyblue");
-		
-		else if(lv[j]==="W") lv_list[j].css("color","lightcoral");
-		
-		else lv_list[j].css("color","lightgreen");
-}); */
 
 $("#top1").click(function(){
 	
