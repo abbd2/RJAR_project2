@@ -204,7 +204,7 @@ $('#searchInput').keyup(function () {
 $('body').on('click', '.champion', function (){
 	let data_championId = $(this).attr("data-championId");
 	let $form = $("<form action='clickDetail' method ='get'></form>");
-	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championId").val(data_championId).appendTo($form);
 	$form.appendTo("body"); //body태그 안에 있어야 submit 작동함
 	$form.submit();
 })
@@ -212,7 +212,7 @@ $('body').on('click', '.champion', function (){
 $("body").on("click", ".tierChamp", function (){
 	let data_championId = $(this).attr('data-championId');
 	let $form = $("<form action='clickDetail' method ='get'></form>");
-	$("<input>").attr("name", "championId").val(data_championId).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championId").val(data_championId).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 })

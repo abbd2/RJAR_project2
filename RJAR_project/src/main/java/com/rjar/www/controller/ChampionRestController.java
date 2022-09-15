@@ -46,8 +46,20 @@ public class ChampionRestController {
 	
 	@GetMapping(value = "/replyInsert", produces = "application/json;charset=utf-8")
 	public List<Reply> replyInsert(Reply reply, HttpSession session) {
-//		reply.setR_id(session.getAttribute("m_id").toString());
+		reply.setR_id(session.getAttribute("m_id").toString());
 		List<Reply> rList = champmm.replyInsert(reply);
+		return rList;
+	}
+	
+	@GetMapping(value = "/selectReply", produces = "application/json;charset=utf-8")
+	public List<Reply> selectReply(Reply reply, HttpSession session) {
+		List<Reply> rList = champmm.selectReply(reply);
+		return rList;
+	}
+	
+	@GetMapping(value = "/deleteReply", produces = "application/json;charset=utf-8")
+	public List<Reply> deleteReply(Reply reply, HttpSession session) {
+		List<Reply> rList = champmm.deleteReply(reply);
 		return rList;
 	}
 	
