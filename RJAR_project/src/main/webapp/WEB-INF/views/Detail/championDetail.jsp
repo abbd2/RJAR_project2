@@ -1081,6 +1081,34 @@ $(function () {
 		
 		else lv_list[j].css("color","lightgreen");
 	}
+	   $.ajax({
+		      type: 'get',
+		      url: 'selectReply',
+		      data: {championId : championId},
+		   
+		      contentType : 'application/json;charset=UTF-8',   
+		         
+		      success: function(data) {
+		         console.log("1:",data);
+		         let admin = '관리자';
+		         rList = '';
+		      $.each(data, function(i, reply){
+		         rList+='<tr height="25" align="center">'
+		            +'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
+		            +'<td width="200">'+reply.r_contents+'</td>'
+		            +'<td width="200">'+reply.r_date+'</td>';
+		         if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
+		            rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
+		                  +'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+		         }else{
+		            rList += '</tr>';            
+		         }
+		      });
+		       $('#rTable').html(rList);
+		      }, error: function(err) {
+		         console.log(err);
+		      }
+		   }); //ajax End
 });
 
 

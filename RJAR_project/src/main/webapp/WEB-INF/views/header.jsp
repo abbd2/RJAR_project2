@@ -127,12 +127,6 @@
 					</form>
 				</c:if>
 				
-				<c:if test="${sessionScope.m_id != null}">
-					<form action="./logout" method="post">
-					<button id="login-btn" type="submit" class="btn btn-success"
-						style="font-family: 'Poor Story', cursive">로그아웃</button>
-					</form>
-				</c:if>
 				<c:if test="${sessionScope.m_nick == null}">
 					<a href="./login">
 						<button id="login-btn" type="button" class="btn btn-success"
