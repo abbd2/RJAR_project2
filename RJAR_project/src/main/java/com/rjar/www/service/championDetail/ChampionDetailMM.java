@@ -778,5 +778,20 @@ public class ChampionDetailMM {
 		System.out.println(rList);
 		return rList;
 	}
+	//페이지 로드 시 댓글 검색
+	public List<Reply> selectReply(Reply reply) {
+		List<Reply> rList = champDao.getReplyList(reply.getChampionId());
+		return rList;
+	}
+	
+	
+	public List<Reply> deleteReply(Reply reply) {
+		boolean result = champDao.deleteReply(reply);
+		List<Reply> rList = null; 
+		if (result) {
+			rList = champDao.getReplyList(reply.getChampionId());			
+		}
+		return rList;
+	}
 
 }

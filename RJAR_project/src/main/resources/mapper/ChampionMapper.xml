@@ -48,7 +48,7 @@
 	
 	<select id="getChampionName2" resultType="ChampionDetail">
 		SELECT /*+ FULL(${tier}) */ LANE, CHAMPIONID, CHAMPION_KR_NAME FROM ${tier}_DETAIL
-		WHERE CHAMPION_KR_NAME = #{championName}) OR CHAMPIONNAME = #{championName}
+		WHERE CHAMPION_KR_NAME = #{championName} OR CHAMPIONNAME = #{championName}
 		ORDER BY PICKRATE DESC
 	</select>
 	
@@ -172,14 +172,20 @@
 	</select>
 	
 	<insert id="replyInsert" parameterType="Reply">
-		INSERT INTO TEST_REPLY (CHAMPIONID ,R_NUM, R_CONTENTS, R_DATE)
-		VALUES(${championId}, SEQ_REPLY.NEXTVAL, #{r_contents}, default)
+		INSERT INTO TEST_REPLY (CHAMPIONID, R_ID ,R_NUM, R_CONTENTS, R_DATE)
+		VALUES(${championId}, #{r_id}, SEQ_REPLY.NEXTVAL, #{r_contents}, default)
 	</insert>
 	
 	<select id="getReplyList" resultType="Reply">
 		SELECT * FROM TEST_REPLY 
 		WHERE CHAMPIONID= #{championId}
-	</select>	
+	</select>
+	
+	<delete id="deleteReply" parameterType="Reply">
+		DELETE FROM TEST_REPLY
+		WHERE CHAMPIONID= ${championId} AND R_NUM = ${r_num}
+	</delete>
+	
 	<select resultType="ChampionDetail" id="getSkill_build">
 		SELECT *
 		FROM (SELECT * FROM SKILL_BUILD

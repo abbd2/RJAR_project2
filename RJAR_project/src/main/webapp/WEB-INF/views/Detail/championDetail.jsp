@@ -925,9 +925,41 @@ TOP2
      </div> <!-- end skill_box -->
         
     </div> <!--end build_box-->
+    	<table id="rTable">
+		
+<!-- 		<tr> -->
+<!-- 			<th>첨부파일</th> -->
+<%-- 			<td><c:set var="file" value="${board.bfList}" /> --%>
+<%-- 				<c:if test="${empty file}"> --%>
+<!-- 					첨부된 파일이 없습니다. -->
+<%-- 				</c:if> --%>
+<%-- 				<c:if test="${!empty file}"> --%>
+<%-- 					<c:forEach var="file" items="${board.bfList}"> --%>
+<%-- 					<img src="upload/${file.bf_sysname}" width="50" />			 --%>
+<%-- 					<a href="./download?sysFileName=${file.bf_sysname}&oriFileName=${file.bf_oriname}"> --%>
+<%-- 						${file.bf_oriname}</a> --%>
+<%-- 					</c:forEach> --%>
+<%-- 				</c:if> --%>
+				
+<!-- 			</td> -->
+<!-- 		</tr> -->
+	</table>
+		<table>
+	<c:if test="${!empty sessionScope.m_id}">
+			<tr>
+				<td><textarea rows="5" cols="70" id="r_contents"></textarea></td>
+				<td><input type="button" value="댓글입력"
+					onclick="replyInsert(${championId})"
+					style="width: 70px; height: 50px"></td>
+			</tr>
+	</c:if>
+		</table>
+	<!-- 댓글 출력 -->
+    
 </body>
 <script type="text/javascript">
 let tier = '${tier}';
+let championId = '${championId}';
 $(function () {
 	
 	switch (tier) {
@@ -960,6 +992,7 @@ $(function () {
 			console.log('같음');
 		} else{
 			statperks_ids1[i].css("filter", "grayscale(100%)");
+			statperks_ids1[i].css("opacity", "0.7");
 		}
 	}
 	for (var i = 0; i < statperks_ids2.length; i++) {
@@ -967,6 +1000,7 @@ $(function () {
 			console.log('같음');
 		} else{
 			statperks_ids2[i].css("filter", "grayscale(100%)");
+			statperks_ids2[i].css("opacity", "0.7");
 		}
 	}
 	for (var i = 0; i < statperks_ids3.length; i++) {
@@ -974,6 +1008,7 @@ $(function () {
 			console.log('같음');
 		} else{
 			statperks_ids3[i].css("filter", "grayscale(100%)");
+			statperks_ids3[i].css("opacity", "0.7");
 		}
 	}
 	
@@ -988,6 +1023,35 @@ $(function () {
 		
 		else lv_list[j].css("color","lightgreen");
 	}
+	
+	$.ajax({
+		type: 'get',
+		url: 'selectReply',
+		data: {championId : championId},
+	
+		contentType : 'application/json;charset=UTF-8',	
+			
+		success: function(data) {
+			console.log("1:",data);
+			let admin = '관리자';
+			rList = '';
+		$.each(data, function(i, reply){
+			rList+='<tr height="25" align="center">'
+				+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
+				+'<td width="200">'+reply.r_contents+'</td>'
+				+'<td width="200">'+reply.r_date+'</td>';
+			if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
+				rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
+						+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+			}else{
+				rList += '</tr>';				
+			}
+		});
+		 $('#rTable').html(rList);
+		}, error: function(err) {
+			console.log(err);
+		}
+	}); //ajax End
 });
 
 /* $(function (){
@@ -1014,7 +1078,8 @@ $("#top2").click(function(){
 	let statperks_ids4 = [$("#statperks10"),$("#statperks11"),$("#statperks12")]	
 	let statperks_ids5 = [$("#statperks13"),$("#statperks14"),$("#statperks15")]
 	let statperks_ids6 = [$("#statperks16"),$("#statperks17"),$("#statperks18")]
-	for (var i = 0; i < statperks_ids4.length; i++) {
+
+	for (var i = 0; i < statperks_ids4.length; i++) {
  		if (${statperks2_3} === Number(statperks_ids4[i].attr("data-value"))){
 			console.log('같음');
 		} else{
@@ -1045,9 +1110,9 @@ $(".lane_btn").click(function(){
 	let championName = "${championName}";
 	let button_value = $(this).val();
 	let $form = $("<form action='runeLine' method ='get'></form>");
-	$("<input>").attr("name", "lane").val(button_value).appendTo($form);
-	$("<input>").attr("name", "championName").val(championName).appendTo($form);
-	$("<input>").attr("name", "tier").val(tier).appendTo($form);
+	$("<input type='hidden'>").attr("name", "lane").val(button_value).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input type='hidden'>").attr("name", "tier").val(tier).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 });
@@ -1055,5 +1120,113 @@ $(".lane_btn").click(function(){
 $('#selectOption').on('change', function (){
 	$('#select').submit();
 });
+
+function replyInsert(championId){
+	let r_contents = $('#r_contents').val();
+	
+	$('#r_contents').val("");
+	$.ajax({
+		type: 'get',
+		url: 'replyInsert',
+		data: {championId : championId , r_contents : r_contents},
+	
+		contentType : 'application/json;charset=UTF-8',	
+			
+		success: function(data) {
+			console.log("1:",data);
+			let admin = '관리자';
+			rList = '';
+		$.each(data, function(i, reply){
+			rList+='<tr height="25" align="center">'
+				+'<input type="hidden" value='+reply.r_num+'>'
+				+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
+				+'<td width="200">'+reply.r_contents+'</td>'
+				+'<td width="200">'+reply.r_date+'</td>';
+			if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
+				rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
+				+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+			}else{
+				rList += '</tr>';				
+			}
+		});
+		 $('#rTable').html(rList);
+		}, error: function(err) {
+			console.log(err);
+		}
+	}); //ajax End
+}
+
+//댓글 입력 후 엔터 칠 때
+$("#r_contents").keydown(function(key) {                
+	if (key.keyCode == 13) {                    
+		if ($('#r_contents').val() != ""){
+			let r_contents = $('#r_contents').val();
+			$('#r_contents').val("");
+			$.ajax({
+				type: 'get',
+				url: 'replyInsert',
+				data: {championId : championId , r_contents : r_contents},
+			
+				contentType : 'application/json;charset=UTF-8',	
+					
+				success: function(data) {
+					console.log("1:",data);
+					let admin = '관리자';
+					rList = '';
+				$.each(data, function(i, reply){
+					rList+='<tr height="25" align="center">'
+						+'<input type="hidden" value='+reply.r_num+'>'
+						+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
+						+'<td width="200">'+reply.r_contents+'</td>'
+						+'<td width="200">'+reply.r_date+'</td>';
+					if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
+						rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
+						+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+					}else{
+						rList += '</tr>';				
+					}
+				});
+				 $('#rTable').html(rList);
+				}, error: function(err) {
+					console.log(err);
+				}
+			}); //ajax End
+		}
+	}
+});
+
+//댓글 삭제
+function deleteReply(r_num){
+	
+	$.ajax({
+		type: 'get',
+		url: 'deleteReply',
+		data: {championId : championId , r_num : r_num},
+	
+		contentType : 'application/json;charset=UTF-8',	
+			
+		success: function(data) {
+			console.log("1:",data);
+			let admin = '관리자';
+			rList = '';
+		$.each(data, function(i, reply){
+			rList+='<tr height="25" align="center">'
+				+'<input type="hidden" value='+reply.r_num+'>'
+				+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
+				+'<td width="200">'+reply.r_contents+'</td>'
+				+'<td width="200">'+reply.r_date+'</td>';
+			if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
+				rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
+				+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+			}else{
+				rList += '</tr>';				
+			}
+		});
+		 $('#rTable').html(rList);
+		}, error: function(err) {
+			console.log(err);
+		}
+	}); //ajax End
+}
 </script>
 </html>
