@@ -2,9 +2,9 @@ package com.rjar.www.controller.member;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +28,18 @@ public class MemberController {
 	ModelAndView mav;
 
 	@GetMapping(value = "/login")
-	public String login() {
+	public ModelAndView login(@RequestParam(value = "msg", required = false) String msg) {
+		
+		System.out.println("로그인 페이지로 이동");
+		mav = new ModelAndView();
+		
+		if(StringUtils.hasText(msg)) { // null 이면 false
+			mav.addObject("msg", msg);
+			System.out.println("alert 출력");
+		}
+		mav.setViewName("login");
 
-		return "login";
+		return mav;
 	}
 
 	@PostMapping(value = "/access")
@@ -132,7 +141,7 @@ public class MemberController {
 
 		log.info("changePw : " + m_pw);
 		log.info("currentPw : " + currentPw);
-		membermm.changePw(m_pw, currentPw);
+		mav = membermm.changePw(m_pw, currentPw);
 
 		return mav;
 	}

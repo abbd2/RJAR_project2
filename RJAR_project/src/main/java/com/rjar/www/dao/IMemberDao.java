@@ -13,7 +13,7 @@ public interface IMemberDao {
 	
 	boolean insertMember(Member mm);
 	
-	String getSecurityPw(String m_id);
+	Member getSecurityPw(String m_id);
 	
 	Member checkName(String m_name);
 	

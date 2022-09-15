@@ -107,6 +107,24 @@
 	width: 300px;
 	height: 13px;
 }
+
+a {
+	text-decoration: none;
+	color: black;
+}
+    a:visited {
+	text-decoration: none;
+}
+    a:hover {
+	text-decoration: none;
+}
+    a:focus {
+	text-decoration: none;
+}
+    a:hover, a:active {
+	text-decoration: none;
+}
+
 </style>
 </head>
 <body>
@@ -167,7 +185,7 @@
 			pwDiscrepancy();
 		} else {
 			console.log("통과");
-			$('#currentPwCheckLabel').html('유효한 비밀번호 입니다.').css('color', 'blue').css('font-size', '14px');
+			$('#currentPwCheckLabel').html('유효한 비밀번호 입니다.').css('color', 'blue').css('font-size', '13px');
 			console.log("pwChekc : ", pwCheck);
 			pwReg = true;
 			if($('#pw').val() === $('#pwCheck').val()){

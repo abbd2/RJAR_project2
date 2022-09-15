@@ -39,14 +39,16 @@ public class MemberMM {
 		String view = null;
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		// 회원가입할 때 암호화해서 저장해뒀던 비밀번호를 받아옴
-		String pwEncode = mDao.getSecurityPw(mm.getM_id());
+		member = mDao.getSecurityPw(mm.getM_id());
+		String pwEncode = member.getM_pw();
 		System.out.println("가져온 암호화된 비밀번호 : " + pwEncode);
 
 		if (pwEncode != null) {
 			if (pwEncoder.matches(mm.getM_pw(), pwEncode)) {
 				System.out.println("로그인 중...");
 				// 세션에 로그인 마킹
-				session.setAttribute("m_id", mm.getM_id());
+				session.setAttribute("m_nick", member.getM_nick());
+				System.out.println("nick : "+member.getM_nick());
 				view = "redirect:/home";
 			} else { // 비밀번호 오류
 				System.out.println("잘못된 비밀번호 :" + mm.getM_pw());
@@ -77,7 +79,6 @@ public class MemberMM {
 		} else {
 			System.out.println("insert 실패");
 		}
-
 		return mav;
 	}
 
@@ -166,18 +167,20 @@ public class MemberMM {
 		}
 	}
 
-	public String changePw(String m_pw, String currentPw) {
-
-		int result = mDao.changePw(member);
+	public ModelAndView changePw(String m_pw, String currentPw) {
 
 		BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 		m_pw = pwEncoder.encode(m_pw); // 변경할 비밀번호 암호화
 		member.setM_pw(m_pw);
 		System.out.println(m_pw);
+		int result = mDao.changePw(member);
 
 		if (result > 0) {
 			System.out.println(result + " 비밀번호 변경 성공");
-			return "redirect:/login";
+			mav = new ModelAndView();
+			mav.addObject("msg", "비밀번호 변경 성공");
+			mav.setViewName("redirect:/login");
+			return mav;
 		} else {
 			throw new NoMatchingPwException("오류");
 		}
@@ -190,7 +193,7 @@ public class MemberMM {
 
 		if (result != null) {
 			System.out.println("!null");
-			throw new CheckUserException("alert(\'이미 생성된 계정이 존재합니다.\')");
+			throw new CheckUserException("이미 생성된 계정이 존재합니다.");
 		} else {
 			System.out.println("null");
 		}
