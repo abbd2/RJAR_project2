@@ -144,5 +144,18 @@ public class MemberController {
 
 		return mav;
 	}
+	@PostMapping(value = "/modifyNick")
+	public ModelAndView modifyNick(HttpSession session, String wantNick) {
+		String m_nick = (String)session.getAttribute("m_nick");
+		log.info("wantNick="+wantNick);
+		System.out.println(m_nick);
+		
+		mav = membermm.modifyNick(session, m_nick, wantNick);
+		mav.setViewName("home");
+		
+		return mav;
+	}
+
+	
 
 }
