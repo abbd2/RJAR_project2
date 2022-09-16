@@ -827,6 +827,8 @@ $(function () {
 		}
 	}
 
+	
+	$('body').css('background-image', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/'${championName}'_0.jpg');
 });
 
 //클릭 시 상세페이지로 다시 이동
