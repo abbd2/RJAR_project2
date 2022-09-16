@@ -20,6 +20,7 @@ public class HomeController {
 
 	@Autowired
 	private ChampionDetailMM champmm;
+	
 	@Autowired
 	private MemberMM membermm;
 

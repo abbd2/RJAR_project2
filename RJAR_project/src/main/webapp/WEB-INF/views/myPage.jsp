@@ -213,7 +213,7 @@ top:-25px;
 	position : absolute;
 	left: 50%;
 }
-.modal1{
+.modal1, .modal2{
     position : fixed;
     width : 400px;
     height : 200px;
@@ -225,7 +225,7 @@ top:-25px;
 	  cursor: pointer;
 }
 
-#nickMModal {
+#nickMModal, #nickMModal1 {
 	display: none;
 }
 
@@ -267,8 +267,9 @@ top:-25px;
 			</div>
 		</nav>
 	</div>
-	<form action="modifyNick" method="Post">
-	<div class="modalBox">
+<div class="modalBox">
+
+	<form id="modifyAction" name="frm">
 		<div class="modal1" id="nickMModal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -286,10 +287,41 @@ top:-25px;
 							 변경하실 별명을 입력하세요.
 							 </label>
                              <input type="text" class="form-control" name="wantNick" placeholder="${sessionScope.m_nick}" id="inputDefault" style="font-family: 'Poor Story', cursive">
+                             <div class="invalid-feedback"></div>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary" style="font-family: 'Poor Story', cursive">수정</button>
+						<button type="button" class="btn btn-primary" style="font-family: 'Poor Story', cursive">수정</button>
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal" style="font-family: 'Poor Story', cursive">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	
+		<div class="modal2" id="nickMModal1">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="font-family: 'Poor Story', cursive">전화번호
+							수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">x</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group" style="margin-top : -20px">
+							 <label class="col-form-label mt-4" for="inputDefault" style="font-family: 'Poor Story', cursive">
+							 변경하실 별명을 입력하세요.
+							 </label>
+                             <input type="text" class="form-control" name="wantNick" placeholder="${sessionScope.m_nick}" id="inputDefault" style="font-family: 'Poor Story', cursive">
+                             <div class="invalid-feedback"></div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" style="font-family: 'Poor Story', cursive">수정</button>
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal" style="font-family: 'Poor Story', cursive">닫기</button>
 					</div>
@@ -297,7 +329,7 @@ top:-25px;
 			</div>
 		</div>
 	</div>
-	</form>
+
 	<div class="main" style="font-family: 'Poor Story', cursive">
 		<div class="middle">
 			<div class="middleleft">
@@ -321,19 +353,21 @@ top:-25px;
 							</div>
 							<div></div>
 						</div>
+						<form name="frm2">
 						<div class="tapMenuBox">
 							<ul class="nav nav-tabs" role="tablist">
+								<li class="nav-item" id="myAct" role="presentation" ><a href="#myActt" id="aTag"
+									class="nav-link active" data-tab="other" data-bs-toggle="tab"
+									 role="tab" tabindex="-1">나의 활동</a></li>
 								<li class="nav-item" role="presentation"><a id="aTag"
-									class="nav-link active" data-tab="Modify" data-bs-toggle="tab"
-									aria-selected="true" role="tab">개인정보수정</a></li>
-								<li class="nav-item" role="presentation"><a id="aTag"
-									class="nav-link" data-tab="other" data-bs-toggle="tab"
-									aria-selected="false" role="tab" tabindex="-1">나의 활동</a></li>
+									class="nav-link" data-tab="Modify" data-bs-toggle="tab"
+									role="tab">개인정보수정</a></li>
 								<li class="nav-item" role="presentation"><a id="aTag"
 									class="nav-link" data-tab="delete" data-bs-toggle="tab"
-									aria-selected="false" role="tab" tabindex="-1">회원탈퇴</a></li>
+									role="tab" tabindex="-1">회원탈퇴</a></li>
 							</ul>
 						</div>
+						</form>
 						<c:if test="${sessionScope.m_nick != null}">
 							<form action="./logout" method="post" id='logOutFrm'
 								style="margin: 0px;">
@@ -348,7 +382,25 @@ top:-25px;
 			</div>
 			<div class="middleDetail">
 				<div id="myTabContent" class="tab-content">
-					<div class="tab-pane fade active show" id="Modify" role="tabpanel">
+					<div class="tab-pane fade active show" id="other" role="tabpanel">
+						<div class="card"
+							style="width: 750px; height: 725px; margin: 25px; margin-top: 25px">
+							<div class="card-body">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th scope="col" style="width: 25%">닉네임</th>
+											<th scope="col" style="width: 50%">내용</th>
+											<th scope="col" style="width: 25%">작성일</th>
+										</tr>
+									</thead>
+									<tbody>${myReply}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="Modify" role="tabpanel">
 						<div class="card"
 							style="width: 750px; height: 200px; margin: 25px; margin-top: 25px">
 							<div class="card-body">
@@ -393,7 +445,7 @@ top:-25px;
 									</div>
 									<div
 										style="width: 20%; height: 100%; float: left; text-align: right">
-										<button type="button" class="btn btn-dark disabled"
+										<button type="button" class="btn btn-dark disabled" id="myPhoneModify"
 											style="font-family: 'Poor Story', cursive">수정</button>
 									</div>
 								</div>
@@ -457,15 +509,7 @@ top:-25px;
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade" id="other" role="tabpanel">
-						<p>Food truck fixie locavore, accusamus mcsweeney's marfa
-							nulla single-origin coffee squid. Exercitation +1 labore velit,
-							blog sartorial PBR leggings next level wes anderson artisan four
-							loko farm-to-table craft beer twee. Qui photo booth letterpress,
-							commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-							vinyl cillum PBR. Homo nostrud organic, assumenda labore
-							aesthetic magna delectus mollit.</p>
-					</div>
+					
 					<div class="tab-pane fade" id="delete" role="tabpanel">
 						<div class="card"
 							style="width: 750px; height: 725px; margin: 25px; margin-top: 25px">
@@ -524,11 +568,13 @@ top:-25px;
 											안내사항을 모두 확인하였으며, 이에 동의합니다. </label>
 									</div>
 								</div>
+								<form action="./delete" method='post'>
 								<div
 									style="margin: 10px; margin-top: 30px; height: 10%; text-align: center;">
-									<button type="button" class="btn btn-success"
+									<button type="submit" class="btn btn-success" id="deleteButton"
 										style="font-family: 'Poor Story', cursive">확인</button>
 								</div>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -540,7 +586,7 @@ top:-25px;
 
 
 	<script type="text/javascript">
-		console.log('${sessionScope.m_nick}')
+	
 		$(document).ready(function() {
 			$("#nickModifyButton").on("click",function(event){
 				$("#nickMModal").fadeIn(300);
@@ -550,64 +596,118 @@ top:-25px;
 				$("#nickMModal").fadeOut(300);
 				$(".backon").fadeOut(300);
 			});
+			
+			$("#myPhoneModify").on("click",function(event){
+				$("#nickMModal1").fadeIn(300);
+				$(".backon").fadeIn(300);
+			});
+			$(".backon, .btn-secondary, .btn-close").on("click", function(event) {
+				$("#nickMModal1").fadeOut(300);
+				$(".backon").fadeOut(300);
+			});
+			
+			$(".btn-success").attr("disabled", true);
+			
+			$("#flexCheckDefault").on('click',function() {
+				var chk = $('input:checkbox[id="flexCheckDefault"]').is(":checked");
+				if (chk == true) {
+					$(".btn-success").removeAttr('disabled');
+				} else {
+					$(".btn-success").attr("disabled", true);
+				}
+			});
+			
+/* 			$('#myAct').click(function(){
+				frm2.action="getReplyList"
+				frm2.method="get"
+				frm2.submit();
+				$(document).ready(function(){
+					   var link = document.location.href;  //현재 접속 url  
+					   var tab = link.split('/').pop();   //배열의 맨 마지막 요소를 삭제하고 삭제된 해당 값을 반환함
+					   $('a[href$='+tab+']').trigger("click"); //해당 앵커 트리거를이용 클릭 이벤트
+					});		
+			}); */
 
-							$(".btn-success").attr("disabled", true);
-							$("#flexCheckDefault")
-									.on(
-											'click',
-											function() {
-												var chk = $(
-														'input:checkbox[id="flexCheckDefault"]')
-														.is(":checked");
-												if (chk == true) {
-													$(".btn-success")
-															.removeAttr(
-																	'disabled');
-												} else {
-													$(".btn-success").attr(
-															"disabled", true);
-												}
-											});
-
-							$('ul.nav-tabs li a').click(function() {
-								var tab_id = $(this).attr('data-tab');
-								console.log(tab_id);
-
-								$('ul.nav-tabs li a').removeClass('active');
-								$('.tab-pane').removeClass('active show');
-
-								$(this).addClass('active');
-								$("#" + tab_id).addClass('active show');
-							})
-
-							var chkList = $("input[name=checkSwitch]");
-							$('#switch')
-									.focus(function() {
-									})
-									.change(
-											function() {
-												if ($(this).is(":checked")) {
-													alert("프로모션 정보수신에 동의하셨습니다. \n"
-															+ "(본 수신 동의는 RJAR.GG 통합 서비스에 한하여 유효하며, 일부 개별 수신 동의를 받는 서비스는 개별 서비스 동의 상태를 따릅니다.)")
-												} else {
-													if (!confirm('앞으로는 RJAR.GG에서 제공하는 프로모션 정보를 받을 수 없습니다. \n'
-															+ '정보수신동의 해제를 진행하시겠습니까?')) {
-														chkList.prop("checked",
-																true);
-													} else {
-														alert("정보수신동의가 해제되었습니다. \n"
-																+ "(본 수신 동의는 RJAR.GG 통합 서비스에 한하여 유효하며, 일부 개별 수신 동의를 받는 서비스는 개별 서비스 동의 상태를 따릅니다.)");
-													}
-												}
-											});
+			
+			
+			$('ul.nav-tabs li a').click(function() {
+				var tab_id = $(this).attr('data-tab');
+				console.log(tab_id);
+				
+				$('ul.nav-tabs li a').removeClass('active');
+				$('.tab-pane').removeClass('active show');
+				$(this).addClass('active');
+				$("#" + tab_id).addClass('active show');
+			})
+			
+			$('#myAct').click(function(){
+		        frm2.action="getReplyList"
+		        frm2.method="get"
+		        frm2.submit();
+		        
+		        $('ul.nav-tabs li a').removeClass('active');
+				$('.tab-pane').removeClass('active show');
+				$(this).addClass('active');
+				$("#" + tab_id).addClass('active show');
+		
+	        });
+			
+			
+			var chkList = $("input[name=checkSwitch]");
+			$('#switch').focus(function() {}).change(function() {
+				if ($(this).is(":checked")) {
+					alert("프로모션 정보수신에 동의하셨습니다. \n"
+							+ "(본 수신 동의는 RJAR.GG 통합 서비스에 한하여 유효하며, 일부 개별 수신 동의를 받는 서비스는 개별 서비스 동의 상태를 따릅니다.)")
+				} else {
+					if (!confirm('앞으로는 RJAR.GG에서 제공하는 프로모션 정보를 받을 수 없습니다. \n'
+							+ '정보수신동의 해제를 진행하시겠습니까?')) {
+						chkList.prop("checked",true);
+					} else {
+						alert("정보수신동의가 해제되었습니다. \n"
+								+ "(본 수신 동의는 RJAR.GG 통합 서비스에 한하여 유효하며, 일부 개별 수신 동의를 받는 서비스는 개별 서비스 동의 상태를 따릅니다.)");
+					}
+				}
+			});
+		});
+		let nickCheck = false
+		
+		// nick 중복확인
+		$('.btn-primary').on('click', function (){
+					if ($('#inputDefault').val() == '' || $('#inputDefault').val() == '${sessionScope.m_nick}') {
+						/* $('.invalid-feedback').html(xhr.responseText).css('color', 'red'); */
+						alert('수정할 별명을 입력하세요')
+						console.log('여기 왜 안나옴?')		
+					}else{
+						$.ajax({
+							method : 'get',
+							url : 'member/checkNick',
+							data : 'm_nick=' + $('#btn-primary').val(),
+							success : function(data, status, xhr) {
+								$('.invalid-feedback').html(data).css('color', 'blue');
+								nickCheck = true
+								console.log('성공?')
+								
+								frm.action ="modifyNick";
+								frm.method ="get";
+								frm.submit();
+								alert('닉네임 변경이 성공하였습니다.')
+							},
+							error : function(xhr, status) {
+								$('.invalid-feedback').html(xhr.responseText).css('color', 'red');
+								nickCheck = false;
+								alert('닉네임 중복을 확인하세요.')
+							}
 						});
+						
+					}
+				});
+		
+		$('#deleteButton').click(function(){
+			alert('삭제가 완료되었습니다.')
+		})
+		
+		// end on
+		
 	</script>
-
-
-
-
-
-
-
 </body>
 </html>

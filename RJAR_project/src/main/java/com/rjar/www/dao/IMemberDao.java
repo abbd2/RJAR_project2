@@ -3,6 +3,7 @@ package com.rjar.www.dao;
 import java.util.List;
 
 import com.rjar.www.bean.Member;
+import com.rjar.www.bean.Reply;
 
 public interface IMemberDao {
 
@@ -26,4 +27,8 @@ public interface IMemberDao {
 	List<Member> getMyPageInfo(String m_nick);
 
 	int nickModify(Member mm);
+
+	int deleteMember(Member member);
+
+	List<Reply> getReplyList(String r_nick);
 }
