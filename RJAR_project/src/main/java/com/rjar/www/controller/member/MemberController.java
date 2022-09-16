@@ -1,5 +1,6 @@
 package com.rjar.www.controller.member;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,18 +145,35 @@ public class MemberController {
 
 		return mav;
 	}
-	@PostMapping(value = "/modifyNick")
+	@GetMapping(value = "/modifyNick")
 	public ModelAndView modifyNick(HttpSession session, String wantNick) {
 		String m_nick = (String)session.getAttribute("m_nick");
 		log.info("wantNick="+wantNick);
 		System.out.println(m_nick);
 		
 		mav = membermm.modifyNick(session, m_nick, wantNick);
-		mav.setViewName("home");
 		
 		return mav;
 	}
+	@PostMapping(value = "/delete")
+	public String delete(HttpSession session) {
+		String m_nick = (String)session.getAttribute("m_nick");
+		membermm.delete(m_nick,session);
+		
+		return "redirect:/home";
+	}
 
-	
+	@GetMapping(value = "/getReplyList")
+	public ModelAndView getReplyList(HttpSession session, String m_nick) {
+		String r_nick = (String)session.getAttribute("m_nick");
+		log.info("wantNick="+m_nick);
+		System.out.println("r_nick"+r_nick);
+		
+		mav = membermm.getReplyList(session, r_nick);
+		mav.setViewName("myPage");
+		mav.addObject("menu", 1);
+		
+		return mav;
+	}
 
 }

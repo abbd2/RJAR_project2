@@ -62,8 +62,16 @@
 	<update id="nickModify">
 	    update member set
 	    m_nick = #{m_MNick} where m_nick = #{m_nick}
-	
 	</update>
+	<delete id="deleteMember">
+	    delete from member where m_nick = #{m_nick}
+	</delete>
+	<select id="getReplyList" resultType="Reply">
+	    select * from reply_table where r_nick = #{r_nick}
+	</select>
+	
+	
+	
 	
 </mapper>
 
