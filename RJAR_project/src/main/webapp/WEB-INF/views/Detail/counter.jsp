@@ -19,6 +19,7 @@
 	font-size: 20px;
 	font-weight: bold;
 }
+
 #champion_profile {
 	width: 100%;
 	height: 300px;
@@ -96,11 +97,11 @@
 }
 
 #rune_box1 {
-    width: 900px;
-    height: 1080px;
-    margin-top: 45px;
-    margin-left: 285px;
-    padding-left: 45px;
+	width: 900px;
+	height: 1080px;
+	margin-top: 45px;
+	margin-left: 285px;
+	padding-left: 45px;
 }
 
 .rune_table, .rune_table2 {
@@ -310,11 +311,11 @@
 	font-size: 20px;
 	border: 2px solid black;
 }
-.counterList{
+
+.counterList {
 	width: 80px;
 	border-bottom: 2px solid black;
 }
-
 </style>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
@@ -326,17 +327,16 @@
 				<option id="gold" value="gold" style="color: #ffd700;">+Gold</option>
 				<option id="platinum" value="platinum" style="color: #006fff;">+Platinum</option>
 				<option id="diamond" value="diamond" style="color: #87cefa;">+Diamond</option>
-			</select>
-			<input value="${championName}" name="championName" type="hidden">
-		</div>   
+			</select> <input value="${championName}" name="championName" type="hidden">
+		</div>
 	</form>
 	<div id="champion_profile">
 		<div id="champ_img_box">
-			<div id="lane_btn_box"> 
+			<div id="lane_btn_box">
 				<button class="lane_btn" value="${lane1}">${lane1}</button>
-			<c:if test="${!empty lane2}">
-	            <button class="lane_btn" value ="${lane2}">${lane2}</button>
-			</c:if>    
+				<c:if test="${!empty lane2}">
+					<button class="lane_btn" value="${lane2}">${lane2}</button>
+				</c:if>
 			</div>
 			<div id="champ_img_box2">
 				<img id="champ_img"
@@ -351,27 +351,27 @@
 			<div id="champ_skill_box">
 				<div id="p">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/passive/${championName}_Passive.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/passive/${start1.passive}"
 						alt="">
 				</div>
 				<div id="q">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}Q.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.q}"
 						alt="">
 				</div>
 				<div id="w">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}W.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.w}"
 						alt="">
 				</div>
 				<div id="e">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}E.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.e}"
 						alt="">
 				</div>
 				<div id="r">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}R.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.r}"
 						alt="">
 				</div>
 			</div>
@@ -379,21 +379,24 @@
 	</div>
 	<div id="nav">
 		<nav>
-			<ul style="list-style: none; margin: 0px;">
-				<span><li><a href="#">빌드</a></li></span>
-				<span><li><a href="#">룬</a></li></span>
-				<span><li><a href="counterInfo">카운터</a></li></span>
-			</ul>
+			<form action="counterInfo" method="get">
+				<input type="hidden" value="${tier}" name="tier"> <input
+					type="hidden" value="${lane}" name="lane"> <input
+					type="hidden" value="${championName}" name="championName">
+				<button class="btn btn-primary">
+					<font>카운터</font>
+				</button>
+			</form>
 		</nav>
 	</div>
 
 	<div class="wholeBox">
 		<div class="counterTable">
 			<table>
-			<tr>
-			<td class="counterList"></td>
-			<td class="counterList">이름</td>
-			</tr>
+				<tr>
+					<td class="counterList"></td>
+					<td class="counterList">이름</td>
+				</tr>
 				<tr class="championTr" data-champion="${counters.counter1}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter1}.png"

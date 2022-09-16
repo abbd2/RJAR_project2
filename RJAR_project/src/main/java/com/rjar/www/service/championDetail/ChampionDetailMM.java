@@ -195,7 +195,7 @@ public class ChampionDetailMM {
 		mav.addObject("championId", championId);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		mav.addObject("lane", lane1);
+		mav.addObject("lane", ChampionLane(lane1));
 
 		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
 		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1, tier);
@@ -369,7 +369,22 @@ public class ChampionDetailMM {
 		System.out.println("skill1="+skill1);
 		
 		// 아이템 빌드
-		List<ChampionDetail> item_build;
+		List<ChampionDetail> item_build=champDao.getItem_build(champion_eg_name, lane1, tier);
+		ChampionDetail build=item_build.get(0);
+		mav.addObject("build",build);
+		System.out.println("build="+build);
+		  
+		ChampionDetail build2=item_build.get(1);
+		mav.addObject("build2",build2);
+		System.out.println("build2="+build2);
+		  
+		ChampionDetail build3=item_build.get(2);
+		mav.addObject("build3",build3);
+		System.out.println("build3="+build3);
+		  
+		ChampionDetail build4=item_build.get(3);
+		mav.addObject("build4",build4);
+		System.out.println("build4="+build4);
 		
 		mav.setViewName("Detail/championDetail");
 		return mav;
@@ -414,7 +429,7 @@ public class ChampionDetailMM {
 		mav.addObject("championId", championId);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		mav.addObject("lane", lane1);
+		mav.addObject("lane", ChampionLane(lane1));
 		
 		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
 		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1, tier);
@@ -588,7 +603,22 @@ public class ChampionDetailMM {
 		System.out.println("skill1="+skill1);
 		
 		// 아이템 빌드
-		List<ChampionDetail> item_build;
+		List<ChampionDetail> item_build=champDao.getItem_build(champion_eg_name, lane1, tier);
+		ChampionDetail build=item_build.get(0);
+		mav.addObject("build",build);
+		System.out.println("build="+build);
+		  
+		ChampionDetail build2=item_build.get(1);
+		mav.addObject("build2",build2);
+		System.out.println("build2="+build2);
+		  
+		ChampionDetail build3=item_build.get(2);
+		mav.addObject("build3",build3);
+		System.out.println("build3="+build3);
+		  
+		ChampionDetail build4=item_build.get(3);
+		mav.addObject("build4",build4);
+		System.out.println("build4="+build4);
 				
 		mav.setViewName("Detail/championDetail");
 		return mav;
@@ -773,14 +803,17 @@ public class ChampionDetailMM {
 		List<ChampionDetail> mainRunePng = selectRunes(counterRunes.get(0).getMain_rune());
 		List<ChampionDetail> subRunePng = selectRunes(counterRunes.get(0).getSub_rune());
 		
+		List<ChampionDetail> start_items = champDao.getStart_items(championName, lane1);
+		ChampionDetail start1=start_items.get(0);
 		
+		mav.addObject("start1",start1);
 		mav.addObject("killParticipation1", remainder.getKillParticipation1());
 		mav.addObject("killParticipation2", remainder.getKillParticipation2());
 		mav.addObject("championName", championName);
 		mav.addObject("champion_kr_name", champion_kr_name);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		mav.addObject("lane", lane);
+		mav.addObject("lane", ChampionLane(lane));
 		mav.addObject("counters", champAndCounter);
 		mav.addObject("counter", champAndCounter.getCounter1());
 		mav.addObject("kda1", remainder.getKda1());

@@ -215,4 +215,32 @@
 		      ORDER BY BOOTS_CNT DESC)
 		WHERE <![CDATA[ROWNUM<=2]]>
 	</select>
+	
+	<select resultType="ChampionDetail" id="getBoots_Plus">
+      SELECT *
+      FROM (SELECT *
+            FROM ${tier}_PLUS_BOOTS
+            WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+            ORDER BY BOOTS_CNT DESC)
+      WHERE <![CDATA[ROWNUM<=2]]>
+   </select>
+   
+   <select resultType="ChampionDetail" id="getItem_build">
+      SELECT CHAMPIONNAME, CHAMPIONID, TEAMPOSITION, ITEM1, ITEM2, ITEM3, ITEM_TOTAL, ITEM_CNT, ITEM_WIN, ITEM_WINRATE, ITEM_PICK
+      FROM (SELECT * FROM ${tier}_BUILD3
+           WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane} AND ITEM3!=0
+           ORDER BY ITEM_CNT DESC)
+      WHERE <![CDATA[ROWNUM<=4]]>
+   </select>
+   
+   <select resultType="ChampionDetail" id="getChampionItem">
+      SELECT CHAMPIONNAME, TEAMPOSITION, ITEM1, A.ITEM_WIN, A.ITEM_TOTAL
+      FROM (SELECT CHAMPIONNAME, TEAMPOSITION, ITEM1, SUM(ITEM_WIN) ITEM_WIN, ITEM_TOTAL
+            FROM GOLD_FULL
+            GROUP BY CHAMPIONNAME, TEAMPOSITION, ITEM1,ITEM_TOTAL
+            HAVING ITEM1!=0 AND CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+            ORDER BY CHAMPIONNAME) A
+      WHERE A.CHAMPIONNAME=CHAMPIONNAME AND A.TEAMPOSITION=TEAMPOSITION AND A.ITEM1=ITEM1
+      ORDER BY ITEM_WIN DESC
+   </select>
 </mapper>

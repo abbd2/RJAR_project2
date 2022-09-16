@@ -66,5 +66,11 @@ public interface IchampionDao {
 
 	boolean upDateReply(Reply reply);
 	
+   List<ChampionDetail> getBoots_Plus(@Param("championName") String champion_eg_name, @Param("lane") String lane1, @Param("tier") String tier);
+   
+   List<ChampionDetail> getItem_build(@Param("championName") String champion_eg_name, @Param("lane") String lane1,@Param("tier") String tier);
+
+   List<ChampionDetail> getChampionItem(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
+
 
 }
