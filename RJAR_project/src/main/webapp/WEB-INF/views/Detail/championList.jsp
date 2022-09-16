@@ -11,16 +11,19 @@
 <style type="text/css">
 .tierVersion {
 	width: 549px;
+	margin-top: 16px;
 }
 
 #selectOption {
-	width: 200px;
-	height: 55px;
+    width: 183px;
+    height: 57px;
 	margin: 5px;
-	border-radius: 7px;
 	border: 2px solid black;
 	font-size: 20px;
 	font-weight: bold;
+    margin-right: 354px;
+    margin-bottom: 20px;
+}
 }
 
 option {
@@ -28,18 +31,96 @@ option {
 }
 
 .laneTd {
-	border: 1px solid gray;
 	width: 200px;
-	padding: 0px;
+	padding: 1px;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: 1.2rem;
+  font-family: "Open Sans", sans-serif;
+  color: #444;
+  background-color: #fff;
+  margin: 0;
+  padding: 4rem;
 }
 
 .lane_ {
-	width: 155px;
-	height: 66px;
-	background-color: white;
-	border: hidden;
-	text-align: center;
+	display: inline-block;
+	padding: 1em 2em;
+	border-radius: 5px;
+	color: white;
 	font-weight: bold;
+	font-size: 15px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	background: linear-gradient(to right, #333 25%, lightgray 75%);
+	background-position: 1% 50%;
+	background-size: 400% 300%;
+	border: 1px solid lightgray;
+	transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    width: 145px;
+    height: 60px;
+}
+
+.lane_ {
+  transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.lane_:hover {
+  color: white;
+  color: #fff;
+  background-position: 99% 50%;
+}
+
+.tierChamp {
+  top: 50%;
+  left: 50%;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+}
+.tierChamp:hover {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.25), 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+.tierChamp:hover{
+  transform: scale(1.06);
+  transition: transform 500ms cubic-bezier(0.165, 0.84, 0.44, 1) 0ms;
+}
+.tierChamp:hover {
+  filter: grayscale(100%);
+  transform: scale(1);
+  -webkit-animation-name: bgin;
+          animation-name: bgin;
+  -webkit-animation-duration: 400ms;
+          animation-duration: 400ms;
+  transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+
+.champion {
+  top: 50%;
+  left: 50%;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+}
+.champion :hover {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.25), 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+.champion :hover{
+  transform: scale(1.06);
+  transition: transform 500ms cubic-bezier(0.165, 0.84, 0.44, 1) 0ms;
+}
+.champion :hover {
+  opacity: 0.45;
+  transform: scale(1);
+  -webkit-animation-name: bgin;
+          animation-name: bgin;
+  -webkit-animation-duration: 400ms;
+          animation-duration: 400ms;
+  transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
 
 .champList {
@@ -52,6 +133,7 @@ option {
 	float: left;
 	width: 60px;
 	height: 80px;
+	
 }
 
 .listimg {
@@ -81,6 +163,7 @@ option {
 	border-bottom: 1px solid lightgray;
 	padding-top: 5px;
 }
+
 .selectImg {
 	margin-right: 10px;
 	width:35px;
@@ -94,7 +177,7 @@ option {
 	height: 55px;
 	margin-bottom: 10px;
 	border-radius: 5px;
-	positon :relative;
+	positon : relative;
 }
 
 .championList {
@@ -116,23 +199,18 @@ option {
 
 .tierList {
 	float: right;
-	width: 715px;
+	width: 735px;
+}
+
+.tier{
+	font-size: 20px;
 }
 
 .tierList th {
 	padding-top: 10px;
-	padding-bottom: 10px;
-	font-size: 12px;
-	text-align: center;
-	"
-}
-
-.tierList tr {
-	border-top: solid 1px lightgray;
-}
-
-.tierChamp { /* 티어리스트 챔피언 사진 - 나중에 작업 */
-	
+	padding-bottom: 15px;
+	font-size: 13px;
+    text-align: -webkit-center;
 }
 
 .tierChampimg {
@@ -149,11 +227,12 @@ option {
 .counterimg {
 	width: 30px;
 	height: 30px;
+    margin-left: 20px;
 }
 
 .kr_name {
 	display: block;
-	width: 180px;
+	width: 170px;
 	margin-left: 0px;
 	margin-top: 10px;
 	text-align: center;
@@ -162,6 +241,7 @@ option {
 .rate {
 	width: 80px;
 	font-weight: bold;
+	text-align: center;
 }
 
 small {
@@ -197,11 +277,12 @@ font {
 }
 
 #searchInput {
-	width: 500px;
-	height: 45px;
-	margin-bottom: 10px;
-	border-radius: 5px;
-	border: solid 2px lightgray;
+    width: 500px;
+    height: 45px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: solid 3px gray;
+    margin-right: 65px;
 }
 
 #searchInput:focus {
@@ -232,27 +313,27 @@ font {
 				</td>
 				<td class="laneTd">
 					<button class="lane_" value="TOP">
-						<span>탑</span>
+						<span>Top</span>
 					</button>
 				</td>
 				<td class="laneTd">
 					<button class="lane_" value="JUNGLE">
-						<span>정글</span>
+						<span>Jungle</span>
 					</button>
 				</td>
 				<td class="laneTd">
 					<button class="lane_" value="MIDDLE">
-						<span>미드</span>
+						<span>Middle</span>
 					</button>
 				</td>
 				<td class="laneTd">
 					<button class="lane_" value="BOTTOM">
-						<span>원딜</span>
+						<span>Bottom</span>
 					</button>
 				</td>
 				<td class="laneTd">
 					<button class="lane_" value="UTILITY">
-						<span>서폿</span>
+						<span>Supporter</span>
 					</button>
 				</td>
 			</tr>
@@ -303,7 +384,7 @@ font {
 							src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png"
 							width="50px;" height="50px;"></button>
 					</td>
-					<td><button id = "free"><img
+					<td><button class="a_img" id = "free"><img
 							name='free'
 							src="https://s-lol-web.op.gg/images/icon/icon-rotation.svg"
 							width="50px;" height="50px;"></button>

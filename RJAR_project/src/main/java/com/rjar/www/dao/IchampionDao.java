@@ -61,6 +61,10 @@ public interface IchampionDao {
 	boolean deleteReply(Reply reply);
 	
 	List<ChampionDetail> getSkill_build(@Param("championName") String champion_eg_name, @Param("lane") String lane1);
+
+	Reply correctReply(Reply reply);
+
+	boolean upDateReply(Reply reply);
 	
 
 }

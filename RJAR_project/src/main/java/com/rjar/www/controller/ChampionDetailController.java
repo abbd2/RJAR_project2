@@ -45,10 +45,7 @@ public class ChampionDetailController {
 
 	@GetMapping(value = "/counterInfo")
 	public ModelAndView counterInfo(Champion champ) {
-		String tier = "platinum";
-		String championName = "Garen";
-		String lane = "TOP";
-		mav = champmm.counterInfo(championName, lane, tier);
+		mav = champmm.counterInfo(champ.getChampionName(), champ.getLane(), champ.getTier());
 		return mav;
 	}
 

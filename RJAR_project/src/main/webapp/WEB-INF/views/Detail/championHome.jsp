@@ -108,8 +108,9 @@ $('.lane_').click(function (){
 		data : {tier: tier, lane: lane},
 		
 	}).done( function(data){
-		console.log('성공');		
-		$('.tierList').html(data);
+		console.log(data);
+		$('.tierList').html(data).trigger("create");
+		
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);
@@ -128,6 +129,7 @@ $('#free').click(function () {
 	}).done( function(data){
 		console.log('성공');		
 		$('.champList').html(data);
+		$('.tier').text
 	}).fail(function(err) {
 		console.log("에러");
 		console.log(err);

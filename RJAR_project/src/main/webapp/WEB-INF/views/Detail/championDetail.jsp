@@ -36,6 +36,10 @@
 	font-weight: bold;
 }
 
+option {
+	font-weight: bold;
+}
+
 #champion_profile{
     width: 100%;
     height: 300px;
@@ -121,6 +125,7 @@
     margin-left: 10px;
     border-radius: 8px;
 }
+
 #rune_box2{
     width: 950px;
     height: 330px;
@@ -315,6 +320,11 @@
     text-align: center;
     line-height: 50px;
 }
+
+#r_contents {
+	margin-left: 170px;
+}
+
 </style>
 </head>
 <body>
@@ -344,7 +354,7 @@
             <img id="champ_img" src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${championName}.png" alt="">
         </div>
         <div id="champ_text">
-                <h2 style="margin-top: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;${championName}-${lane}</h2><br>
+                <h2 style="margin-top: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;${champion_kr_name}-${lane}</h2><br>
                 <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;챔피언 티어 : 3티어</h5>
          </div>
          <div id="champ_skill_box">
@@ -368,10 +378,17 @@
 </div>
 <div id="nav">
     <nav>
+<!--             <span><li><a href="#">빌드</a></li></span> -->
+<!--             <span><li><a href="#">룬</a></li></span> -->
+            <form action ="counterInfo" method="get">
+            	<input type="hidden" value="${tier}" name="tier">
+            	<input type="hidden" value="${lane}" name="lane">
+            	<input type="hidden" value="${championName}" name="championName">
+            <button>
+            <font>카운터</font>
+            </button>
+            </form>
         <ul style="list-style: none; margin: 0px;">
-            <span><li><a href="#">빌드</a></li></span>
-            <span><li><a href="#">룬</a></li></span>
-            <span><li><a href="counterInfo">카운터</a></li></span>
         </ul>
     </nav>
 </div>
@@ -984,42 +1001,30 @@ TOP2
         
     </div> <!--end build_box-->
     
-    <table id="rTable">
-		
-<!-- 		<tr> -->
-<!-- 			<th>첨부파일</th> -->
-<%-- 			<td><c:set var="file" value="${board.bfList}" /> --%>
-<%-- 				<c:if test="${empty file}"> --%>
-<!-- 					첨부된 파일이 없습니다. -->
-<%-- 				</c:if> --%>
-<%-- 				<c:if test="${!empty file}"> --%>
-<%-- 					<c:forEach var="file" items="${board.bfList}"> --%>
-<%-- 					<img src="upload/${file.bf_sysname}" width="50" />			 --%>
-<%-- 					<a href="./download?sysFileName=${file.bf_sysname}&oriFileName=${file.bf_oriname}"> --%>
-<%-- 						${file.bf_oriname}</a> --%>
-<%-- 					</c:forEach> --%>
-<%-- 				</c:if> --%>
-				
-<!-- 			</td> -->
-<!-- 		</tr> -->
-	</table>
-	<table>
-		<c:if test="${!empty sessionScope.m_id}">
+	<div >
+	<h1 style="font-size: 25px;">운영 Tip</h1>
+		<br>
+		<table id="rTable" Style="width: 1250px;">
+			<!-- 댓글 출력 -->
+		</table>
+		<br>
+		<table>
+			<c:if test="${!empty sessionScope.m_nick}">
 				<tr>
-					<td><textarea rows="5" cols="70" id="r_contents"></textarea></td>
-					<td><input type="button" value="댓글입력"
+					<td><textarea rows="2" cols="100" id="r_contents"></textarea></td>
+					<td><input type="button" class="btn btn-primary" value="댓글입력"
 						onclick="replyInsert(${championId})"
-						style="width: 70px; height: 50px"></td>
+						style="width: 110px; height: 60px;"></td>
 				</tr>
-		</c:if>
-	</table>
-	<!-- 댓글 출력 -->
+			</c:if>
+		</table>
+				<br>
+	</div>
 </body>
 <script type="text/javascript">
 let tier = '${tier}';
 let championId = ${championId};
 $(function () {
-	
 	switch (tier) {
 	case 'bronze':
 		$('#bronze').prop('selected', true);
@@ -1093,13 +1098,13 @@ $(function () {
 		         let admin = '관리자';
 		         rList = '';
 		      $.each(data, function(i, reply){
-		         rList+='<tr height="25" align="center">'
-		            +'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
-		            +'<td width="200">'+reply.r_contents+'</td>'
-		            +'<td width="200">'+reply.r_date+'</td>';
-		         if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
-		            rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
-		                  +'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+		         rList+='<tr height="25" align="center" style ="border-bottom: 1px solid lightgray;">'
+		            +'<td width="450">'+reply.r_contents+'</td>'
+		            +'<td width="70">'+reply.r_nick+'</td>'
+		            +'<td width="70">'+reply.r_date+'</td>';
+		         if (reply.r_nick == "${sessionScope.m_nick}" || admin == "${sessionScope.m_nick}"){
+		            rList += '<td width="70"><button class="btn btn-outline-dark" onclick="correctReply('+reply.r_num+')">수정</button>'
+		                  +'<button class="btn btn-outline-dark" onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
 		         }else{
 		            rList += '</tr>';            
 		         }
@@ -1129,6 +1134,7 @@ $("#top2").click(function(){
 			console.log('같음');
 		} else{
 			statperks_ids4[i].css("filter", "grayscale(100%)");
+			statperks_ids4[i].css("opacity", "0.7");
 		}
 	}
 	for (var i = 0; i < statperks_ids5.length; i++) {
@@ -1136,6 +1142,7 @@ $("#top2").click(function(){
 			console.log('같음');
 		} else{
 			statperks_ids5[i].css("filter", "grayscale(100%)");
+			statperks_ids5[i].css("opacity", "0.7");
 		}
 	}
 	for (var i = 0; i < statperks_ids6.length; i++) {
@@ -1143,6 +1150,7 @@ $("#top2").click(function(){
 			console.log('같음');
 		} else{
 			statperks_ids6[i].css("filter", "grayscale(100%)");
+			statperks_ids6[i].css("opacity", "0.7");
 		}
 	}
 	
@@ -1155,9 +1163,9 @@ $(".lane_btn").click(function(){
 	let championName = "${championName}";
 	let button_value = $(this).val();
 	let $form = $("<form action='runeLine' method ='get'></form>");
-	$("<input>").attr("name", "lane").val(button_value).appendTo($form);
-	$("<input>").attr("name", "championName").val(championName).appendTo($form);
-	$("<input>").attr("name", "tier").val(tier).appendTo($form);
+	$("<input type='hidden'>").attr("name", "lane").val(button_value).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input type='hidden'>").attr("name", "tier").val(tier).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 });
@@ -1182,14 +1190,14 @@ function replyInsert(championId){
 			let admin = '관리자';
 			rList = '';
 		$.each(data, function(i, reply){
-			rList+='<tr height="25" align="center">'
+			rList+='<tr height="25" align="center" style ="border-bottom: 1px solid lightgray;">'
 				+'<input type="hidden" value='+reply.r_num+'>'
-				+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
-				+'<td width="200">'+reply.r_contents+'</td>'
-				+'<td width="200">'+reply.r_date+'</td>';
-			if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
-				rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
-				+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+				+'<td width="70">'+reply.r_nick+'</td>' // 닉네임으로 바꿀예정
+				+'<td width="450">'+reply.r_contents+'</td>'
+				+'<td width="70">'+reply.r_date+'</td>';
+			if (reply.r_nick == "${sessionScope.m_nick}" || admin == "${sessionScope.m_nick}"){
+				rList += '<td width="70"><button class="btn btn-outline-dark" onclick="correctReply('+reply.r_num+')">수정</button>'
+				+'<button class="btn btn-outline-dark" onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
 			}else{
 				rList += '</tr>';				
 			}
@@ -1219,14 +1227,14 @@ $("#r_contents").keydown(function(key) {                
 					let admin = '관리자';
 					rList = '';
 				$.each(data, function(i, reply){
-					rList+='<tr height="25" align="center">'
+					rList+='<tr height="25" align="center" style ="border-bottom: 1px solid lightgray;">'
 						+'<input type="hidden" value='+reply.r_num+'>'
-						+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
-						+'<td width="200">'+reply.r_contents+'</td>'
-						+'<td width="200">'+reply.r_date+'</td>';
-					if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
-						rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
-						+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+						+'<td width="70">'+reply.r_nick+'</td>'
+						+'<td width="450">'+reply.r_contents+'</td>'
+						+'<td width="70">'+reply.r_date+'</td>';
+					if (reply.r_nick == "${sessionScope.m_nick}" || admin == "${sessionScope.m_nick}"){
+						rList += '<td width="70"><button class="btn btn-outline-dark" onclick="correctReply('+reply.r_num+')">수정</button>'
+						+'<button class="btn btn-outline-dark" onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
 					}else{
 						rList += '</tr>';				
 					}
@@ -1249,20 +1257,20 @@ function deleteReply(r_num){
 		data: {championId : championId , r_num : r_num},
 	
 		contentType : 'application/json;charset=UTF-8',	
-			
+	
 		success: function(data) {
 			console.log("1:",data);
 			let admin = '관리자';
 			rList = '';
 		$.each(data, function(i, reply){
-			rList+='<tr height="25" align="center">'
+			rList+='<tr height="25" align="center" style ="border-bottom: 1px solid lightgray;">'
 				+'<input type="hidden" value='+reply.r_num+'>'
-				+'<td width="100">'+reply.r_id+'</td>' // 닉네임으로 바꿀예정
-				+'<td width="200">'+reply.r_contents+'</td>'
-				+'<td width="200">'+reply.r_date+'</td>';
-			if (reply.r_id == "${sessionScope.m_id}" || admin == "${sessionScope.m_id}"){
-				rList += '<td width="200"><button onclick="correctReply('+reply.r_num+')">수정</button>'
-				+'<button onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+				+'<td width="70">'+reply.r_nick+'</td>' // 닉네임으로 바꿀예정
+				+'<td width="450">'+reply.r_contents+'</td>'
+				+'<td width="70">'+reply.r_date+'</td>';
+			if (reply.r_nick == "${sessionScope.m_nick}" || admin == "${sessionScope.m_nick}"){
+				rList += '<td width="200"><button class="btn btn-outline-dark" onclick="correctReply('+reply.r_num+')">수정</button>'
+				+'<button class="btn btn-outline-dark" onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
 			}else{
 				rList += '</tr>';				
 			}
@@ -1272,6 +1280,68 @@ function deleteReply(r_num){
 			console.log(err);
 		}
 	}); //ajax End
+}
+//댓글 수정 클릭 시 
+function correctReply(r_num){
+	
+	$.ajax({
+		type: 'get',
+		url: 'correctReply',
+		data: {championId : championId , r_num : r_num},
+	
+		contentType : 'application/json;charset=UTF-8',	
+		
+		success: function(reply) {
+			console.log("1:",reply);
+			$('#r_contents').val(reply.r_contents);
+			$('#inputButton').attr('onclick', 'replyUpdate('+reply.r_num+')');
+			$('#inputButton').attr("value", "수정완료");
+// 		 $('#rTable').html(rList);
+		}, error: function(err) {
+			console.log(err);
+		}
+	}); //ajax End
+}
+
+//댓글 수정완료 버튼
+function replyUpdate(r_num)  {
+	
+	let r_contents = $('#r_contents').val();
+	
+	$('#r_contents').val("");
+	$.ajax({
+		type: 'get',
+		url: 'replyUpdate',
+		data: {championId : championId , r_num : r_num, r_contents : r_contents},
+	
+		contentType : 'application/json;charset=UTF-8',	
+			
+		success: function(data) {
+			console.log("1:",data);
+			let admin = '관리자';
+			rList = '';
+		$.each(data, function(i, reply){
+			rList+='<tr height="25" align="center" style ="border-bottom: 1px solid lightgray;">'
+				+'<input type="hidden" value='+reply.r_num+'>'
+				+'<td width="70">'+reply.r_nick+'</td>'
+				+'<td width="450">'+reply.r_contents+'</td>'
+				+'<td width="70">'+reply.r_date+'</td>';
+			if (reply.r_nick == "${sessionScope.m_nick}" || admin == "${sessionScope.m_nick}"){
+				rList += '<td width="70"><button class="btn btn-outline-dark" onclick="correctReply('+reply.r_num+')">수정</button>'
+				+'<button class="btn btn-outline-dark" onclick="deleteReply('+reply.r_num+')">삭제</button></td></tr>';
+			}else{
+				rList += '</tr>';				
+			}
+		});
+		$('#rTable').html(rList);
+		
+		$('#inputButton').attr('onclick', 'replyInsert('+championId+')');
+		$('#inputButton').attr("value", "댓글입력");
+		}, error: function(err) {
+			console.log(err);
+		}
+	});
+	
 }
 </script>
 </html>
