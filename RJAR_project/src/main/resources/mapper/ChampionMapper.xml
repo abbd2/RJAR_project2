@@ -4,7 +4,7 @@
 <mapper namespace="com.rjar.www.dao.IchampionDao">
 
 	<select id="getChampionList" resultType="Champion">
-		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA STATS_SKILL_PK)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
 		FROM STATS_SKILL_DATA
 		ORDER BY CHAMPION_KR_NAME
 	</select>
@@ -25,7 +25,7 @@
 	</select>
 	
 	<select id="getRotaion" resultType="Champion">
-		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA STATS_SKILL_PK)*/ CHAMPIONNAME, CHAMPIONID, CHAMPION_KR_NAME
 		FROM STATS_SKILL_DATA
 		WHERE CHAMPIONID IN(#{championId1},#{championId2},#{championId3},#{championId4},#{championId5},#{championId6},
 		#{championId7},#{championId8},#{championId9},#{championId10},#{championId11},#{championId12},#{championId13},#{championId14},
@@ -34,20 +34,20 @@
 	</select>
 	
 	<select id="getSelectChamp" resultType="Champion">
-		SELECT /*+INDEX_DESC(STATS_SKILL_DATA SYS_C0031835)*/ CHAMPIONNAME, CHAMPION_KR_NAME
+		SELECT /*+INDEX_DESC(STATS_SKILL_DATA STATS_SKILL_PK)*/ CHAMPIONNAME, CHAMPION_KR_NAME
 		FROM STATS_SKILL_DATA
 		WHERE CHAMPION_KR_NAME LIKE '%'||#{text}||'%' OR CHAMPIONNAME LIKE '%'||#{text}||'%'
 		ORDER BY CHAMPION_KR_NAME
 	</select>
 	
 	<select id="getChampionName1" resultType="ChampionDetail">
-		SELECT /*+ FULL(${tier}) */ LANE, CHAMPIONNAME, CHAMPION_KR_NAME FROM ${tier}_DETAIL
+		SELECT /*+INDEX_DESC(${tier}_DETAIL ${tier}_DETAIL_PK)*/ LANE, CHAMPIONNAME, CHAMPION_KR_NAME FROM ${tier}_DETAIL
 		WHERE CHAMPIONID = ${championId}
 		ORDER BY PICKRATE DESC
 	</select>
 	
 	<select id="getChampionName2" resultType="ChampionDetail">
-		SELECT /*+ FULL(${tier}) */ LANE, CHAMPIONID, CHAMPION_KR_NAME FROM ${tier}_DETAIL
+		SELECT /*+ FULL(${tier}) */ LANE, CHAMPIONID, CHAMPIONNAME, CHAMPION_KR_NAME FROM ${tier}_DETAIL
 		WHERE CHAMPION_KR_NAME = #{championName} OR CHAMPIONNAME = #{championName}
 		ORDER BY PICKRATE DESC
 	</select>
@@ -109,7 +109,7 @@
 	</select>
 	
 	<select id="getvsWinRate" resultType="Champion">
-		SELECT ROUND(COUNT(E.WIN)/COUNT(F.GAMEID), 4)*100 AS VSWINRATE
+		SELECT ROUND(COUNT(E.WIN)/COUNT(F.GAMEID), 4)*100 AS VSWINRATE, COUNT(F.GAMEID) AS GAMECOUNT
 		FROM
 		(SELECT A.WIN FROM
 		(SELECT GAMEID AS WIN FROM ${tier}
@@ -172,19 +172,32 @@
 	</select>
 	
 	<insert id="replyInsert" parameterType="Reply">
-		INSERT INTO TEST_REPLY (CHAMPIONID, R_ID ,R_NUM, R_CONTENTS, R_DATE)
-		VALUES(${championId}, #{r_id}, SEQ_REPLY.NEXTVAL, #{r_contents}, default)
+		INSERT INTO REPLY_TABLE (CHAMPIONID, R_NUM, R_NICK , R_CONTENTS, R_DATE)
+		VALUES(${championId}, SEQ_REPLY.NEXTVAL, #{r_nick}, #{r_contents}, default)
 	</insert>
 	
 	<select id="getReplyList" resultType="Reply">
-		SELECT * FROM TEST_REPLY 
+		SELECT * FROM REPLY_TABLE 
 		WHERE CHAMPIONID= #{championId}
+		ORDER BY R_DATE
 	</select>
 	
 	<delete id="deleteReply" parameterType="Reply">
-		DELETE FROM TEST_REPLY
+		DELETE FROM REPLY_TABLE
 		WHERE CHAMPIONID= ${championId} AND R_NUM = ${r_num}
 	</delete>
+	
+	<select id="correctReply" resultType="Reply">
+		SELECT R_CONTENTS, R_NUM FROM REPLY_TABLE
+		WHERE CHAMPIONID= ${championId} AND R_NUM = ${r_num}
+	</select>
+	
+	<update id="upDateReply" parameterType="Reply">
+		UPDATE REPLY_TABLE
+		SET 
+		R_CONTENTS = #{r_contents}
+		WHERE CHAMPIONID= ${championId} AND R_NUM = ${r_num}
+	</update>
 	
 	<select resultType="ChampionDetail" id="getSkill_build">
 		SELECT *
@@ -202,4 +215,32 @@
 		      ORDER BY BOOTS_CNT DESC)
 		WHERE <![CDATA[ROWNUM<=2]]>
 	</select>
+	
+	<select resultType="ChampionDetail" id="getBoots_Plus">
+      SELECT *
+      FROM (SELECT *
+            FROM ${tier}_PLUS_BOOTS
+            WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+            ORDER BY BOOTS_CNT DESC)
+      WHERE <![CDATA[ROWNUM<=2]]>
+   </select>
+   
+   <select resultType="ChampionDetail" id="getItem_build">
+      SELECT CHAMPIONNAME, CHAMPIONID, TEAMPOSITION, ITEM1, ITEM2, ITEM3, ITEM_TOTAL, ITEM_CNT, ITEM_WIN, ITEM_WINRATE, ITEM_PICK
+      FROM (SELECT * FROM ${tier}_BUILD3
+           WHERE CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane} AND ITEM3!=0
+           ORDER BY ITEM_CNT DESC)
+      WHERE <![CDATA[ROWNUM<=4]]>
+   </select>
+   
+   <select resultType="ChampionDetail" id="getChampionItem">
+      SELECT CHAMPIONNAME, TEAMPOSITION, ITEM1, A.ITEM_WIN, A.ITEM_TOTAL
+      FROM (SELECT CHAMPIONNAME, TEAMPOSITION, ITEM1, SUM(ITEM_WIN) ITEM_WIN, ITEM_TOTAL
+            FROM GOLD_FULL
+            GROUP BY CHAMPIONNAME, TEAMPOSITION, ITEM1,ITEM_TOTAL
+            HAVING ITEM1!=0 AND CHAMPIONNAME=#{championName} AND TEAMPOSITION=#{lane}
+            ORDER BY CHAMPIONNAME) A
+      WHERE A.CHAMPIONNAME=CHAMPIONNAME AND A.TEAMPOSITION=TEAMPOSITION AND A.ITEM1=ITEM1
+      ORDER BY ITEM_WIN DESC
+   </select>
 </mapper>

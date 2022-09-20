@@ -1,9 +1,11 @@
 package com.rjar.www.service.member;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.rjar.www.bean.Member;
+import com.rjar.www.bean.Reply;
 import com.rjar.www.dao.IMemberDao;
 import com.rjar.www.exception.CheckException;
 import com.rjar.www.exception.CheckUserException;
@@ -29,6 +32,9 @@ public class MemberMM {
 
 	@Autowired
 	private Member member;
+	
+//	@Autowired
+//	private Reply reply;
 
 	ModelAndView mav;
 
@@ -232,13 +238,84 @@ public class MemberMM {
 			System.out.println(result + " 닉네임 변경 선공");
 			session.setAttribute("m_nick", wantNick);
 			mav = new ModelAndView();
-			mav.addObject("msg", "비밀번호 변경 성공");
+			mav.addObject("msg", 1);
 			mav.setViewName("redirect:/home");
 			return mav;
 
 		} else {
-			throw new NoMatchingPwException("오류");
+			
+			throw new CheckException("오류");
 		}
+	}
+
+	public String delete(String m_nick, HttpSession session) {
+		member.setM_nick(m_nick);
+		
+		int result = mDao.deleteMember(member);
+		System.out.println("delete_result="+result);
+		
+		if(result>0) {
+			session.invalidate();
+			System.out.println(result+"계정 삭제 성공");
+					
+			return "redirect:/home";		
+		}else {
+			
+			throw new CheckException("오류");
+		}
+
+	}
+
+	public ModelAndView getReplyList(HttpSession session, String r_nick) {
+		System.out.println("1"+session);
+		System.out.println("2"+r_nick);
+		
+		String test = "생각을좀하자산아";
+		mav = new ModelAndView();
+		List<Reply> rList = null;
+		System.out.println("rList 가져오기");
+		rList = mDao.getReplyList(test);
+		
+		if(rList!=null && rList.size()!=0) {
+			System.out.println(rList);
+			mav.addObject("rList",rList);
+			mav.addObject("myReply", make_Reply_html(rList));		
+		}else {
+			mav.addObject("myReply", make_noData_html());
+		}
+//		mav.setViewName("myPage");
+				
+		return mav;
+	}
+
+	private Object make_noData_html() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<tr class=table-active>");
+		sb.append("<td></td>");
+		sb.append("<td>데이터가 없습니다.</td>");
+		sb.append("<td></td>");
+		sb.append("</tr>");
+		
+		
+		return sb.toString();
+	}
+
+	private Object make_Reply_html(List<Reply> rList) {
+		StringBuffer sb = new StringBuffer();
+		System.out.println("rList길이="+rList.size());
+				
+		for(int i=0; i<rList.size(); i++) {
+			sb.append("<tr class=table-active>");
+			sb.append("<td>"+rList.get(i).getR_nick()+"</td>");
+			sb.append("<td>"+rList.get(i).getR_contents()+"</td>");
+			sb.append("<td>"+rList.get(i).getR_date()+"</td>");
+			sb.append("</tr>");
+		}
+		
+		System.out.println("sb="+sb);
+		
+		
+		return sb.toString();
 	}
 
 }

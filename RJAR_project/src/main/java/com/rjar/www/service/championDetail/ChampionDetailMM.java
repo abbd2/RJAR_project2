@@ -77,12 +77,12 @@ public class ChampionDetailMM {
 			sb.append("<td class = 'kr_name'><small style = 'font-weight: bolder'>"
 					+ tierList.get(i).getChampion_kr_name() + "</small></td>");
 
-			sb.append("<td class = 'rate'><font>" + tierList.get(i).getChampTier() + "</font></td>");
+			sb.append("<td><font class = 'tier'>" + tierList.get(i).getChampTier() + "</font></td>");
 			sb.append("<td class = 'rate'><font>" + tierList.get(i).getWinRate1() + "</font></td>");
 			sb.append("<td class = 'rate'><font>" + tierList.get(i).getBanRate1() + "</font></td>");
 			sb.append("<td class = 'rate'><font>" + tierList.get(i).getPickRate() + "</font></td>");
 
-			sb.append("<td style = 'padding-left:20px;'>");
+			sb.append("<td>");
 			sb.append("<div class = 'counter' value = " + tierList.get(i).getCounter1() + ">");
 			sb.append("<img class = 'counterimg' src = https://ddragon.leagueoflegends.com/cdn/12.16.1/img/champion/"
 					+ tierList.get(i).getCounter1() + ".png>");
@@ -195,7 +195,7 @@ public class ChampionDetailMM {
 		mav.addObject("championId", championId);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		mav.addObject("lane", lane1);
+		mav.addObject("lane", ChampionLane(lane1));
 
 		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
 		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1, tier);
@@ -369,7 +369,22 @@ public class ChampionDetailMM {
 		System.out.println("skill1="+skill1);
 		
 		// 아이템 빌드
-		List<ChampionDetail> item_build;
+		List<ChampionDetail> item_build=champDao.getItem_build(champion_eg_name, lane1, tier);
+		ChampionDetail build=item_build.get(0);
+		mav.addObject("build",build);
+		System.out.println("build="+build);
+		  
+		ChampionDetail build2=item_build.get(1);
+		mav.addObject("build2",build2);
+		System.out.println("build2="+build2);
+		  
+		ChampionDetail build3=item_build.get(2);
+		mav.addObject("build3",build3);
+		System.out.println("build3="+build3);
+		  
+		ChampionDetail build4=item_build.get(3);
+		mav.addObject("build4",build4);
+		System.out.println("build4="+build4);
 		
 		mav.setViewName("Detail/championDetail");
 		return mav;
@@ -401,6 +416,7 @@ public class ChampionDetailMM {
 		// 챔피언이름/주로 가는 2가지 라인 가져오기
 		List<ChampionDetail> championNameLane = champDao.getChampionName2(championName, tier);
 		
+		String champion_eg_name = championNameLane.get(0).getChampionName();
 		String champion_kr_name = championNameLane.get(0).getChampion_kr_name();
 		int championId = championNameLane.get(0).getChampionId();
 		String lane1 = championNameLane.get(0).getLane();
@@ -408,15 +424,15 @@ public class ChampionDetailMM {
 		if(championNameLane.size() != 1) {
 			lane2 = championNameLane.get(1).getLane();
 		}
-		mav.addObject("championName", championName);
+		mav.addObject("championName", champion_eg_name);
 		mav.addObject("champion_kr_name", champion_kr_name);
 		mav.addObject("championId", championId);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		mav.addObject("lane", lane1);
+		mav.addObject("lane", ChampionLane(lane1));
 		
 		// 해당 챔피언 룬 (승률이 가장 높은 2개) 가져오기
-		List<ChampionDetail> championRunes = champDao.getChampionRunes(championName, lane1, tier);
+		List<ChampionDetail> championRunes = champDao.getChampionRunes(champion_eg_name, lane1, tier);
 
 		// 승률 1번째로 높은 룬
 		ChampionDetail runes1 = championRunes.get(0);
@@ -477,7 +493,7 @@ public class ChampionDetailMM {
 			String statperks3 = championRunes.get(i).getStatperks();
 
 			rune_pickWin.add(champDao.rune_pickWin(main_rune, main_under1, main_under2, main_under3, main_under4,
-					sub_rune, sub_under1, sub_under2, statperks3, championName, lane1, tier));
+					sub_rune, sub_under1, sub_under2, statperks3, champion_eg_name, lane1, tier));
 
 		}
 
@@ -486,6 +502,124 @@ public class ChampionDetailMM {
 		mav.addObject("rune_pick1", rune_pickWin.get(0).getRune_pick());
 		mav.addObject("rune_pick2", rune_pickWin.get(1).getRune_pick());
 		mav.addObject("tier", tier);
+		
+		
+		// 스펠 판수, 승률, 픽률
+		List<ChampionDetail> spells = champDao.getSpell(champion_eg_name, lane1);
+		ChampionDetail spell;
+
+		int cnt=0;
+		for(int i=0;i<spells.size();i++) {
+			for(int j=i;j<spells.size();j++) {
+				if (spells.get(i).getSpell1().equals(spells.get(j).getSpell2()) && spells.get(i).getSpell2().equals(spells.get(j).getSpell1())) {
+					int spell_cnt = spells.get(i).getSpell_cnt()+spells.get(j).getSpell_cnt();
+					int	spell_win = spells.get(i).getSpell_win()+spells.get(j).getSpell_win();
+					double winrate=((double)spell_win/spell_cnt)*100;
+					double pickrate=((double)spell_cnt/spells.get(i).getSpell_total())*100;
+					
+					// 소숫점 두자리
+					winrate=Math.round(winrate*100)/100.0;
+					String spell_winrate=String.format("%.2f", winrate);
+					
+					pickrate=Math.round(pickrate*100)/100.0;
+					String spell_pickrate=String.format("%.2f", pickrate);
+					
+					
+					
+					cnt++;
+					
+					if (cnt==1) {
+						spell=spells.get(j);
+						spells.set(i, spell.setSpell1(spell.getSpell1()));
+						spells.set(i, spell.setSpell2(spell.getSpell2()));
+						spells.set(i, spell.setSpell_cnt(spell_cnt));
+						spells.set(i, spell.setSpell_win(spell_win));
+						spells.set(i, spell.setSpell_winrate(spell_winrate));
+						spells.set(i, spell.setSpell_pick(spell_pickrate));
+						spells.set(i, spell.setLane(ChampionLane(spell.getLane())));
+						mav.addObject("spell",spell);
+					}
+					else if(cnt==2) {
+						spell=spells.get(j);
+						spells.set(i, spell.setSpell1(spell.getSpell1()));
+						spells.set(i, spell.setSpell2(spell.getSpell2()));
+						spells.set(i, spell.setSpell_cnt(spell_cnt));
+						spells.set(i, spell.setSpell_win(spell_win));
+						spells.set(i, spell.setSpell_winrate(spell_winrate));
+						spells.set(i, spell.setSpell_pick(spell_pickrate));
+						mav.addObject("spell2",spell);
+					}
+					if (cnt==3) break;
+				}
+			}
+		}
+		
+		//아이템 판수, 승률, 픽률
+		List<ChampionDetail> start_items = champDao.getStart_items(champion_eg_name, lane1);
+		ChampionDetail start1=start_items.get(0);
+		
+		mav.addObject("start1",start1);
+		
+		if (start_items.get(1).getStart1()!=null){
+			ChampionDetail start2=start_items.get(1);
+			mav.addObject("start2",start2);
+		}
+		
+		//신발 판수, 승률, 픽률
+		List<ChampionDetail> boots = champDao.getBoots(champion_eg_name, lane1);
+		ChampionDetail boots1=boots.get(0);
+		ChampionDetail boots2=boots.get(1);
+		
+		mav.addObject("boots1",boots1);
+		System.out.println("boots1="+boots1);
+		
+		mav.addObject("boots2",boots2);
+		System.out.println("boots2="+boots2);
+		
+		
+		//스킬 빌드
+		List<ChampionDetail> skill_build=champDao.getSkill_build(champion_eg_name, lane1);
+		
+		ChampionDetail skill1=skill_build.get(0);
+		System.out.println("skill1="+skill1);
+		skill1=skill_build.get(0);
+		skill_build.set(0, skill1.setLv1(ChampionSKill(skill1.getLv1())));
+		skill_build.set(0, skill1.setLv2(ChampionSKill(skill1.getLv2())));			
+		skill_build.set(0, skill1.setLv3(ChampionSKill(skill1.getLv3())));			
+		skill_build.set(0, skill1.setLv4(ChampionSKill(skill1.getLv4())));
+		skill_build.set(0, skill1.setLv5(ChampionSKill(skill1.getLv5())));
+		skill_build.set(0, skill1.setLv6(ChampionSKill(skill1.getLv6())));
+		skill_build.set(0, skill1.setLv7(ChampionSKill(skill1.getLv7())));
+		skill_build.set(0, skill1.setLv8(ChampionSKill(skill1.getLv8())));
+		skill_build.set(0, skill1.setLv9(ChampionSKill(skill1.getLv9())));
+		skill_build.set(0, skill1.setLv10(ChampionSKill(skill1.getLv10())));
+		skill_build.set(0, skill1.setLv11(ChampionSKill(skill1.getLv11())));
+		skill_build.set(0, skill1.setLv12(ChampionSKill(skill1.getLv12())));
+		skill_build.set(0, skill1.setLv13(ChampionSKill(skill1.getLv13())));
+		skill_build.set(0, skill1.setLv14(ChampionSKill(skill1.getLv14())));
+		skill_build.set(0, skill1.setLv15(ChampionSKill(skill1.getLv15())));
+		
+		mav.addObject("skill1",skill1);
+		System.out.println("skill1="+skill1);
+		
+		// 아이템 빌드
+		List<ChampionDetail> item_build=champDao.getItem_build(champion_eg_name, lane1, tier);
+		ChampionDetail build=item_build.get(0);
+		mav.addObject("build",build);
+		System.out.println("build="+build);
+		  
+		ChampionDetail build2=item_build.get(1);
+		mav.addObject("build2",build2);
+		System.out.println("build2="+build2);
+		  
+		ChampionDetail build3=item_build.get(2);
+		mav.addObject("build3",build3);
+		System.out.println("build3="+build3);
+		  
+		ChampionDetail build4=item_build.get(3);
+		mav.addObject("build4",build4);
+		System.out.println("build4="+build4);
+				
 		mav.setViewName("Detail/championDetail");
 		return mav;
 	}
@@ -652,6 +786,7 @@ public class ChampionDetailMM {
 		                      champAndCounter.getCounter5(), champAndCounter.getCounter6(),
 		                      champAndCounter.getCounter7(), champAndCounter.getCounter8(),
 		                      champAndCounter.getCounter9(), champAndCounter.getCounter10()};
+		
 		for (int i = 0; i < 10; i++) {			
 			vsWinRateList.add(champDao.getvsWinRate(championName, counterList[i], lane, tier));
 		}
@@ -668,14 +803,17 @@ public class ChampionDetailMM {
 		List<ChampionDetail> mainRunePng = selectRunes(counterRunes.get(0).getMain_rune());
 		List<ChampionDetail> subRunePng = selectRunes(counterRunes.get(0).getSub_rune());
 		
+		List<ChampionDetail> start_items = champDao.getStart_items(championName, lane1);
+		ChampionDetail start1=start_items.get(0);
 		
+		mav.addObject("start1",start1);
 		mav.addObject("killParticipation1", remainder.getKillParticipation1());
 		mav.addObject("killParticipation2", remainder.getKillParticipation2());
 		mav.addObject("championName", championName);
 		mav.addObject("champion_kr_name", champion_kr_name);
 		mav.addObject("lane1", lane1);
 		mav.addObject("lane2", lane2);
-		mav.addObject("lane", lane);
+		mav.addObject("lane", ChampionLane(lane));
 		mav.addObject("counters", champAndCounter);
 		mav.addObject("counter", champAndCounter.getCounter1());
 		mav.addObject("kda1", remainder.getKda1());
@@ -801,6 +939,20 @@ public class ChampionDetailMM {
 	
 	public List<Reply> deleteReply(Reply reply) {
 		boolean result = champDao.deleteReply(reply);
+		List<Reply> rList = null; 
+		if (result) {
+			rList = champDao.getReplyList(reply.getChampionId());			
+		}
+		return rList;
+	}
+
+	public Reply correctReply(Reply reply) {
+		Reply contents = champDao.correctReply(reply);
+		return contents;
+	}
+
+	public List<Reply> replyUpdate(Reply reply) {
+		boolean result = champDao.upDateReply(reply);
 		List<Reply> rList = null; 
 		if (result) {
 			rList = champDao.getReplyList(reply.getChampionId());			

@@ -19,6 +19,7 @@
 	font-size: 20px;
 	font-weight: bold;
 }
+
 #champion_profile {
 	width: 100%;
 	height: 300px;
@@ -98,9 +99,8 @@
 #rune_box1 {
 	width: 900px;
 	height: 1080px;
-	margin-top: 30px;
-	border-radius: 8px;
-	margin-left: 181px;
+	margin-top: 45px;
+	margin-left: 285px;
 	padding-left: 45px;
 }
 
@@ -202,7 +202,7 @@
 }
 
 .wholeBox {
-	width: 1300px;
+	width: 1500px;
 }
 
 .vsBox {
@@ -311,11 +311,11 @@
 	font-size: 20px;
 	border: 2px solid black;
 }
-.counterList{
+
+.counterList {
 	width: 80px;
 	border-bottom: 2px solid black;
 }
-
 </style>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
@@ -327,17 +327,16 @@
 				<option id="gold" value="gold" style="color: #ffd700;">+Gold</option>
 				<option id="platinum" value="platinum" style="color: #006fff;">+Platinum</option>
 				<option id="diamond" value="diamond" style="color: #87cefa;">+Diamond</option>
-			</select>
-			<input value="${championName}" name="championName" type="hidden">
+			</select> <input value="${championName}" name="championName" type="hidden">
 		</div>
 	</form>
 	<div id="champion_profile">
 		<div id="champ_img_box">
 			<div id="lane_btn_box">
 				<button class="lane_btn" value="${lane1}">${lane1}</button>
-			<c:if test="${!empty lane2}">
-	            <button class="lane_btn" value ="${lane2}">${lane2}</button>
-			</c:if>    
+				<c:if test="${!empty lane2}">
+					<button class="lane_btn" value="${lane2}">${lane2}</button>
+				</c:if>
 			</div>
 			<div id="champ_img_box2">
 				<img id="champ_img"
@@ -352,27 +351,27 @@
 			<div id="champ_skill_box">
 				<div id="p">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/passive/${championName}_Passive.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/passive/${start1.passive}"
 						alt="">
 				</div>
 				<div id="q">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}Q.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.q}"
 						alt="">
 				</div>
 				<div id="w">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}W.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.w}"
 						alt="">
 				</div>
 				<div id="e">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}E.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.e}"
 						alt="">
 				</div>
 				<div id="r">
 					<img class="champ_skill"
-						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${championName}R.png"
+						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/spell/${start1.r}"
 						alt="">
 				</div>
 			</div>
@@ -380,27 +379,31 @@
 	</div>
 	<div id="nav">
 		<nav>
-			<ul style="list-style: none; margin: 0px;">
-				<span><li><a href="#">빌드</a></li></span>
-				<span><li><a href="#">룬</a></li></span>
-				<span><li><a href="counterInfo">카운터</a></li></span>
-			</ul>
+			<form action="counterInfo" method="get">
+				<input type="hidden" value="${tier}" name="tier"> <input
+					type="hidden" value="${lane}" name="lane"> <input
+					type="hidden" value="${championName}" name="championName">
+				<button class="btn btn-primary">
+					<font>카운터</font>
+				</button>
+			</form>
 		</nav>
 	</div>
 
 	<div class="wholeBox">
 		<div class="counterTable">
 			<table>
-			<tr>
-			<td class="counterList"></td>
-			<td class="counterList">이름</td>
-			</tr>
+				<tr>
+					<td class="counterList"></td>
+					<td class="counterList">이름</td>
+				</tr>
 				<tr class="championTr" data-champion="${counters.counter1}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter1}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter1} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(0).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(0).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter2}">
 					<td class="counterList"><img
@@ -408,6 +411,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter2} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(1).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(1).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter3}">
 					<td class="counterList"><img
@@ -415,6 +419,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter3} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(2).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(2).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter4}">
 					<td class="counterList"><img
@@ -422,6 +427,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter4} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(3).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(3).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter5}">
 					<td class="counterList"><img
@@ -429,6 +435,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter5} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(4).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(4).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter6}">
 					<td class="counterList"><img
@@ -436,6 +443,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter6} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(5).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(5).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter7}">
 					<td class="counterList"><img
@@ -443,6 +451,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter7} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(6).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(6).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter8}">
 					<td class="counterList"><img
@@ -450,6 +459,7 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter8} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(7).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(7).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter9}">
 					<td class="counterList"><img
@@ -457,13 +467,15 @@
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter9} </font></td>
 					<td class="counterList"><font>${vsWinRate.get(8).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(8).getGameCount()}</font></td>
 				</tr>
 				<tr class="championTr" data-champion="${counters.counter10}">
 					<td class="counterList"><img
 						src="https://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/${counters.counter10}.png"
 						style="width: 40px; height: 40px;"></td>
 					<td class="counterList"><font> ${counters.counter10} </font></td>
-					<td><font id="winRate10">${vsWinRate.get(9).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(9).getVsWinRate()}</font></td>
+					<td class="counterList"><font>${vsWinRate.get(9).getGameCount()}</font></td>
 				</tr>
 			</table>
 		</div>
@@ -818,6 +830,8 @@ $(function () {
 		}
 	}
 
+	
+	$('body').css('background-image', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/'${championName}'_0.jpg');
 });
 
 //클릭 시 상세페이지로 다시 이동
@@ -826,9 +840,9 @@ $(".lane_btn").click(function(){
 	let championName = "${championName}";
 	let button_value = $(this).val();
 	let $form = $("<form action='runeLine' method ='get'></form>");
-	$("<input>").attr("name", "lane").val(button_value).appendTo($form);
-	$("<input>").attr("name", "championName").val(championName).appendTo($form);
-	$("<input>").attr("name", "tier").val(tier).appendTo($form);
+	$("<input type='hidden'>").attr("name", "lane").val(button_value).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input type='hidden'>").attr("name", "tier").val(tier).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 });
@@ -841,10 +855,10 @@ $('.championTr').click(function(){
 	let championName = "${championName}";
 	let counter = $(this).attr('data-champion');
 	let $form = $("<form action='counterCal' method ='get'></form>");
-	$("<input>").attr("name", "championName").val(championName).appendTo($form);
-	$("<input>").attr("name", "counter1").val(counter).appendTo($form);	
-	$("<input>").attr("name", "lane").val(lane).appendTo($form);
-	$("<input>").attr("name", "tier").val(tier).appendTo($form);
+	$("<input type='hidden'>").attr("name", "championName").val(championName).appendTo($form);
+	$("<input type='hidden'>").attr("name", "counter1").val(counter).appendTo($form);	
+	$("<input type='hidden'>").attr("name", "lane").val(lane).appendTo($form);
+	$("<input type='hidden'>").attr("name", "tier").val(tier).appendTo($form);
 	$form.appendTo("body");
 	$form.submit();
 });
